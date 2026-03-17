@@ -15,6 +15,7 @@
         <link href="https://fonts.bunny.net/css?family=public-sans:300,400,500,600,700&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans antialiased bg-bg-warm min-h-screen flex flex-col">
@@ -36,14 +37,24 @@
             <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
                 @php
                     $navItems = [
-                        ['route' => 'dashboard',    'match' => 'dashboard',              'label' => __('races.dashboard'),
+                        ['route' => 'dashboard',           'match' => 'dashboard',                    'label' => __('races.dashboard'),
                          'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>'],
-                        ['route' => 'races.index',  'match' => 'races.index|races.show', 'label' => __('races.my_races'),
+                        ['route' => 'races.index',         'match' => 'races.index|races.show',       'label' => __('races.my_races'),
                          'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>'],
-                        ['route' => 'races.create', 'match' => 'races.create|races.edit','label' => __('races.add_race'),
+                        ['route' => 'races.create',        'match' => 'races.create|races.edit',      'label' => __('races.add_race'),
                          'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 4v16m8-8H4"/>'],
-                        ['route' => 'stats.index',  'match' => 'stats.*',                'label' => __('races.stats'),
+                        ['route' => 'calendar.index',      'match' => 'calendar.*',                   'label' => 'Calendario',
+                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>'],
+                        ['route' => 'stats.index',         'match' => 'stats.*',                      'label' => __('races.stats'),
                          'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'],
+                        ['route' => 'expenses.index',      'match' => 'expenses.*',                   'label' => 'Gastos',
+                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
+                        ['route' => 'personal-records.index', 'match' => 'personal-records.*',        'label' => 'Récords',
+                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>'],
+                        ['route' => 'gear.index',          'match' => 'gear.*',                       'label' => 'Material',
+                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>'],
+                        ['route' => 'coach.index',         'match' => 'coach.*',                      'label' => 'RaceCoach',
+                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z"/>'],
                     ];
                 @endphp
                 @foreach($navItems as $item)
@@ -201,26 +212,27 @@
                     </a>
                 </div>
 
-                <a href="{{ route('stats.index') }}"
-                   class="flex flex-col items-center gap-1 {{ request()->routeIs('stats.*') ? 'text-primary' : 'text-slate-400' }}">
+                <a href="{{ route('expenses.index') }}"
+                   class="flex flex-col items-center gap-1 {{ request()->routeIs('expenses.*') ? 'text-primary' : 'text-slate-400' }}">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         style="width:24px;height:24px;stroke-width:{{ request()->routeIs('stats.*') ? '2.25' : '1.75' }}">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                         style="width:24px;height:24px;stroke-width:{{ request()->routeIs('expenses.*') ? '2.25' : '1.75' }}">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <span class="text-[10px] {{ request()->routeIs('stats.*') ? 'font-bold' : 'font-medium' }} leading-none">Stats</span>
+                    <span class="text-[10px] {{ request()->routeIs('expenses.*') ? 'font-bold' : 'font-medium' }} leading-none">Gastos</span>
                 </a>
 
-                <a href="{{ route('profile.edit') }}"
-                   class="flex flex-col items-center gap-1 {{ request()->routeIs('profile.*') ? 'text-primary' : 'text-slate-400' }}">
+                <a href="{{ route('coach.index') }}"
+                   class="flex flex-col items-center gap-1 {{ request()->routeIs('coach.*') ? 'text-primary' : 'text-slate-400' }}">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         style="width:24px;height:24px;stroke-width:{{ request()->routeIs('profile.*') ? '2.25' : '1.75' }}">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                         style="width:24px;height:24px;stroke-width:{{ request()->routeIs('coach.*') ? '2.25' : '1.75' }}">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
-                    <span class="text-[10px] {{ request()->routeIs('profile.*') ? 'font-bold' : 'font-medium' }} leading-none">Perfil</span>
+                    <span class="text-[10px] {{ request()->routeIs('coach.*') ? 'font-bold' : 'font-medium' }} leading-none">Coach</span>
                 </a>
 
             </nav>
         </div>
 
+        @livewireScripts
     </body>
 </html>

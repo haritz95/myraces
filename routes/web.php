@@ -1,8 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\GearController;
+use App\Http\Controllers\PersonalRecordController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RaceCoachController;
 use App\Http\Controllers\RaceController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\StatsController;
@@ -29,6 +34,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('races', RaceController::class);
 
     Route::get('/stats', [StatsController::class, 'index'])->name('stats.index');
+
+    Route::resource('expenses', ExpenseController::class)->except(['show']);
+
+    Route::get('/personal-records', [PersonalRecordController::class, 'index'])->name('personal-records.index');
+    Route::post('/personal-records', [PersonalRecordController::class, 'store'])->name('personal-records.store');
+    Route::delete('/personal-records/{personalRecord}', [PersonalRecordController::class, 'destroy'])->name('personal-records.destroy');
+
+    Route::resource('gear', GearController::class)->except(['show']);
+
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+
+    Route::get('/coach', [RaceCoachController::class, 'index'])->name('coach.index');
+    Route::post('/coach/chat', [RaceCoachController::class, 'chat'])->name('coach.chat');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
