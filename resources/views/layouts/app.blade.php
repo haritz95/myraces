@@ -468,7 +468,7 @@
                     <svg style="display:inline;vertical-align:middle;margin:0 2px" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.70)" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                     </svg>
-                    y luego <strong style="color:rgba(255,255,255,0.80)">"Añadir a pantalla de inicio"</strong>
+                    y luego <span style="color:rgba(255,255,255,0.80);font-weight:700">"Añadir a pantalla de inicio"</span>
                 </p>
             </div>
         </div>

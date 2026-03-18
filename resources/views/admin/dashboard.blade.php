@@ -4,13 +4,14 @@
     <div class="max-w-5xl mx-auto px-4 py-6 space-y-6">
 
         {{-- Stats --}}
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
             @foreach([
-                [$stats['total_users'],              'Usuarios',  '#C8FA5F'],
-                [$stats['total_races'],              'Carreras',  '#C8FA5F'],
-                [number_format($stats['total_km'],0).'km', 'Km totales','rgba(255,255,255,0.7)'],
-                ['€'.number_format($stats['total_spent'],0),'Invertido','rgba(255,255,255,0.7)'],
-                [$stats['banned_users'],             'Baneados',  '#f87171'],
+                [$stats['total_users'],                   'Usuarios',    '#C8FA5F'],
+                [$stats['total_races'],                   'Carreras',    '#C8FA5F'],
+                [number_format($stats['total_km'], 0).'km','Km totales', 'rgba(255,255,255,0.7)'],
+                ['€'.number_format($stats['total_spent'], 0), 'Invertido','rgba(255,255,255,0.7)'],
+                [$stats['active_pods'],                   'Pods activos','#a78bfa'],
+                [$stats['banned_users'],                  'Baneados',    '#f87171'],
             ] as [$val, $label, $color])
                 <div class="card px-4 py-4 text-center">
                     <p class="text-2xl font-black leading-none tabnum" style="color:{{ $color }}">{{ $val }}</p>
@@ -116,6 +117,17 @@
                 <div>
                     <p class="text-sm font-bold text-white">Anuncios</p>
                     <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Revisar, aprobar, pausar</p>
+                </div>
+            </a>
+            <a href="{{ route('admin.pods.index') }}" class="card-interactive flex items-center gap-4 p-5">
+                <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-white">Social Pods</p>
+                    <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Ver, editar, moderar</p>
                 </div>
             </a>
             <a href="{{ route('admin.nav-items') }}" class="card-interactive flex items-center gap-4 p-5">

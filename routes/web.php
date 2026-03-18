@@ -6,6 +6,7 @@ use App\Http\Controllers\PodController;
 use App\Http\Controllers\Admin\AdController as AdminAdController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NavItemController;
+use App\Http\Controllers\Admin\PodController as AdminPodController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
@@ -97,6 +98,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('/ads/{ad}/reject', [AdminAdController::class, 'reject'])->name('ads.reject');
     Route::patch('/ads/{ad}/pause', [AdminAdController::class, 'pause'])->name('ads.pause');
     Route::delete('/ads/{ad}', [AdminAdController::class, 'destroy'])->name('ads.destroy');
+
+    Route::get('/pods', [AdminPodController::class, 'index'])->name('pods.index');
+    Route::get('/pods/{pod}', [AdminPodController::class, 'show'])->name('pods.show');
+    Route::get('/pods/{pod}/edit', [AdminPodController::class, 'edit'])->name('pods.edit');
+    Route::patch('/pods/{pod}', [AdminPodController::class, 'update'])->name('pods.update');
+    Route::delete('/pods/{pod}', [AdminPodController::class, 'destroy'])->name('pods.destroy');
+    Route::delete('/pods/{pod}/members/{userId}', [AdminPodController::class, 'removeMember'])->name('pods.members.remove');
 
     Route::get('/nav-items', [NavItemController::class, 'index'])->name('nav-items');
     Route::post('/nav-items', [NavItemController::class, 'store'])->name('nav-items.store');
