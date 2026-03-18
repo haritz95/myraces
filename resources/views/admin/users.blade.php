@@ -17,6 +17,7 @@
             <select name="filter" onchange="this.form.submit()" class="input-field w-auto pr-8">
                 <option value="">Todos</option>
                 <option value="admin" {{ request('filter') === 'admin' ? 'selected' : '' }}>Admins</option>
+                <option value="premium" {{ request('filter') === 'premium' ? 'selected' : '' }}>Premium</option>
                 <option value="banned" {{ request('filter') === 'banned' ? 'selected' : '' }}>Baneados</option>
             </select>
         </form>
@@ -41,6 +42,9 @@
                                 @if($user->is_admin)
                                     <span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded font-bold">Admin</span>
                                 @endif
+                                @if($user->is_premium)
+                                    <span class="text-[10px] bg-violet-500/20 text-violet-400 px-1.5 py-0.5 rounded font-bold">Premium</span>
+                                @endif
                                 @if($user->is_banned)
                                     <span class="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded font-bold">Baneado</span>
                                 @endif
@@ -52,6 +56,18 @@
 
                         @if($user->id !== auth()->id())
                             <div class="flex items-center gap-2 flex-shrink-0">
+
+                                {{-- Toggle premium --}}
+                                <form method="POST" action="{{ route('admin.users.toggle-premium', $user) }}">
+                                    @csrf @method('PATCH')
+                                    <button type="submit"
+                                            class="text-[11px] px-2.5 py-1.5 rounded-lg font-bold border transition
+                                                   {{ $user->is_premium
+                                                        ? 'border-violet-500/30 text-violet-400 bg-violet-500/10 hover:bg-violet-500/20'
+                                                        : 'border-white/10 text-white/40 hover:text-white hover:border-white/20' }}">
+                                        {{ $user->is_premium ? 'Quitar premium' : 'Premium' }}
+                                    </button>
+                                </form>
 
                                 {{-- Toggle admin --}}
                                 <form method="POST" action="{{ route('admin.users.toggle-admin', $user) }}">

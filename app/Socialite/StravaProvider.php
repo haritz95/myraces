@@ -8,21 +8,21 @@ use Laravel\Socialite\Two\User;
 
 class StravaProvider extends AbstractProvider implements ProviderInterface
 {
-    protected string $scopeSeparator = ',';
+    protected $scopeSeparator = ',';
 
-    protected array $scopes = ['read'];
+    protected $scopes = ['read', 'activity:read_all'];
 
-    protected function getAuthUrl(string $state): string
+    protected function getAuthUrl($state)
     {
         return $this->buildAuthUrlFromBase('https://www.strava.com/oauth/authorize', $state);
     }
 
-    protected function getTokenUrl(): string
+    protected function getTokenUrl()
     {
         return 'https://www.strava.com/oauth/token';
     }
 
-    protected function getUserByToken(string $token): array
+    protected function getUserByToken($token)
     {
         $response = $this->getHttpClient()->get('https://www.strava.com/api/v3/athlete', [
             'headers' => ['Authorization' => 'Bearer '.$token],

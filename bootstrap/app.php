@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\CheckNavItemAccess;
 use App\Http\Middleware\EnsureIsAdmin;
+use App\Http\Middleware\EnsurePremium;
 use App\Http\Middleware\EnsureUserIsNotBanned;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -22,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => EnsureIsAdmin::class,
+            'premium' => EnsurePremium::class,
             'nav.access' => CheckNavItemAccess::class,
         ]);
     })

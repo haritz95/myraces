@@ -10,7 +10,7 @@
                 [$stats['total_races'],                   'Carreras',    '#C8FA5F'],
                 [number_format($stats['total_km'], 0).'km','Km totales', 'rgba(255,255,255,0.7)'],
                 ['€'.number_format($stats['total_spent'], 0), 'Invertido','rgba(255,255,255,0.7)'],
-                [$stats['active_pods'],                   'Pods activos','#a78bfa'],
+                [$stats['premium_users'],                  'Premium',     '#a78bfa'],
                 [$stats['banned_users'],                  'Baneados',    '#f87171'],
             ] as [$val, $label, $color])
                 <div class="card px-4 py-4 text-center">
@@ -117,6 +117,17 @@
                 <div>
                     <p class="text-sm font-bold text-white">Anuncios</p>
                     <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Revisar, aprobar, pausar</p>
+                </div>
+            </a>
+            <a href="{{ route('admin.events.index') }}" class="card-interactive flex items-center gap-4 p-5">
+                <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-white">Catálogo de carreras</p>
+                    <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Añadir, editar, destacar</p>
                 </div>
             </a>
             <a href="{{ route('admin.pods.index') }}" class="card-interactive flex items-center gap-4 p-5">

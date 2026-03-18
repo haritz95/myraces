@@ -475,11 +475,58 @@
     </div>
 
     <script>
+        const VAPID_PUBLIC_KEY = '{{ config('webpush.vapid.public_key') }}';
+        const SUBSCRIBE_URL    = '{{ route('push.subscribe') }}';
+        const UNSUBSCRIBE_URL  = '{{ route('push.unsubscribe') }}';
+        const CSRF_TOKEN       = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        let swRegistration = null;
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(() => {});
+                navigator.serviceWorker.register('/sw.js').then((reg) => {
+                    swRegistration = reg;
+                    window._swReg = reg;
+                }).catch(() => {});
             });
         }
+
+        // Push subscription helpers
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+            const raw     = window.atob(base64);
+            return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+        }
+
+        window.subscribeToPush = async function () {
+            if (!swRegistration) { return false; }
+            try {
+                const sub = await swRegistration.pushManager.subscribe({
+                    userVisibleOnly:      true,
+                    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+                });
+                const json = sub.toJSON();
+                await fetch(SUBSCRIBE_URL, {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN },
+                    body:    JSON.stringify({ endpoint: sub.endpoint, keys: json.keys }),
+                });
+                return true;
+            } catch { return false; }
+        };
+
+        window.unsubscribeFromPush = async function () {
+            if (!swRegistration) { return; }
+            const sub = await swRegistration.pushManager.getSubscription();
+            if (!sub) { return; }
+            await fetch(UNSUBSCRIBE_URL, {
+                method:  'DELETE',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN },
+                body:    JSON.stringify({ endpoint: sub.endpoint }),
+            });
+            await sub.unsubscribe();
+        };
 
         // Show iOS install hint (only on Safari iOS, not already installed, not dismissed)
         (function () {

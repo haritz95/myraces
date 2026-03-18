@@ -36,8 +36,10 @@
         <div class="relative overflow-hidden rounded-2xl px-5 py-4"
              style="background:linear-gradient(135deg,rgba(200,250,95,0.15) 0%,rgba(200,250,95,0.05) 100%);border:1px solid rgba(200,250,95,0.25);backdrop-filter:blur(12px)">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center flex-shrink-0 text-2xl">
-                    🔥
+                <div class="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
                 </div>
                 <div class="flex-1">
                     <p class="text-white font-black text-lg leading-none">{{ $streak->current_streak }}-day streak</p>
@@ -156,7 +158,11 @@
 
         @if($myPods->isEmpty() && $discover->isEmpty())
             <div class="card px-6 py-16 text-center space-y-4">
-                <div class="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto text-3xl">🏃</div>
+                <div class="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
+                    <svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
                 <div>
                     <p class="text-white font-black text-xl">Sin Pods todavía</p>
                     <p class="text-sm mt-1" style="color:rgba(255,255,255,0.40)">Crea el primero e invita a tus compañeros de entreno.</p>

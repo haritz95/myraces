@@ -355,6 +355,48 @@
                     </div>
                 </div>
 
+                {{-- Push notifications --}}
+                <div class="settings-row" style="border-top:1px solid rgba(255,255,255,0.05)"
+                     x-data="{ enabled: false, loading: false }"
+                     x-init="
+                        if ('Notification' in window && 'serviceWorker' in navigator) {
+                            navigator.serviceWorker.ready.then(reg => {
+                                reg.pushManager.getSubscription().then(sub => { enabled = !!sub; });
+                            });
+                        }
+                     ">
+                    <div class="settings-icon">
+                        <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <span class="settings-row-label">Notificaciones push</span>
+                        <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.35)">Recordatorios de carreras</p>
+                    </div>
+                    <button type="button" :disabled="loading"
+                            @click="
+                                if (!('Notification' in window)) return;
+                                loading = true;
+                                if (enabled) {
+                                    unsubscribeFromPush().then(() => { enabled = false; loading = false; });
+                                } else {
+                                    Notification.requestPermission().then(async perm => {
+                                        if (perm === 'granted') {
+                                            const ok = await subscribeToPush();
+                                            enabled = ok;
+                                        }
+                                        loading = false;
+                                    });
+                                }
+                            "
+                            class="w-9 h-5 rounded-full flex-shrink-0 transition-colors duration-200 relative disabled:opacity-50"
+                            :class="enabled ? 'bg-primary' : 'bg-white/20'">
+                        <span class="absolute left-0.5 top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200"
+                              :class="enabled ? 'translate-x-4' : 'translate-x-0'"></span>
+                    </button>
+                </div>
+
             </div>
             @if(session('status') === 'theme-updated')
                 <p class="text-xs text-primary mt-2 px-1 flex items-center gap-1.5 font-bold">
@@ -443,6 +485,42 @@
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                 Preferencias guardadas.
             </p>
+        </div>
+
+        {{-- Strava --}}
+        @php
+            $hasStrava = auth()->user()->socialAccounts()->where('provider', 'strava')->exists();
+        @endphp
+        <div>
+            <p class="section-label">Integraciones</p>
+            <div class="settings-group">
+                <div class="settings-row">
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#FC4C02">
+                        <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.599h4.172L10.463 0l-7 13.828h4.169"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="settings-row-label">Strava</p>
+                        <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.35)">
+                            {{ $hasStrava ? 'Cuenta conectada' : 'No conectado' }}
+                        </p>
+                    </div>
+                    @if($hasStrava)
+                        <a href="{{ route('strava.import') }}"
+                           class="text-xs font-bold px-3 py-1.5 rounded-lg transition"
+                           style="background:rgba(252,76,2,0.15);color:#FC4C02">
+                            Importar
+                        </a>
+                    @else
+                        <a href="{{ route('social.redirect', 'strava') }}"
+                           class="text-xs font-bold px-3 py-1.5 rounded-lg transition"
+                           style="background:rgba(252,76,2,0.15);color:#FC4C02">
+                            Conectar
+                        </a>
+                    @endif
+                </div>
+            </div>
         </div>
 
         {{-- Account --}}

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[Fillable([
-    'user_id', 'name', 'date', 'location', 'country',
+    'user_id', 'strava_id', 'name', 'date', 'location', 'country',
     'distance', 'distance_unit', 'modality', 'status',
     'finish_time', 'position_overall', 'position_category',
     'category', 'bib_number', 'cost', 'website', 'notes', 'is_public',
@@ -65,10 +65,10 @@ class Race extends Model
         $seconds = $this->finish_time % 60;
 
         if ($hours > 0) {
-            return sprintf('%d:%02d:%02d', $hours, $minutes, $seconds);
+            return \sprintf('%d:%02d:%02d', $hours, $minutes, $seconds);
         }
 
-        return sprintf('%d:%02d', $minutes, $seconds);
+        return \sprintf('%d:%02d', $minutes, $seconds);
     }
 
     /**
@@ -88,6 +88,6 @@ class Race extends Model
         $minutes = intdiv((int) $paceSeconds, 60);
         $seconds = (int) $paceSeconds % 60;
 
-        return sprintf('%d:%02d /km', $minutes, $seconds);
+        return \sprintf('%d:%02d /km', $minutes, $seconds);
     }
 }

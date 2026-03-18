@@ -1,12 +1,22 @@
 <x-app-layout>
     @section('page_title', __('races.my_races'))
     @section('header_action')
-        <a href="{{ route('races.create') }}" class="btn btn-primary text-sm py-2 px-4">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-            </svg>
-            Añadir
-        </a>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('strava.import') }}"
+               class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-colors"
+               style="background:rgba(252,76,2,0.15);color:#FC4C02">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.599h4.172L10.463 0l-7 13.828h4.169"/>
+                </svg>
+                Strava
+            </a>
+            <a href="{{ route('races.create') }}" class="btn btn-primary text-sm py-2 px-4">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                </svg>
+                Añadir
+            </a>
+        </div>
     @endsection
 
     {{-- Status tabs --}}

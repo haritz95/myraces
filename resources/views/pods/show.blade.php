@@ -98,7 +98,7 @@
                         $pts = $member->pivot->points ?? 0;
                         $pct = $topPoints > 0 ? round($pts / $topPoints * 100) : 0;
                         $isMe = $member->id === auth()->id();
-                        $medals = ['🥇','🥈','🥉'];
+                        $medals = ['1.', '2.', '3.'];
                     @endphp
                     <div class="px-4 py-3.5 {{ !$loop->last ? 'border-b' : '' }}"
                          style="{{ !$loop->last ? 'border-color:rgba(255,255,255,0.05)' : '' }}">
@@ -141,7 +141,11 @@
         @if($isMember && $streak)
         <div class="rounded-2xl px-5 py-4 flex items-center gap-4"
              style="background:rgba(200,250,95,0.06);border:1px solid rgba(200,250,95,0.12);backdrop-filter:blur(8px)">
-            <div class="text-3xl">{{ $streak->current_streak >= 7 ? '🔥' : ($streak->current_streak >= 3 ? '⚡' : '🏃') }}</div>
+            <div class="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </div>
             <div class="flex-1">
                 <p class="text-sm font-black text-white">Tu racha: <span class="text-primary">{{ $streak->current_streak }} días</span></p>
                 <p class="text-xs" style="color:rgba(255,255,255,0.45)">
@@ -265,7 +269,7 @@
 
                     <template x-if="messages.length === 0">
                         <div class="py-8 text-center">
-                            <p class="text-sm" style="color:rgba(255,255,255,0.30)">Sé el primero en escribir algo 👋</p>
+                            <p class="text-sm" style="color:rgba(255,255,255,0.30)">Sé el primero en escribir algo</p>
                         </div>
                     </template>
                 </div>

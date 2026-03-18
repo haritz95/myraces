@@ -30,6 +30,42 @@ self.addEventListener('activate', (event) => {
     );
 });
 
+// ── Push notifications ────────────────────────────────────────
+self.addEventListener('push', (event) => {
+    if (!event.data) { return; }
+
+    const data = event.data.json();
+
+    event.waitUntil(
+        self.registration.showNotification(data.title || 'MyRaces', {
+            body:    data.body    || '',
+            icon:    data.icon    || '/icons/icon.svg',
+            badge:   '/icons/icon.svg',
+            data:    data.data    || {},
+            actions: data.actions || [],
+        })
+    );
+});
+
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+
+    const url = event.notification.data?.url || '/dashboard';
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+            for (const client of windowClients) {
+                if (client.url === url && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(url);
+            }
+        })
+    );
+});
+
 // ── Fetch strategy ────────────────────────────────────────────
 self.addEventListener('fetch', (event) => {
     const { request } = event;

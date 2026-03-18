@@ -21,6 +21,7 @@ class AdminController extends Controller
             'total_races' => Race::count(),
             'total_km' => (float) Race::where('status', 'completed')->sum('distance'),
             'total_spent' => (float) Race::whereNotNull('cost')->sum('cost'),
+            'premium_users' => User::where('is_premium', true)->count(),
             'banned_users' => User::where('is_banned', true)->count(),
             'active_pods' => Pod::where('status', 'active')->count(),
             'recent_users' => User::latest()->take(5)->get(),
@@ -40,10 +41,19 @@ class AdminController extends Controller
             )
             ->when($request->filter === 'banned', fn ($q) => $q->where('is_banned', true))
             ->when($request->filter === 'admin', fn ($q) => $q->where('is_admin', true))
+            ->when($request->filter === 'premium', fn ($q) => $q->where('is_premium', true))
             ->latest()
             ->paginate(20);
 
         return view('admin.users', compact('users'));
+    }
+
+    public function togglePremium(User $user): RedirectResponse
+    {
+        $user->update(['is_premium' => ! $user->is_premium]);
+
+        return redirect()->route('admin.users')
+            ->with('success', $user->is_premium ? "{$user->name} ahora tiene premium." : "{$user->name} ya no tiene premium.");
     }
 
     public function toggleAdmin(User $user): RedirectResponse
