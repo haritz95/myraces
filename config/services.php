@@ -53,4 +53,8 @@ return [
         'redirect' => env('STRAVA_REDIRECT_URI', '/auth/strava/callback'),
     ],
 
+    'anthropic' => [
+        'key' => env('ANTHROPIC_API_KEY'),
+    ],
+
 ];

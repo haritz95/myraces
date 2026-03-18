@@ -37,4 +37,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Race::class);
     }
+
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    public function personalRecords(): HasMany
+    {
+        return $this->hasMany(PersonalRecord::class);
+    }
+
+    public function gears(): HasMany
+    {
+        return $this->hasMany(Gear::class);
+    }
 }
