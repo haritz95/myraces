@@ -2,7 +2,6 @@
     @section('page_title', 'Calendario')
 
     @php
-        use Carbon\Carbon;
         $prevMonth = $month === 1 ? ['year' => $year - 1, 'month' => 12] : ['year' => $year, 'month' => $month - 1];
         $nextMonth = $month === 12 ? ['year' => $year + 1, 'month' => 1] : ['year' => $year, 'month' => $month + 1];
 
@@ -10,50 +9,55 @@
                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
         $daysInMonth = $startOfMonth->daysInMonth;
-        $firstDayOfWeek = ($startOfMonth->dayOfWeek + 6) % 7; // Monday = 0
+        $firstDayOfWeek = ($startOfMonth->dayOfWeek + 6) % 7;
 
         $racesByDay = $races->groupBy(fn($r) => $r->date->day);
 
         $statusColors = [
-            'upcoming' => 'bg-primary',
-            'completed' => 'bg-green-500',
-            'dnf' => 'bg-amber-500',
-            'dns' => 'bg-slate-400',
+            'upcoming'  => '#C8FA5F',
+            'completed' => '#4ade80',
+            'dnf'       => '#f87171',
+            'dns'       => '#6b7280',
         ];
     @endphp
 
-    <main class="flex-1 overflow-y-auto px-4 py-6 max-w-2xl mx-auto w-full pb-[76px]">
+    <main class="px-5 py-6 max-w-2xl mx-auto w-full space-y-6">
 
         {{-- Month header --}}
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center justify-between">
             <a href="{{ route('calendar.index', $prevMonth) }}"
-               class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+               class="w-10 h-10 rounded-2xl flex items-center justify-center transition-colors"
+               style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.50)"
+               onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='white'"
+               onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='rgba(255,255,255,0.50)'">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
             </a>
             <div class="text-center">
-                <p class="text-xl font-bold text-slate-900">{{ $monthNames[$month] }}</p>
-                <p class="text-sm text-slate-400">{{ $year }}</p>
+                <p class="text-xl font-black text-white">{{ $monthNames[$month] }}</p>
+                <p class="text-sm font-bold" style="color:rgba(255,255,255,0.35)">{{ $year }}</p>
             </div>
             <a href="{{ route('calendar.index', $nextMonth) }}"
-               class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+               class="w-10 h-10 rounded-2xl flex items-center justify-center transition-colors"
+               style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.50)"
+               onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='white'"
+               onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='rgba(255,255,255,0.50)'">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </a>
         </div>
 
         {{-- Calendar grid --}}
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden mb-6">
+        <div class="card overflow-hidden">
             {{-- Days of week header --}}
-            <div class="grid grid-cols-7 border-b border-slate-100">
+            <div class="grid grid-cols-7" style="border-bottom:1px solid rgba(255,255,255,0.06)">
                 @foreach(['L', 'M', 'X', 'J', 'V', 'S', 'D'] as $day)
-                    <div class="py-2 text-center text-[11px] font-semibold text-slate-400">{{ $day }}</div>
+                    <div class="py-2.5 text-center text-[11px] font-black uppercase tracking-wider" style="color:rgba(255,255,255,0.25)">{{ $day }}</div>
                 @endforeach
             </div>
 
             {{-- Calendar days --}}
             <div class="grid grid-cols-7">
-                {{-- Empty cells before first day --}}
                 @for($i = 0; $i < $firstDayOfWeek; $i++)
-                    <div class="h-14 border-r border-b border-slate-50"></div>
+                    <div class="h-14" style="border-right:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)"></div>
                 @endfor
 
                 @for($day = 1; $day <= $daysInMonth; $day++)
@@ -62,17 +66,19 @@
                         $dayRaces = $racesByDay->get($day, collect());
                         $col = ($firstDayOfWeek + $day - 1) % 7;
                     @endphp
-                    <div class="h-14 p-1 border-r border-b border-slate-50 {{ $col === 6 ? 'border-r-0' : '' }} relative">
-                        <span class="text-xs {{ $isToday ? 'bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center font-bold' : 'text-slate-600 font-medium' }} block mb-0.5">
+                    <div class="h-14 p-1 relative" style="border-right:{{ $col === 6 ? '0' : '1px solid rgba(255,255,255,0.04)' }};border-bottom:1px solid rgba(255,255,255,0.04)">
+                        <span class="text-xs block mb-0.5 {{ $isToday ? 'w-6 h-6 rounded-full flex items-center justify-center font-black text-black mx-auto' : 'text-center font-semibold' }}"
+                              style="{{ $isToday ? 'background:#C8FA5F' : 'color:rgba(255,255,255,0.50)' }}">
                             {{ $day }}
                         </span>
                         @foreach($dayRaces->take(2) as $race)
-                            <div class="text-[9px] font-medium truncate px-1 py-0.5 rounded {{ $statusColors[$race->status] ?? 'bg-slate-400' }} text-white">
+                            <div class="text-[9px] font-black truncate px-1 py-0.5 rounded-md mx-0.5 mb-0.5"
+                                 style="background:{{ ($statusColors[$race->status] ?? '#6b7280') }}20;color:{{ $statusColors[$race->status] ?? '#6b7280' }}">
                                 {{ $race->name }}
                             </div>
                         @endforeach
                         @if($dayRaces->count() > 2)
-                            <span class="text-[9px] text-slate-400">+{{ $dayRaces->count() - 2 }}</span>
+                            <span class="text-[9px] font-bold px-1" style="color:rgba(255,255,255,0.30)">+{{ $dayRaces->count() - 2 }}</span>
                         @endif
                     </div>
                 @endfor
@@ -81,21 +87,23 @@
 
         {{-- Races this month --}}
         @if($races->isNotEmpty())
-            <section class="mb-6">
-                <h2 class="text-base font-bold text-slate-900 mb-3">Este mes</h2>
+            <section>
+                <h2 class="text-base font-black text-white mb-3">Este mes</h2>
                 <div class="space-y-2">
                     @foreach($races->sortBy('date') as $race)
+                        @php $accentColor = $statusColors[$race->status] ?? '#6b7280'; @endphp
                         <a href="{{ route('races.show', $race) }}"
-                           class="flex items-center gap-3 bg-white rounded-xl border border-slate-100 p-3 hover:shadow-sm transition-shadow">
-                            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                <span class="text-primary font-bold text-sm">{{ $race->date->format('d') }}</span>
+                           class="flex items-center gap-3 card-interactive p-3">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                                 style="background:{{ $accentColor }}18;border:1px solid {{ $accentColor }}30">
+                                <span class="font-black text-sm" style="color:{{ $accentColor }}">{{ $race->date->format('d') }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <p class="font-semibold text-slate-900 text-sm truncate">{{ $race->name }}</p>
-                                <p class="text-xs text-slate-400">{{ $race->formatted_distance }} km · {{ $race->date->format('d M') }}</p>
+                                <p class="font-black text-white text-sm truncate">{{ $race->name }}</p>
+                                <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">{{ $race->formatted_distance }} km · {{ $race->date->format('d M') }}</p>
                             </div>
-                            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full
-                                {{ $race->status === 'upcoming' ? 'bg-primary/10 text-primary' : ($race->status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500') }}">
+                            <span class="text-[11px] font-black px-2.5 py-1 rounded-full flex-shrink-0"
+                                  style="background:{{ $accentColor }}18;color:{{ $accentColor }}">
                                 {{ ucfirst($race->status) }}
                             </span>
                         </a>
@@ -107,19 +115,19 @@
         {{-- Upcoming races --}}
         @if($upcomingRaces->isNotEmpty())
             <section>
-                <h2 class="text-base font-bold text-slate-900 mb-3">Próximas</h2>
+                <h2 class="text-base font-black text-white mb-3">Próximas</h2>
                 <div class="space-y-2">
                     @foreach($upcomingRaces as $race)
                         @php $daysLeft = now()->startOfDay()->diffInDays($race->date->startOfDay()); @endphp
                         <a href="{{ route('races.show', $race) }}"
-                           class="flex items-center gap-3 bg-white rounded-xl border border-slate-100 p-3 hover:shadow-sm transition-shadow">
+                           class="flex items-center gap-3 card-interactive p-3">
                             <div class="w-10 text-center flex-shrink-0">
-                                <p class="text-lg font-bold text-primary leading-none">{{ $daysLeft }}</p>
-                                <p class="text-[10px] text-slate-400 leading-none">días</p>
+                                <p class="text-xl font-black tabnum leading-none text-primary">{{ $daysLeft }}</p>
+                                <p class="text-[10px] font-bold leading-none mt-0.5" style="color:rgba(255,255,255,0.30)">días</p>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <p class="font-semibold text-slate-900 text-sm truncate">{{ $race->name }}</p>
-                                <p class="text-xs text-slate-400">{{ $race->formatted_distance }} km · {{ $race->date->format('d M Y') }}</p>
+                                <p class="font-black text-white text-sm truncate">{{ $race->name }}</p>
+                                <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">{{ $race->formatted_distance }} km · {{ $race->date->format('d M Y') }}</p>
                             </div>
                         </a>
                     @endforeach

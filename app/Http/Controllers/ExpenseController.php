@@ -37,7 +37,7 @@ class ExpenseController extends Controller
             ->sum('amount');
 
         $years = $user->expenses()
-            ->selectRaw('strftime("%Y", date) as year')
+            ->selectRaw('YEAR(date) as year')
             ->distinct()
             ->orderByDesc('year')
             ->pluck('year');

@@ -43,6 +43,21 @@ class ProfileController extends Controller
     }
 
     /**
+     * Update the user's theme preference.
+     */
+    public function updateTheme(Request $request): RedirectResponse
+    {
+        $request->validate(['theme' => ['required', 'in:dark,light']]);
+
+        $request->user()->profile()->updateOrCreate(
+            ['user_id' => $request->user()->id],
+            ['theme' => $request->theme]
+        );
+
+        return Redirect::route('profile.edit')->with('status', 'theme-updated');
+    }
+
+    /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse

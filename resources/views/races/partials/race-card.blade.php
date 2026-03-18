@@ -1,9 +1,9 @@
 @php
-    $statusBg = match($race->status) {
-        'upcoming'  => 'background: linear-gradient(160deg, #ec5b13, #c2410c)',
-        'completed' => 'background: linear-gradient(160deg, #16a34a, #15803d)',
-        'dnf'       => 'background: linear-gradient(160deg, #dc2626, #b91c1c)',
-        default     => 'background: linear-gradient(160deg, #94a3b8, #64748b)',
+    $accentColor = match($race->status) {
+        'upcoming'  => '#C8FA5F',
+        'completed' => '#4ade80',
+        'dnf'       => '#f87171',
+        default     => '#6b7280',
     };
     $badgeClass = match($race->status) {
         'upcoming'  => 'badge-upcoming',
@@ -13,20 +13,19 @@
     };
 @endphp
 <a href="{{ route('races.show', $race) }}"
-   class="flex items-center gap-3 bg-white p-3 rounded-xl shadow-card border border-slate-100 hover:shadow-card-up hover:border-slate-200 transition-all duration-200 group">
+   class="flex items-center gap-4 card-interactive p-4 group">
 
-    {{-- Status date block (like collection thumbnail) --}}
-    <div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 flex flex-col items-center justify-center"
-         style="{{ $statusBg }}">
-        <p class="text-2xl font-bold text-white tabnum leading-none">{{ $race->date->format('d') }}</p>
-        <p class="text-[10px] font-bold text-white/80 uppercase tracking-wide mt-1">{{ $race->date->translatedFormat('M') }}</p>
-        <p class="text-[10px] text-white/60">{{ $race->date->format('Y') }}</p>
+    {{-- Date block --}}
+    <div class="w-[52px] h-[52px] rounded-2xl flex flex-col items-center justify-center flex-shrink-0"
+         style="background:{{ $accentColor }}18;border:1px solid {{ $accentColor }}30">
+        <p class="text-lg font-black tabnum leading-none" style="color:{{ $accentColor }}">{{ $race->date->format('d') }}</p>
+        <p class="text-[9px] font-black uppercase tracking-wider mt-0.5" style="color:{{ $accentColor }}80">{{ $race->date->translatedFormat('M') }}</p>
     </div>
 
     {{-- Info --}}
     <div class="flex-1 min-w-0">
-        <h4 class="font-bold text-sm text-slate-900 truncate">{{ $race->name }}</h4>
-        <p class="text-xs text-slate-500 mt-0.5 truncate">
+        <h4 class="font-black text-sm text-white truncate leading-snug">{{ $race->name }}</h4>
+        <p class="text-xs mt-0.5 truncate" style="color:rgba(255,255,255,0.40)">
             {{ $race->formatted_distance }} {{ $race->distance_unit }}
             · {{ __('races.modalities.' . $race->modality) }}
             @if($race->location) · {{ $race->location }}@endif
@@ -34,14 +33,14 @@
         <div class="mt-2">
             @if($race->formatted_time)
                 <div class="flex items-center gap-2">
-                    <span class="text-sm font-bold text-slate-800 tabnum">{{ $race->formatted_time }}</span>
+                    <span class="text-sm font-black text-white tabnum">{{ $race->formatted_time }}</span>
                     @if($race->pace)
-                        <span class="text-xs text-slate-400 tabnum">· {{ $race->pace }}/km</span>
+                        <span class="text-xs tabnum" style="color:rgba(255,255,255,0.35)">· {{ $race->pace }}/km</span>
                     @endif
                 </div>
             @elseif($race->status === 'upcoming')
                 @php $d = now()->startOfDay()->diffInDays($race->date->startOfDay()); @endphp
-                <span class="text-[10px] font-bold py-1 px-2.5 bg-primary/10 text-primary rounded-full uppercase">
+                <span class="text-[10px] font-black py-1 px-2.5 rounded-full uppercase" style="background:rgba(200,250,95,0.12);color:#C8FA5F">
                     {{ $d === 0 ? '¡Hoy!' : ($d === 1 ? 'Mañana' : "En {$d} días") }}
                 </span>
             @else
@@ -50,7 +49,7 @@
         </div>
     </div>
 
-    <svg class="w-5 h-5 text-slate-300 group-hover:text-primary transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+    <svg class="w-4 h-4 flex-shrink-0 transition-transform group-hover:translate-x-0.5" style="color:rgba(255,255,255,0.20)" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
     </svg>
 </a>

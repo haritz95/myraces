@@ -1,133 +1,157 @@
 <x-app-layout>
     @section('page_title', 'RaceCoach IA')
 
-    <main class="flex-1 overflow-y-auto max-w-2xl mx-auto w-full pb-[76px]"
-          x-data="{
-              messages: [
-                  { role: 'coach', text: '¡Hola! Soy RaceCoach, tu entrenador IA personal. Puedo analizar tus récords, predecir tiempos de carrera y ayudarte a optimizar tu rendimiento. ¿En qué te puedo ayudar hoy?' }
-              ],
-              input: '',
-              loading: false,
-              async sendMessage() {
-                  if (!this.input.trim() || this.loading) return;
-                  const msg = this.input.trim();
-                  this.input = '';
-                  this.messages.push({ role: 'user', text: msg });
-                  this.loading = true;
-                  this.$nextTick(() => this.$refs.chatEnd?.scrollIntoView({ behavior: 'smooth' }));
-                  try {
-                      const res = await fetch('{{ route('coach.chat') }}', {
-                          method: 'POST',
-                          headers: {
-                              'Content-Type': 'application/json',
-                              'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                              'Accept': 'application/json',
-                          },
-                          body: JSON.stringify({ message: msg })
-                      });
-                      const data = await res.json();
-                      this.messages.push({ role: 'coach', text: data.response });
-                  } catch(e) {
-                      this.messages.push({ role: 'coach', text: 'Hubo un error al conectar. Por favor, inténtalo de nuevo.' });
-                  } finally {
-                      this.loading = false;
-                      this.$nextTick(() => this.$refs.chatEnd?.scrollIntoView({ behavior: 'smooth' }));
-                  }
-              }
-          }">
+    {{-- Chat container: fixed height so messages scroll and input stays pinned --}}
+    <div class="coach-chat flex flex-col max-w-2xl mx-auto w-full"
+         x-data="{
+             messages: [
+                 { role: 'coach', text: '¡Hola! Soy RaceCoach, tu entrenador IA personal. Puedo analizar tus récords, predecir tiempos de carrera y ayudarte a optimizar tu rendimiento. ¿En qué te puedo ayudar hoy?' }
+             ],
+             input: '',
+             loading: false,
+             async sendMessage() {
+                 if (!this.input.trim() || this.loading) return;
+                 const msg = this.input.trim();
+                 this.input = '';
+                 this.messages.push({ role: 'user', text: msg });
+                 this.loading = true;
+                 this.$nextTick(() => this.$refs.chatEnd?.scrollIntoView({ behavior: 'smooth' }));
+                 try {
+                     const res = await fetch('{{ route('coach.chat') }}', {
+                         method: 'POST',
+                         headers: {
+                             'Content-Type': 'application/json',
+                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                             'Accept': 'application/json',
+                         },
+                         body: JSON.stringify({ message: msg })
+                     });
+                     const data = await res.json();
+                     this.messages.push({ role: 'coach', text: data.response });
+                 } catch(e) {
+                     this.messages.push({ role: 'coach', text: 'Hubo un error al conectar. Por favor, inténtalo de nuevo.' });
+                 } finally {
+                     this.loading = false;
+                     this.$nextTick(() => this.$refs.chatEnd?.scrollIntoView({ behavior: 'smooth' }));
+                 }
+             }
+         }">
 
-        {{-- Coach Hero --}}
-        <div class="px-4 pt-6 pb-4">
-            <div class="relative overflow-hidden rounded-2xl p-5 mb-5" style="background: linear-gradient(135deg, #221610 0%, #7c2d12 40%, #ec5b13 100%)">
-                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 20% 80%, white 1px, transparent 1px); background-size: 30px 30px"></div>
-                <div class="relative flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center flex-shrink-0" style="box-shadow: inset 0 1px 0 rgba(255,255,255,0.2)">
-                        <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
+        {{-- Scrollable area --}}
+        <div class="flex-1 overflow-y-auto min-h-0">
+
+            {{-- Coach Hero --}}
+            <div class="px-5 pt-6 pb-4">
+                <div class="relative overflow-hidden rounded-3xl p-5 mb-5"
+                     style="background:linear-gradient(135deg,#0f1a00 0%,#1a2d00 50%,#253d00 100%);border:1px solid rgba(200,250,95,0.15)">
+                    <div class="absolute inset-0 opacity-[0.05]" style="background-image:radial-gradient(circle at 20% 80%, #C8FA5F 1px, transparent 1px);background-size:30px 30px"></div>
+                    <div class="relative flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+                             style="background:rgba(200,250,95,0.12);border:1px solid rgba(200,250,95,0.25)">
+                            <svg class="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-white font-black text-lg leading-tight">RaceCoach</p>
+                            <p class="text-sm" style="color:rgba(255,255,255,0.45)">Tu entrenador personal con IA</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-white font-bold text-lg leading-tight">RaceCoach</p>
-                        <p class="text-white/60 text-sm">Tu entrenador personal con IA</p>
+                    <div class="relative grid grid-cols-3 gap-2">
+                        <div class="rounded-2xl p-3 text-center" style="background:rgba(255,255,255,0.07)">
+                            <p class="text-white font-black text-xl leading-none">{{ $races->count() }}</p>
+                            <p class="text-[11px] mt-1 font-bold" style="color:rgba(255,255,255,0.40)">Carreras</p>
+                        </div>
+                        <div class="rounded-2xl p-3 text-center" style="background:rgba(255,255,255,0.07)">
+                            <p class="text-white font-black text-xl leading-none">{{ $personalRecords->count() }}</p>
+                            <p class="text-[11px] mt-1 font-bold" style="color:rgba(255,255,255,0.40)">Récords</p>
+                        </div>
+                        <div class="rounded-2xl p-3 text-center" style="background:rgba(255,255,255,0.07)">
+                            <p class="text-white font-black text-xl leading-none tabnum">{{ number_format((float)$totalExpenses, 0) }}€</p>
+                            <p class="text-[11px] mt-1 font-bold" style="color:rgba(255,255,255,0.40)">Invertido</p>
+                        </div>
                     </div>
                 </div>
-                <div class="relative mt-4 grid grid-cols-3 gap-2">
-                    <div class="bg-white/10 rounded-xl p-2.5 text-center">
-                        <p class="text-white font-bold text-lg leading-none">{{ $races->count() }}</p>
-                        <p class="text-white/60 text-[11px] mt-0.5">Carreras</p>
-                    </div>
-                    <div class="bg-white/10 rounded-xl p-2.5 text-center">
-                        <p class="text-white font-bold text-lg leading-none">{{ $personalRecords->count() }}</p>
-                        <p class="text-white/60 text-[11px] mt-0.5">Récords</p>
-                    </div>
-                    <div class="bg-white/10 rounded-xl p-2.5 text-center">
-                        <p class="text-white font-bold text-lg leading-none">{{ number_format((float)$totalExpenses, 0) }}€</p>
-                        <p class="text-white/60 text-[11px] mt-0.5">Invertido</p>
-                    </div>
+
+                {{-- Quick chips --}}
+                <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                    @foreach(['Analiza mis récords', 'Predice mi tiempo en 10K', 'Optimiza mis gastos', '¿Cuándo cambiar zapatillas?'] as $chip)
+                        <button @click="input = '{{ $chip }}'; sendMessage()"
+                                class="flex-shrink-0 text-xs font-bold px-3.5 py-2 rounded-full whitespace-nowrap transition-colors"
+                                style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.60);border:1px solid rgba(255,255,255,0.10)"
+                                onmouseover="this.style.background='rgba(200,250,95,0.12)';this.style.color='#C8FA5F';this.style.borderColor='rgba(200,250,95,0.25)'"
+                                onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='rgba(255,255,255,0.60)';this.style.borderColor='rgba(255,255,255,0.10)'">
+                            {{ $chip }}
+                        </button>
+                    @endforeach
                 </div>
             </div>
 
-            {{-- Quick chips --}}
-            <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-                @foreach(['Analiza mis récords', 'Predice mi tiempo en 10K', 'Optimiza mis gastos', '¿Cuándo cambiar zapatillas?'] as $chip)
-                    <button @click="input = '{{ $chip }}'; sendMessage()"
-                            class="flex-shrink-0 text-xs font-medium px-3 py-2 bg-white border border-slate-200 rounded-full text-slate-600 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
-                        {{ $chip }}
-                    </button>
-                @endforeach
-            </div>
-        </div>
+            {{-- Messages --}}
+            <div class="px-5 space-y-4 pb-4">
+                <template x-for="(msg, i) in messages" :key="i">
+                    <div :class="msg.role === 'coach' ? 'flex gap-3' : 'flex gap-3 flex-row-reverse'">
+                        <div x-show="msg.role === 'coach'"
+                             class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                             style="background:rgba(200,250,95,0.12);border:1px solid rgba(200,250,95,0.20)">
+                            <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <div :class="msg.role === 'coach'
+                                ? 'rounded-3xl rounded-tl-md px-4 py-3 text-sm max-w-[85%]'
+                                : 'rounded-3xl rounded-tr-md px-4 py-3 text-sm max-w-[85%] text-black font-semibold'"
+                             :style="msg.role === 'coach'
+                                ? 'background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.08)'
+                                : 'background:#C8FA5F'"
+                             x-text="msg.text">
+                        </div>
+                    </div>
+                </template>
 
-        {{-- Chat area --}}
-        <div class="px-4 space-y-4 mb-4 min-h-[200px]">
-            <template x-for="(msg, i) in messages" :key="i">
-                <div :class="msg.role === 'coach' ? 'flex gap-3' : 'flex gap-3 flex-row-reverse'">
-                    <div x-show="msg.role === 'coach'" class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                {{-- Typing indicator --}}
+                <div x-show="loading" class="flex gap-3">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                         style="background:rgba(200,250,95,0.12);border:1px solid rgba(200,250,95,0.20)">
                         <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                     </div>
-                    <div :class="msg.role === 'coach'
-                        ? 'bg-white border border-slate-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-slate-800 max-w-[85%] shadow-sm'
-                        : 'bg-primary text-white rounded-2xl rounded-tr-sm px-4 py-3 text-sm max-w-[85%]'"
-                         x-text="msg.text">
+                    <div class="rounded-3xl rounded-tl-md px-4 py-3 flex items-center gap-1.5" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.08)">
+                        <span class="w-2 h-2 rounded-full animate-bounce bg-primary" style="animation-delay:0ms"></span>
+                        <span class="w-2 h-2 rounded-full animate-bounce bg-primary" style="animation-delay:150ms"></span>
+                        <span class="w-2 h-2 rounded-full animate-bounce bg-primary" style="animation-delay:300ms"></span>
                     </div>
                 </div>
-            </template>
 
-            {{-- Typing indicator --}}
-            <div x-show="loading" class="flex gap-3">
-                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <div class="bg-white border border-slate-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm flex items-center gap-1">
-                    <span class="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style="animation-delay:0ms"></span>
-                    <span class="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style="animation-delay:150ms"></span>
-                    <span class="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style="animation-delay:300ms"></span>
-                </div>
+                <div x-ref="chatEnd"></div>
             </div>
-
-            <div x-ref="chatEnd"></div>
         </div>
 
-        {{-- Input area --}}
-        <div class="sticky bottom-[76px] bg-bg-warm/95 backdrop-blur-sm border-t border-slate-200 px-4 py-3">
+        {{-- Input bar — always pinned at bottom --}}
+        <div class="flex-shrink-0 px-5 py-3" style="background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.07)">
             <div class="flex items-center gap-2">
                 <input type="text" x-model="input"
                        @keydown.enter="sendMessage()"
                        placeholder="Pregúntame sobre tu rendimiento…"
-                       class="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                       class="flex-1 input-field">
                 <button @click="sendMessage()" :disabled="loading || !input.trim()"
-                        class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white disabled:opacity-40 transition-opacity flex-shrink-0"
-                        style="box-shadow: 0 4px 12px rgba(236,91,19,0.35)">
+                        class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-black font-black transition-all disabled:opacity-30 bg-primary active:scale-95"
+                        style="box-shadow:0 4px 12px rgba(200,250,95,0.35)">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                     </svg>
                 </button>
             </div>
         </div>
 
-    </main>
+    </div>
+
+    <style>
+        /* Mobile: fill space between header (58px) and bottom nav (72px) */
+        .coach-chat { height: calc(100dvh - 58px - 72px); }
+        /* Desktop: fill space below the top header bar (60px), no bottom nav */
+        @media (min-width: 768px) { .coach-chat { height: calc(100dvh - 60px); } }
+    </style>
+
 </x-app-layout>

@@ -33,6 +33,8 @@ class UpdateRaceRequest extends FormRequest
             'website' => ['nullable', 'url', 'max:255'],
             'notes' => ['nullable', 'string', 'max:2000'],
             'is_public' => ['boolean'],
+            'gear_ids' => ['nullable', 'array'],
+            'gear_ids.*' => ['integer', 'exists:gears,id'],
         ];
     }
 

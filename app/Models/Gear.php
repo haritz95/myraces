@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[Fillable(['user_id', 'brand', 'model', 'type', 'purchase_date', 'current_km', 'max_km', 'purchase_price', 'is_active', 'notes'])]
 class Gear extends Model
@@ -28,6 +29,11 @@ class Gear extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function races(): BelongsToMany
+    {
+        return $this->belongsToMany(Race::class);
     }
 
     public function getUsagePercentageAttribute(): ?float
