@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('page_title', 'Menú móvil')
+    @section('page_title', 'Gestión del menú')
     @section('back_url', route('admin.dashboard'))
 
     @php
@@ -42,7 +42,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             <p class="text-sm" style="color:rgba(255,255,255,0.55)">
-                El <strong class="text-white">menú inferior</strong> admite hasta 4 elementos (el FAB de añadir y "Más" se muestran siempre). El <strong class="text-white">drawer</strong> puede tener elementos ilimitados.
+                Todos los elementos activos aparecen en el <strong class="text-white">sidebar de escritorio</strong> automáticamente. La <strong class="text-white">ubicación móvil</strong> controla si aparece en el menú inferior (máx. 4) o en el drawer ("Más"). Desactivar un elemento o marcarlo como premium lo oculta en todas las pantallas.
             </p>
         </div>
 
@@ -168,7 +168,7 @@
 
                     <div class="grid grid-cols-2 gap-4 px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.05)">
                         <div class="space-y-1.5">
-                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Ubicación</label>
+                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Ubicación en móvil</label>
                             <select name="location" class="input-field">
                                 <option value="drawer" {{ old('location', 'drawer') === 'drawer' ? 'selected' : '' }}>Drawer (Más)</option>
                                 <option value="bottom_nav" {{ old('location') === 'bottom_nav' ? 'selected' : '' }}>Menú inferior</option>

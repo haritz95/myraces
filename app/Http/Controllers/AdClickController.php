@@ -4,12 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use App\Models\AdClick;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 
 class AdClickController extends Controller
 {
+    public function impression(Request $request, Ad $ad): JsonResponse
+    {
+        if ($ad->status === 'approved') {
+            $key = "ad_imp:{$ad->id}:{$request->ip()}";
+
+            if (! RateLimiter::tooManyAttempts($key, 5)) {
+                RateLimiter::hit($key, 3600);
+                $ad->recordImpression();
+            }
+        }
+
+        return response()->json(['ok' => true]);
+    }
+
     public function click(Request $request, Ad $ad): RedirectResponse
     {
         if ($ad->status !== 'approved') {

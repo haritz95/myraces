@@ -1,0 +1,51 @@
+{
+    "name": "MyRaces",
+    "short_name": "MyRaces",
+    "description": "Tu app de running: carreras, estadísticas, pods sociales y coach IA.",
+    "start_url": "/dashboard",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#0a0a0a",
+    "theme_color": "#0a0a0a",
+    "lang": "es",
+    "icons": [
+        {
+            "src": "/icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/icon-maskable.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "maskable"
+        }
+    ],
+    "screenshots": [],
+    "categories": ["sports", "health", "fitness"],
+    "shortcuts": [
+        {
+            "name": "Nueva carrera",
+            "short_name": "Añadir",
+            "description": "Registra una carrera",
+            "url": "/races/create",
+            "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+        },
+        {
+            "name": "Mis carreras",
+            "short_name": "Carreras",
+            "description": "Ver historial de carreras",
+            "url": "/races",
+            "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+        },
+        {
+            "name": "Social Pods",
+            "short_name": "Pods",
+            "description": "Ver tus pods",
+            "url": "/pods",
+            "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+        }
+    ]
+}

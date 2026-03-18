@@ -1,6 +1,12 @@
 @props(['ad'])
 
 @if($ad)
+<div x-data x-init="
+    fetch('{{ route('ad.impression', $ad) }}', {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content }
+    })
+"></div>
 <a href="{{ route('ad.click', $ad) }}"
    target="_blank" rel="noopener sponsored"
    class="block rounded-2xl overflow-hidden transition-all duration-200 hover:opacity-90 active:scale-[0.99]"

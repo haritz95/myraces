@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdClickController;
+use App\Http\Controllers\OfflineController;
+use App\Http\Controllers\PodController;
 use App\Http\Controllers\Admin\AdController as AdminAdController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NavItemController;
@@ -20,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('/offline', OfflineController::class)->name('offline');
 
 Route::get('/language/{locale}', function (string $locale) {
     if (in_array($locale, ['es', 'en'])) {
@@ -49,13 +53,25 @@ Route::middleware(['auth', 'verified', 'nav.access'])->group(function () {
 
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
+    Route::get('/pods', [PodController::class, 'index'])->name('pods.index');
+    Route::get('/pods/create', [PodController::class, 'create'])->name('pods.create');
+    Route::post('/pods', [PodController::class, 'store'])->name('pods.store');
+    Route::get('/pods/{pod}', [PodController::class, 'show'])->name('pods.show');
+    Route::post('/pods/{pod}/join', [PodController::class, 'join'])->name('pods.join');
+    Route::delete('/pods/{pod}/leave', [PodController::class, 'leave'])->name('pods.leave');
+    Route::post('/pods/{pod}/messages', [PodController::class, 'sendMessage'])->name('pods.messages.store');
+    Route::get('/pods/{pod}/messages', [PodController::class, 'messages'])->name('pods.messages');
+
     Route::get('/coach', [RaceCoachController::class, 'index'])->name('coach.index');
     Route::post('/coach/chat', [RaceCoachController::class, 'chat'])->name('coach.chat');
 
     Route::get('/ads', [MyAdsController::class, 'index'])->name('my-ads.index');
     Route::get('/ads/create', [MyAdsController::class, 'create'])->name('my-ads.create');
     Route::post('/ads', [MyAdsController::class, 'store'])->name('my-ads.store');
+    Route::get('/ads/{ad}', [MyAdsController::class, 'show'])->name('my-ads.show');
+    Route::patch('/ads/{ad}', [MyAdsController::class, 'update'])->name('my-ads.update');
     Route::delete('/ads/{ad}', [MyAdsController::class, 'destroy'])->name('my-ads.destroy');
+    Route::post('/ad/{ad}/impression', [AdClickController::class, 'impression'])->name('ad.impression');
     Route::get('/ad/{ad}/click', [AdClickController::class, 'click'])->name('ad.click');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -76,6 +92,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/races/{race}', [AdminController::class, 'destroyRace'])->name('races.destroy');
 
     Route::get('/ads', [AdminAdController::class, 'index'])->name('ads');
+    Route::get('/ads/{ad}', [AdminAdController::class, 'show'])->name('ads.show');
     Route::patch('/ads/{ad}/approve', [AdminAdController::class, 'approve'])->name('ads.approve');
     Route::patch('/ads/{ad}/reject', [AdminAdController::class, 'reject'])->name('ads.reject');
     Route::patch('/ads/{ad}/pause', [AdminAdController::class, 'pause'])->name('ads.pause');

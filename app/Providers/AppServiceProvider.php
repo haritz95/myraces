@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\NavItem;
+use App\Models\Race;
+use App\Observers\RaceObserver;
 use App\Socialite\StravaProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -14,11 +16,19 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Race::observe(RaceObserver::class);
+
         View::composer('layouts.app', function ($view) {
-            $mobileNavItems = NavItem::forMobile();
+            $user = auth()->user();
+            $isAdmin = $user?->is_admin;
+
+            $accessible = NavItem::ordered()->enabled()->get()
+                ->filter(fn (NavItem $item) => $isAdmin || ! $item->is_premium || $user?->is_premium);
+
             $view->with([
-                'mobileBottomNav' => $mobileNavItems->where('location', 'bottom_nav'),
-                'mobileDrawer' => $mobileNavItems->where('location', 'drawer')->where('is_enabled', true),
+                'sidebarNav' => $accessible,
+                'mobileBottomNav' => $accessible->where('location', 'bottom_nav')->values(),
+                'mobileDrawer' => $accessible->where('location', 'drawer')->values(),
             ]);
         });
 

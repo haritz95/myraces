@@ -8,6 +8,9 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-title" content="MyRaces">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="apple-touch-icon" href="/icons/icon.svg">
 
         <title>@yield('page_title', config('app.name', 'MyRaces')) — MyRaces</title>
 
@@ -57,36 +60,19 @@
             </div>
 
             <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-                @php
-                    $navItems = [
-                        ['route' => 'dashboard',              'match' => 'dashboard',                 'label' => __('races.dashboard'),
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>'],
-                        ['route' => 'races.index',            'match' => 'races.index|races.show',    'label' => __('races.my_races'),
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>'],
-                        ['route' => 'races.create',           'match' => 'races.create|races.edit',   'label' => __('races.add_race'),
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 4v16m8-8H4"/>'],
-                        ['route' => 'calendar.index',         'match' => 'calendar.*',                'label' => 'Calendario',
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>'],
-                        ['route' => 'stats.index',            'match' => 'stats.*',                   'label' => __('races.stats'),
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'],
-                        ['route' => 'expenses.index',         'match' => 'expenses.*',                'label' => 'Gastos',
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
-                        ['route' => 'personal-records.index', 'match' => 'personal-records.*',        'label' => 'Récords',
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>'],
-                        ['route' => 'gear.index',             'match' => 'gear.*',                    'label' => 'Material',
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>'],
-                        ['route' => 'coach.index',            'match' => 'coach.*',                   'label' => 'RaceCoach',
-                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z"/>'],
-                    ];
-                @endphp
-                @foreach($navItems as $item)
-                    @php $active = collect(explode('|', $item['match']))->contains(fn($p) => request()->routeIs($p)); @endphp
-                    <a href="{{ route($item['route']) }}"
+                @foreach($sidebarNav as $item)
+                    @php $active = $item->isActive(); @endphp
+                    <a href="{{ route($item->route_name) }}"
                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-150
                               {{ $active ? 'bg-primary/15 text-primary' : 'hover:bg-white/[0.05] hover:text-white' }}"
                        style="{{ !$active ? 'color:rgba(255,255,255,0.40)' : '' }}">
-                        <svg style="width:18px;height:18px;flex-shrink:0" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $item['icon'] !!}</svg>
-                        {{ $item['label'] }}
+                        <svg style="width:18px;height:18px;flex-shrink:0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="{{ $item->icon_path }}"/>
+                        </svg>
+                        {{ $item->label }}
+                        @if($item->is_premium)
+                            <span class="ml-auto text-[8px] font-black px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 leading-none">PRO</span>
+                        @endif
                     </a>
                 @endforeach
             </nav>
@@ -460,5 +446,12 @@
             </div>
         </div>
 
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
     </body>
 </html>

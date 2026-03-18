@@ -35,7 +35,7 @@
                     ];
                     [$bgColor, $textColor] = $statusColors[$ad->status] ?? ['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.40)'];
                 @endphp
-                <div class="card overflow-hidden">
+                <a href="{{ route('my-ads.show', $ad) }}" class="card overflow-hidden block hover:ring-1 hover:ring-white/10 transition-all">
                     <div class="flex items-start gap-3 p-4">
                         @if($ad->imageUrl())
                             <img src="{{ $ad->imageUrl() }}" alt="" class="w-16 h-16 rounded-xl object-cover flex-shrink-0">
@@ -68,13 +68,12 @@
                     </div>
                     <div class="flex items-center justify-between px-4 py-2.5" style="border-top:1px solid rgba(255,255,255,0.05)">
                         <span class="text-[10px]" style="color:rgba(255,255,255,0.25)">{{ $ad->created_at->format('d/m/Y') }}</span>
-                        <form method="POST" action="{{ route('my-ads.destroy', $ad) }}"
-                              onsubmit="return confirm('¿Eliminar este anuncio?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-[11px] font-bold text-red-400 hover:text-red-300 transition-colors">Eliminar</button>
-                        </form>
+                        <span class="text-[11px] font-bold text-primary flex items-center gap-1">
+                            Ver analíticas
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </span>
                     </div>
-                </div>
+                </a>
             @endforeach
         @endif
     </div>

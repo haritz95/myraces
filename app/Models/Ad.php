@@ -55,17 +55,33 @@ class Ad extends Model
     }
 
     /**
-     * Pick one random active ad for the given location and record the impression.
+     * Pick one random active ad for the given location without recording the impression.
+     * Use this in controllers — the impression is recorded when the ad is actually rendered.
+     */
+    public static function pick(string $location): ?self
+    {
+        return static::forLocation($location)->inRandomOrder()->first();
+    }
+
+    /**
+     * Pick and immediately record the impression.
+     *
+     * @deprecated Use pick() + let the view record via /ad/{ad}/impression instead.
      */
     public static function serve(string $location): ?self
     {
-        $ad = static::forLocation($location)->inRandomOrder()->first();
+        $ad = static::pick($location);
 
         if ($ad) {
             static::where('id', $ad->id)->increment('impressions_count');
         }
 
         return $ad;
+    }
+
+    public function recordImpression(): void
+    {
+        static::where('id', $this->id)->increment('impressions_count');
     }
 
     public function imageUrl(): ?string

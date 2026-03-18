@@ -39,7 +39,7 @@ class RaceController extends Controller
             ->orderByDesc('year')
             ->pluck('year');
 
-        $feedAd = Ad::serve('feed');
+        $feedAd = Ad::pick('feed');
 
         return view('races.index', compact('races', 'years', 'feedAd'));
     }

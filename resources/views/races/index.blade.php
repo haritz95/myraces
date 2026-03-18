@@ -90,11 +90,16 @@
             <div class="mb-2">
                 @include('races.partials.race-card', ['race' => $race])
             </div>
-            @if($i === 4 && $feedAd)
+            @if($i === 2 && $feedAd)
                 <div class="mb-4">
                     <x-ad-card :ad="$feedAd" />
                 </div>
             @endif
+        @if($loop->last && $races->count() < 3 && $feedAd)
+            <div class="mb-4 mt-2">
+                <x-ad-card :ad="$feedAd" />
+            </div>
+        @endif
         @empty
             <div class="flex flex-col items-center justify-center py-20 text-center">
                 <div
