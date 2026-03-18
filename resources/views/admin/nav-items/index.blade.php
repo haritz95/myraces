@@ -49,7 +49,7 @@
         {{-- Bottom nav --}}
         <section>
             <h2 class="text-sm font-black uppercase tracking-widest text-primary mb-3">Menú inferior</h2>
-            <div class="card overflow-hidden divide-y" style="divide-color:rgba(255,255,255,0.05)">
+            <div class="card overflow-hidden">
                 @forelse($items->get('bottom_nav', collect()) as $item)
                     @include('admin.nav-items._row', ['item' => $item, 'targetLocation' => 'drawer', 'targetLocationLabel' => 'Mover al drawer'])
                 @empty
@@ -61,7 +61,7 @@
         {{-- Drawer --}}
         <section>
             <h2 class="text-sm font-black uppercase tracking-widest text-primary mb-3">Drawer (Más)</h2>
-            <div class="card overflow-hidden divide-y" style="divide-color:rgba(255,255,255,0.05)">
+            <div class="card overflow-hidden">
                 @forelse($items->get('drawer', collect()) as $item)
                     @include('admin.nav-items._row', ['item' => $item, 'targetLocation' => 'bottom_nav', 'targetLocationLabel' => 'Mover al menú inferior'])
                 @empty

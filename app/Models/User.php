@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'is_banned', 'ban_reason', 'banned_at'])]
+#[Fillable(['name', 'email', 'password', 'is_banned', 'ban_reason', 'banned_at', 'is_premium'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -26,6 +26,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean',
             'is_banned' => 'boolean',
+            'is_premium' => 'boolean',
             'banned_at' => 'datetime',
         ];
     }

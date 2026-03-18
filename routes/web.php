@@ -32,7 +32,7 @@ Route::get('/language/{locale}', function (string $locale) {
 Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('social.redirect');
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('social.callback');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'nav.access'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('races', RaceController::class);
@@ -83,6 +83,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('/nav-items', [NavItemController::class, 'index'])->name('nav-items');
     Route::post('/nav-items', [NavItemController::class, 'store'])->name('nav-items.store');
+    Route::patch('/nav-items/{navItem}', [NavItemController::class, 'update'])->name('nav-items.update');
     Route::delete('/nav-items/{navItem}', [NavItemController::class, 'destroy'])->name('nav-items.destroy');
     Route::patch('/nav-items/{navItem}/toggle', [NavItemController::class, 'toggle'])->name('nav-items.toggle');
     Route::patch('/nav-items/{navItem}/premium', [NavItemController::class, 'togglePremium'])->name('nav-items.premium');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckNavItemAccess;
 use App\Http\Middleware\EnsureIsAdmin;
 use App\Http\Middleware\EnsureUserIsNotBanned;
 use App\Http\Middleware\SetLocale;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => EnsureIsAdmin::class,
+            'nav.access' => CheckNavItemAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -53,6 +53,20 @@ class NavItemController extends Controller
         return back()->with('success', "\"{$request->label}\" añadido al menú.");
     }
 
+    public function update(Request $request, NavItem $navItem): RedirectResponse
+    {
+        $request->validate([
+            'label' => ['required', 'string', 'max:30'],
+            'route_name' => ['required', 'string', 'max:100'],
+            'match_pattern' => ['required', 'string', 'max:200'],
+            'icon_path' => ['required', 'string'],
+        ]);
+
+        $navItem->update($request->only('label', 'route_name', 'match_pattern', 'icon_path'));
+
+        return back()->with('success', "\"{$navItem->label}\" actualizado.");
+    }
+
     public function destroy(NavItem $navItem): RedirectResponse
     {
         $navItem->delete();
