@@ -107,8 +107,12 @@
                     </a>
                 @endif
                 <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-150 {{ request()->routeIs('profile.*') ? 'bg-primary/15 text-primary' : 'hover:bg-white/[0.05]' }}" style="{{ !request()->routeIs('profile.*') ? 'color:rgba(255,255,255,0.40)' : '' }}">
-                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-black font-black text-[11px] flex-shrink-0">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-black font-black text-[11px] flex-shrink-0 overflow-hidden">
+                        @if(auth()->user()->profile?->avatar)
+                            <img src="{{ asset('storage/' . auth()->user()->profile->avatar) }}" alt="" class="w-full h-full object-cover">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        @endif
                     </div>
                     <span class="truncate">{{ auth()->user()->name }}</span>
                 </a>
@@ -158,8 +162,12 @@
                             @yield('header_action')
                         @else
                             <a href="{{ route('profile.edit') }}"
-                               class="w-9 h-9 rounded-full bg-primary flex items-center justify-center overflow-hidden">
-                                <span class="text-black font-black text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                               class="w-9 h-9 rounded-full bg-primary flex items-center justify-center overflow-hidden flex-shrink-0">
+                                @if(auth()->user()->profile?->avatar)
+                                    <img src="{{ asset('storage/' . auth()->user()->profile->avatar) }}" alt="" class="w-full h-full object-cover">
+                                @else
+                                    <span class="text-black font-black text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                @endif
                             </a>
                         @endif
                     </div>
@@ -322,6 +330,134 @@
                 </nav>
             </div>
 
+        </div>
+
+        {{-- ── COOKIE BANNER ────────────────────────────────────── --}}
+        @php
+            $cookieConsented = auth()->check() && auth()->user()->profile?->cookie_consented_at !== null;
+        @endphp
+        <div x-data="{
+                show: false,
+                panel: false,
+                functional: true,
+                analytics: true,
+                isAuth: {{ auth()->check() ? 'true' : 'false' }},
+                alreadyConsented: {{ $cookieConsented ? 'true' : 'false' }},
+                init() {
+                    if (this.alreadyConsented) { return; }
+                    if (!this.isAuth) {
+                        const saved = localStorage.getItem('cookie_consent');
+                        if (saved) { return; }
+                    }
+                    setTimeout(() => { this.show = true; }, 600);
+                },
+                acceptAll() {
+                    this.functional = true;
+                    this.analytics  = true;
+                    this.save();
+                },
+                acceptNecessary() {
+                    this.functional = false;
+                    this.analytics  = false;
+                    this.save();
+                },
+                save() {
+                    const payload = { functional: this.functional, analytics: this.analytics };
+                    if (this.isAuth) {
+                        fetch('{{ route('cookie.consent') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                    } else {
+                        localStorage.setItem('cookie_consent', JSON.stringify({ ...payload, at: new Date().toISOString() }));
+                    }
+                    this.show = false;
+                    this.panel = false;
+                }
+             }"
+             x-show="show"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 translate-y-4"
+             x-cloak
+             class="fixed bottom-[80px] md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-[60]"
+             style="border-radius:20px;background:var(--color-bg-card);border:1px solid rgba(255,255,255,0.10);box-shadow:0 24px 60px rgba(0,0,0,0.30)">
+
+            <div class="px-5 pt-5 pb-4">
+                <div class="flex items-start gap-3 mb-3">
+                    <div class="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-black text-white leading-tight">Privacidad y cookies</p>
+                        <p class="text-xs mt-1 leading-relaxed" style="color:rgba(255,255,255,0.50)">Usamos cookies para mejorar tu experiencia. Puedes elegir qué tipos aceptas.</p>
+                    </div>
+                </div>
+
+                {{-- Customization panel --}}
+                <div x-show="panel" x-transition x-cloak class="mb-4 space-y-2.5 pt-2" style="border-top:1px solid rgba(255,255,255,0.07)">
+                    <div class="flex items-center justify-between py-1">
+                        <div>
+                            <p class="text-xs font-bold text-white">Necesarias</p>
+                            <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.35)">Sesión, seguridad. Siempre activas.</p>
+                        </div>
+                        <div class="w-9 h-5 rounded-full bg-primary flex-shrink-0 opacity-60 cursor-not-allowed"></div>
+                    </div>
+                    <div class="flex items-center justify-between py-1">
+                        <div>
+                            <p class="text-xs font-bold text-white">Funcionales</p>
+                            <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.35)">Idioma, tema y preferencias.</p>
+                        </div>
+                        <button type="button" @click="functional = !functional"
+                                class="w-9 h-5 rounded-full flex-shrink-0 transition-colors duration-200 relative"
+                                :class="functional ? 'bg-primary' : 'bg-white/20'">
+                            <span class="absolute left-0.5 top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200"
+                                  :class="functional ? 'translate-x-4' : 'translate-x-0'"></span>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between py-1">
+                        <div>
+                            <p class="text-xs font-bold text-white">Analíticas</p>
+                            <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.35)">Estadísticas de uso anónimas.</p>
+                        </div>
+                        <button type="button" @click="analytics = !analytics"
+                                class="w-9 h-5 rounded-full flex-shrink-0 transition-colors duration-200 relative"
+                                :class="analytics ? 'bg-primary' : 'bg-white/20'">
+                            <span class="absolute left-0.5 top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200"
+                                  :class="analytics ? 'translate-x-4' : 'translate-x-0'"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div class="flex gap-2">
+                        <button type="button" @click="acceptNecessary()"
+                                class="flex-1 text-xs font-bold py-2.5 rounded-xl transition-colors"
+                                style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.60)">
+                            Solo necesarias
+                        </button>
+                        <button type="button"
+                                @click="panel ? save() : acceptAll()"
+                                class="flex-1 text-xs font-black py-2.5 rounded-xl bg-primary text-black transition-opacity hover:opacity-90">
+                            <span x-text="panel ? 'Guardar' : 'Aceptar todo'"></span>
+                        </button>
+                    </div>
+                    <button type="button" @click="panel = !panel"
+                            class="text-[11px] font-semibold transition-colors text-center"
+                            style="color:rgba(255,255,255,0.35)">
+                        <span x-text="panel ? 'Ocultar opciones' : 'Personalizar cookies'"></span>
+                    </button>
+                </div>
+            </div>
         </div>
 
     </body>

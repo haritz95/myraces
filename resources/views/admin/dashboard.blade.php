@@ -107,6 +107,17 @@
                     <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Ver y eliminar carreras</p>
                 </div>
             </a>
+            <a href="{{ route('admin.ads') }}" class="card-interactive flex items-center gap-4 p-5">
+                <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-white">Anuncios</p>
+                    <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Revisar, aprobar, pausar</p>
+                </div>
+            </a>
             <a href="{{ route('admin.nav-items') }}" class="card-interactive flex items-center gap-4 p-5">
                 <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
                     <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">

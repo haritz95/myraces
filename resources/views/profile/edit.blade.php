@@ -6,9 +6,13 @@
          style="background:linear-gradient(135deg,#0f1a00 0%,#1a2d00 50%,#253d00 100%);border-bottom:1px solid rgba(255,255,255,0.06)">
         <div class="absolute inset-0 opacity-[0.05]" style="background-image:radial-gradient(circle at 20% 80%, #C8FA5F 1px, transparent 1px);background-size:30px 30px"></div>
         <div class="flex items-center gap-4 relative max-w-lg mx-auto">
-            <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-black font-black text-2xl flex-shrink-0 bg-primary"
+            <div class="w-16 h-16 rounded-2xl flex-shrink-0 overflow-hidden bg-primary flex items-center justify-center"
                  style="box-shadow:0 8px 24px rgba(200,250,95,0.35)">
-                {{ strtoupper(substr($user->name, 0, 1)) }}
+                @if($user->profile?->avatar)
+                    <img src="{{ asset('storage/' . $user->profile->avatar) }}" alt="" class="w-full h-full object-cover">
+                @else
+                    <span class="text-black font-black text-2xl">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                @endif
             </div>
             <div class="min-w-0">
                 <h2 class="text-white font-black text-xl leading-tight truncate">{{ $user->name }}</h2>
@@ -97,6 +101,146 @@
                     Perfil actualizado correctamente.
                 </p>
             @endif
+        </div>
+
+        {{-- Extended profile --}}
+        @php $p = $user->profile; @endphp
+        <div x-data="{ open: false }">
+            <form method="POST" action="{{ route('profile.data') }}" enctype="multipart/form-data">
+                @csrf
+
+                {{-- Avatar + username + bio --}}
+                <p class="section-label">Perfil público</p>
+                <div class="settings-group">
+
+                    {{-- Avatar --}}
+                    <div class="settings-row">
+                        <div class="settings-icon overflow-hidden">
+                            @if($p?->avatar)
+                                <img src="{{ asset('storage/' . $p->avatar) }}" alt="" class="w-full h-full object-cover rounded-xl">
+                            @else
+                                <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            @endif
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="settings-row-label">Foto de perfil</p>
+                            @error('avatar') <p class="text-red-400 text-xs">{{ $message }}</p> @enderror
+                        </div>
+                        <label class="text-xs font-bold text-primary cursor-pointer hover:opacity-80 transition-opacity">
+                            Cambiar
+                            <input type="file" name="avatar" accept="image/*" class="hidden"
+                                   onchange="this.closest('form').querySelector('[data-avatar-name]').textContent = this.files[0]?.name ?? ''">
+                        </label>
+                    </div>
+                    <p class="text-[10px] px-5 pb-2" style="color:rgba(255,255,255,0.25)" data-avatar-name></p>
+
+                    {{-- Username --}}
+                    <div class="px-5 py-3.5 space-y-1.5" style="border-top:1px solid rgba(255,255,255,0.05)">
+                        <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Nombre de usuario</label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold" style="color:rgba(255,255,255,0.30)">@</span>
+                            <input type="text" name="username" value="{{ old('username', $p?->username) }}"
+                                   maxlength="30" placeholder="tu_usuario"
+                                   class="input-field pl-8 @error('username') error @enderror">
+                        </div>
+                        @error('username') <p class="text-red-400 text-xs">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Bio --}}
+                    <div class="px-5 py-3.5 space-y-1.5" style="border-top:1px solid rgba(255,255,255,0.05)">
+                        <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Bio <span class="font-normal" style="color:rgba(255,255,255,0.25)">máx. 300 caracteres</span></label>
+                        <textarea name="bio" rows="3" maxlength="300" placeholder="Cuéntanos algo sobre ti..."
+                                  class="input-field resize-none @error('bio') error @enderror">{{ old('bio', $p?->bio) }}</textarea>
+                        @error('bio') <p class="text-red-400 text-xs">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Is public --}}
+                    <label class="settings-row cursor-pointer" style="border-top:1px solid rgba(255,255,255,0.05)">
+                        <div class="settings-icon">
+                            <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="settings-row-label">Perfil público</p>
+                            <p class="text-xs" style="color:rgba(255,255,255,0.35)">Otros usuarios pueden ver tu perfil</p>
+                        </div>
+                        <input type="hidden" name="is_public" value="0">
+                        <input type="checkbox" name="is_public" value="1" {{ old('is_public', $p?->is_public) ? 'checked' : '' }}
+                               class="w-4 h-4 rounded accent-primary">
+                    </label>
+                </div>
+
+                {{-- Location + physical stats --}}
+                <p class="section-label mt-6">Datos personales</p>
+                <div class="settings-group">
+
+                    {{-- City + Country --}}
+                    <div class="grid grid-cols-2 gap-3 px-5 py-3.5">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Ciudad</label>
+                            <input type="text" name="city" value="{{ old('city', $p?->city) }}"
+                                   maxlength="80" placeholder="Barcelona"
+                                   class="input-field @error('city') error @enderror">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">País</label>
+                            <input type="text" name="country" value="{{ old('country', $p?->country) }}"
+                                   maxlength="80" placeholder="España"
+                                   class="input-field @error('country') error @enderror">
+                        </div>
+                    </div>
+
+                    {{-- Birth date + Gender --}}
+                    <div class="grid grid-cols-2 gap-3 px-5 py-3.5" style="border-top:1px solid rgba(255,255,255,0.05)">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Fecha de nacimiento</label>
+                            <input type="date" name="birth_date"
+                                   value="{{ old('birth_date', $p?->birth_date?->format('Y-m-d')) }}"
+                                   class="input-field @error('birth_date') error @enderror">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Género</label>
+                            <select name="gender" class="input-field @error('gender') error @enderror">
+                                <option value="">—</option>
+                                <option value="male"         {{ old('gender', $p?->gender) === 'male'         ? 'selected' : '' }}>Hombre</option>
+                                <option value="female"       {{ old('gender', $p?->gender) === 'female'       ? 'selected' : '' }}>Mujer</option>
+                                <option value="other"        {{ old('gender', $p?->gender) === 'other'        ? 'selected' : '' }}>Otro</option>
+                                <option value="prefer_not"   {{ old('gender', $p?->gender) === 'prefer_not'   ? 'selected' : '' }}>Prefiero no indicar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- Height + Weight --}}
+                    <div class="grid grid-cols-2 gap-3 px-5 py-3.5" style="border-top:1px solid rgba(255,255,255,0.05)">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Altura (cm)</label>
+                            <input type="number" name="height_cm" value="{{ old('height_cm', $p?->height_cm) }}"
+                                   min="100" max="250" placeholder="175"
+                                   class="input-field @error('height_cm') error @enderror">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Peso (kg)</label>
+                            <input type="number" name="weight_kg" value="{{ old('weight_kg', $p?->weight_kg) }}"
+                                   min="30" max="300" step="0.1" placeholder="70"
+                                   class="input-field @error('weight_kg') error @enderror">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary w-full">Guardar datos del perfil</button>
+                </div>
+
+                @if(session('status') === 'profile-data-updated')
+                    <p class="text-xs text-primary mt-3 px-1 flex items-center gap-1.5 font-bold">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        Datos guardados correctamente.
+                    </p>
+                @endif
+            </form>
         </div>
 
         {{-- Security --}}
@@ -218,6 +362,87 @@
                     Tema actualizado.
                 </p>
             @endif
+        </div>
+
+        {{-- Privacy & Cookies --}}
+        @php
+            $profile = $user->profile;
+            $consented = $profile?->cookie_consented_at !== null;
+        @endphp
+        <div
+            x-data="{
+                functional: {{ $consented && $profile->cookie_functional ? 'true' : 'false' }},
+                analytics:  {{ $consented && $profile->cookie_analytics  ? 'true' : 'false' }},
+                saved: false,
+                save() {
+                    fetch('{{ route('cookie.consent') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                        },
+                        body: JSON.stringify({ functional: this.functional, analytics: this.analytics })
+                    }).then(() => {
+                        this.saved = true;
+                        setTimeout(() => { this.saved = false; }, 3000);
+                    });
+                }
+            }">
+            <p class="section-label">Privacidad y cookies</p>
+            <div class="settings-group">
+                <div class="settings-row">
+                    <div class="settings-icon">
+                        <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <span class="settings-row-label">Necesarias</span>
+                    <div class="w-9 h-5 rounded-full bg-primary flex-shrink-0 opacity-60 cursor-not-allowed"></div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-icon">
+                        <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <span class="settings-row-label">Funcionales</span>
+                        <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.35)">Idioma, tema y preferencias</p>
+                    </div>
+                    <button type="button" @click="functional = !functional; save()"
+                            class="w-9 h-5 rounded-full flex-shrink-0 transition-colors duration-200 relative"
+                            :class="functional ? 'bg-primary' : 'bg-white/20'">
+                        <span class="absolute left-0.5 top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200"
+                              :class="functional ? 'translate-x-4' : 'translate-x-0'"></span>
+                    </button>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-icon">
+                        <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <span class="settings-row-label">Analíticas</span>
+                        <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.35)">Estadísticas de uso anónimas</p>
+                    </div>
+                    <button type="button" @click="analytics = !analytics; save()"
+                            class="w-9 h-5 rounded-full flex-shrink-0 transition-colors duration-200 relative"
+                            :class="analytics ? 'bg-primary' : 'bg-white/20'">
+                        <span class="absolute left-0.5 top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200"
+                              :class="analytics ? 'translate-x-4' : 'translate-x-0'"></span>
+                    </button>
+                </div>
+            </div>
+            @if($consented)
+                <p class="text-[10px] mt-2 px-1" style="color:rgba(255,255,255,0.25)">
+                    Consentimiento otorgado el {{ $profile->cookie_consented_at->format('d/m/Y') }}.
+                </p>
+            @endif
+            <p x-show="saved" x-transition x-cloak class="text-xs text-primary mt-2 px-1 flex items-center gap-1.5 font-bold">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                Preferencias guardadas.
+            </p>
         </div>
 
         {{-- Account --}}

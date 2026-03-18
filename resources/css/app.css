@@ -289,3 +289,7 @@
 /* Hero card gradient overlay — remove entirely in light mode */
 [data-theme="light"] .from-black\/90 { background-image: none !important; }
 [data-theme="light"] .via-black\/20  { --tw-gradient-via: transparent !important; }
+
+
+/* ── AD CARD image gradient overlay — preserve in light mode ── */
+[data-theme="light"] .ad-img-overlay { background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%) !important; }

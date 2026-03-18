@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRaceRequest;
 use App\Http\Requests\UpdateRaceRequest;
+use App\Models\Ad;
 use App\Models\Expense;
 use App\Models\PersonalRecord;
 use App\Models\Race;
@@ -38,7 +39,9 @@ class RaceController extends Controller
             ->orderByDesc('year')
             ->pluck('year');
 
-        return view('races.index', compact('races', 'years'));
+        $feedAd = Ad::serve('feed');
+
+        return view('races.index', compact('races', 'years', 'feedAd'));
     }
 
     public function create(): View

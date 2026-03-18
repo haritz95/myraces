@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\NavItem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class NavItemController extends Controller
@@ -15,6 +16,48 @@ class NavItemController extends Controller
         $items = NavItem::ordered()->get()->groupBy('location');
 
         return view('admin.nav-items.index', compact('items'));
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'label' => ['required', 'string', 'max:30'],
+            'route_name' => ['required', 'string', 'max:100'],
+            'icon_path' => ['required', 'string'],
+            'match_pattern' => ['required', 'string', 'max:200'],
+            'location' => ['required', 'in:bottom_nav,drawer'],
+            'is_premium' => ['boolean'],
+        ]);
+
+        if ($request->location === 'bottom_nav') {
+            $count = NavItem::where('location', 'bottom_nav')->where('is_enabled', true)->count();
+            if ($count >= 4) {
+                return back()->with('error', 'El menú inferior sólo admite 4 elementos activos.');
+            }
+        }
+
+        $maxOrder = NavItem::where('location', $request->location)->max('sort_order') ?? 0;
+
+        NavItem::create([
+            'key' => Str::slug($request->label).'-'.Str::random(4),
+            'label' => $request->label,
+            'route_name' => $request->route_name,
+            'icon_path' => $request->icon_path,
+            'match_pattern' => $request->match_pattern,
+            'location' => $request->location,
+            'sort_order' => $maxOrder + 1,
+            'is_enabled' => true,
+            'is_premium' => $request->boolean('is_premium'),
+        ]);
+
+        return back()->with('success', "\"{$request->label}\" añadido al menú.");
+    }
+
+    public function destroy(NavItem $navItem): RedirectResponse
+    {
+        $navItem->delete();
+
+        return back()->with('success', "\"{$navItem->label}\" eliminado.");
     }
 
     public function toggle(NavItem $navItem): RedirectResponse

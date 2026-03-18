@@ -86,10 +86,15 @@
             </form>
         </div>
 
-        @forelse($races as $race)
+        @forelse($races as $i => $race)
             <div class="mb-2">
                 @include('races.partials.race-card', ['race' => $race])
             </div>
+            @if($i === 4 && $feedAd)
+                <div class="mb-4">
+                    <x-ad-card :ad="$feedAd" />
+                </div>
+            @endif
         @empty
             <div class="flex flex-col items-center justify-center py-20 text-center">
                 <div

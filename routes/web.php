@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdClickController;
+use App\Http\Controllers\Admin\AdController as AdminAdController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NavItemController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GearController;
+use App\Http\Controllers\MyAdsController;
 use App\Http\Controllers\PersonalRecordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RaceCoachController;
@@ -49,9 +52,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/coach', [RaceCoachController::class, 'index'])->name('coach.index');
     Route::post('/coach/chat', [RaceCoachController::class, 'chat'])->name('coach.chat');
 
+    Route::get('/ads', [MyAdsController::class, 'index'])->name('my-ads.index');
+    Route::get('/ads/create', [MyAdsController::class, 'create'])->name('my-ads.create');
+    Route::post('/ads', [MyAdsController::class, 'store'])->name('my-ads.store');
+    Route::delete('/ads/{ad}', [MyAdsController::class, 'destroy'])->name('my-ads.destroy');
+    Route::get('/ad/{ad}/click', [AdClickController::class, 'click'])->name('ad.click');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/data', [ProfileController::class, 'updateProfileData'])->name('profile.data');
     Route::patch('/profile/theme', [ProfileController::class, 'updateTheme'])->name('profile.theme');
+    Route::post('/cookie-consent', [ProfileController::class, 'updateCookieConsent'])->name('cookie.consent');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
@@ -64,7 +75,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/races', [AdminController::class, 'races'])->name('races');
     Route::delete('/races/{race}', [AdminController::class, 'destroyRace'])->name('races.destroy');
 
+    Route::get('/ads', [AdminAdController::class, 'index'])->name('ads');
+    Route::patch('/ads/{ad}/approve', [AdminAdController::class, 'approve'])->name('ads.approve');
+    Route::patch('/ads/{ad}/reject', [AdminAdController::class, 'reject'])->name('ads.reject');
+    Route::patch('/ads/{ad}/pause', [AdminAdController::class, 'pause'])->name('ads.pause');
+    Route::delete('/ads/{ad}', [AdminAdController::class, 'destroy'])->name('ads.destroy');
+
     Route::get('/nav-items', [NavItemController::class, 'index'])->name('nav-items');
+    Route::post('/nav-items', [NavItemController::class, 'store'])->name('nav-items.store');
+    Route::delete('/nav-items/{navItem}', [NavItemController::class, 'destroy'])->name('nav-items.destroy');
     Route::patch('/nav-items/{navItem}/toggle', [NavItemController::class, 'toggle'])->name('nav-items.toggle');
     Route::patch('/nav-items/{navItem}/premium', [NavItemController::class, 'togglePremium'])->name('nav-items.premium');
     Route::patch('/nav-items/{navItem}/move', [NavItemController::class, 'move'])->name('nav-items.move');
