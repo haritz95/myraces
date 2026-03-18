@@ -24,6 +24,12 @@
     .text-muted  { color: rgba(255,255,255,0.45); }
     .text-subtle { color: rgba(255,255,255,0.25); }
     .border-dim  { border-color: rgba(255,255,255,0.07); }
+
+    /* ── iOS safe area utilities ──────────────────────────── */
+    .pt-safe  { padding-top:    env(safe-area-inset-top);    }
+    .pb-safe  { padding-bottom: env(safe-area-inset-bottom); }
+    .pl-safe  { padding-left:   env(safe-area-inset-left);   }
+    .pr-safe  { padding-right:  env(safe-area-inset-right);  }
 }
 
 @layer components {

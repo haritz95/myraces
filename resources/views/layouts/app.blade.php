@@ -116,7 +116,7 @@
         <div class="md:ml-64 min-h-screen flex flex-col">
 
             {{-- Mobile header --}}
-            <header class="md:hidden sticky top-0 z-40 bg-bg-app/90 backdrop-blur-xl" style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <header class="md:hidden sticky top-0 z-40 bg-bg-app/90 backdrop-blur-xl pt-safe" style="border-bottom:1px solid rgba(255,255,255,0.06)">
                 <div class="relative flex items-center justify-between px-5 h-[58px]">
                     {{-- Left: back button or logo --}}
                     <div class="relative z-10">
@@ -189,7 +189,8 @@
                      x-transition:leave-start="opacity-100"
                      x-transition:leave-end="opacity-0"
                      x-cloak
-                     class="fixed bottom-[88px] md:bottom-6 md:right-6 inset-x-4 md:inset-x-auto z-50 pointer-events-none">
+                     class="fixed md:bottom-6 md:right-6 inset-x-4 md:inset-x-auto z-50 pointer-events-none"
+                     style="bottom:calc(88px + env(safe-area-inset-bottom))">
                     <div class="text-white text-sm font-semibold px-4 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3" style="background:rgba(30,30,30,0.98);border:1px solid rgba(255,255,255,0.10)">
                         <div class="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                             <svg style="width:10px;height:10px" class="text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -202,7 +203,7 @@
             @endif
 
             {{-- Content --}}
-            <main class="flex-1 pb-[80px] md:pb-0">
+            <main class="flex-1 md:pb-0" style="padding-bottom:calc(80px + env(safe-area-inset-bottom))">
                 {{ $slot }}
             </main>
 
@@ -267,8 +268,8 @@
                     $rightItems = $bnItems->slice(2);
                     $drawerActive = $mobileDrawer->contains(fn ($i) => $i->isActive());
                 @endphp
-                <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around px-2 h-[72px]"
-                     style="background:rgba(10,10,10,0.96);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.07)">
+                <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around px-2 pb-safe"
+                     style="background:rgba(10,10,10,0.96);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.07);height:calc(72px + env(safe-area-inset-bottom))">
 
                     @foreach($leftItems as $item)
                         @php $active = $item->isActive(); @endphp
@@ -373,7 +374,8 @@
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 translate-y-4"
              x-cloak
-             class="fixed bottom-[80px] md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-[60]"
+             class="fixed md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-[60]"
+             style="bottom:calc(80px + env(safe-area-inset-bottom))"
              style="border-radius:20px;background:var(--color-bg-card);border:1px solid rgba(255,255,255,0.10);box-shadow:0 24px 60px rgba(0,0,0,0.30)">
 
             <div class="px-5 pt-5 pb-4">
@@ -446,12 +448,51 @@
             </div>
         </div>
 
+    {{-- iOS "Add to Home Screen" guide --}}
+    <div id="ios-install-banner"
+         style="display:none;position:fixed;bottom:calc(80px + env(safe-area-inset-bottom) + 12px);left:16px;right:16px;z-index:9999;
+                background:#1c1c1e;border:1px solid rgba(255,255,255,0.12);border-radius:18px;
+                padding:14px 16px;box-shadow:0 16px 48px rgba(0,0,0,0.5)">
+        <button onclick="document.getElementById('ios-install-banner').style.display='none';localStorage.setItem('pwa-banner-dismissed','1')"
+                style="position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(255,255,255,0.40);font-size:18px;cursor:pointer;line-height:1;padding:4px">×</button>
+        <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:40px;height:40px;background:#C8FA5F;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#000" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </div>
+            <div>
+                <p style="color:#fff;font-weight:800;font-size:13px;margin-bottom:2px">Instala MyRaces</p>
+                <p style="color:rgba(255,255,255,0.50);font-size:11px;line-height:1.4">
+                    Pulsa
+                    <svg style="display:inline;vertical-align:middle;margin:0 2px" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.70)" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                    y luego <strong style="color:rgba(255,255,255,0.80)">"Añadir a pantalla de inicio"</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').catch(() => {});
             });
         }
+
+        // Show iOS install hint (only on Safari iOS, not already installed, not dismissed)
+        (function () {
+            var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            var isStandalone = window.navigator.standalone === true;
+            var dismissed = localStorage.getItem('pwa-banner-dismissed');
+            if (isIos && !isStandalone && !dismissed) {
+                setTimeout(function () {
+                    var banner = document.getElementById('ios-install-banner');
+                    if (banner) { banner.style.display = 'block'; }
+                }, 3000);
+            }
+        })();
     </script>
     </body>
 </html>
