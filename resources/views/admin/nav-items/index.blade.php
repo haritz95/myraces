@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('page_title', 'Gestión del menú')
+    @section('page_title', 'Navegación')
     @section('back_url', route('admin.dashboard'))
 
     @php
@@ -58,7 +58,6 @@
         ['name' => 'Escudo',        'path' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'],
         ['name' => 'Premium',       'path' => 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'],
         ['name' => 'Idioma',        'path' => 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129'],
-        ['name' => 'Campana activa','path' => 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'],
         ['name' => 'Info',          'path' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
         ['name' => 'Enlace',        'path' => 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'],
         ['name' => 'Descarga',      'path' => 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4'],
@@ -81,45 +80,63 @@
             <div class="card px-4 py-3 text-sm font-semibold text-red-400 border-red-500/20 bg-red-500/10">{{ session('error') }}</div>
         @endif
 
-        {{-- Info --}}
-        <div class="card px-5 py-4 flex items-start gap-3">
-            <svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <p class="text-sm" style="color:rgba(255,255,255,0.55)">
-                Todos los elementos activos aparecen en el <strong class="text-white">sidebar de escritorio</strong> automáticamente. La <strong class="text-white">ubicación móvil</strong> controla si aparece en el menú inferior (máx. 4) o en el drawer ("Más"). Desactivar un elemento o marcarlo como premium lo oculta en todas las pantallas.
-            </p>
+        {{-- Legend --}}
+        <div class="card px-5 py-4 space-y-3">
+            <p class="text-xs font-black text-white uppercase tracking-wider">Cómo funciona</p>
+            <div class="grid grid-cols-1 gap-2 text-xs" style="color:rgba(255,255,255,0.55)">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-1 px-2 py-1 rounded-lg flex-shrink-0" style="background:rgba(96,165,250,0.15);color:#60a5fa">
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span class="text-[10px] font-black">PC</span>
+                    </div>
+                    <span>Aparece en la barra lateral de escritorio (≥ md)</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex rounded-lg overflow-hidden flex-shrink-0" style="border:1px solid rgba(255,255,255,0.15)">
+                        <span class="px-2 py-1 text-[10px] font-black" style="background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.60)">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display:inline"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                        </span>
+                        <span class="px-2 py-1 text-[10px] font-black border-l" style="border-color:rgba(255,255,255,0.15);background:rgba(200,250,95,0.15);color:#C8FA5F">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display:inline"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        </span>
+                        <span class="px-2 py-1 text-[10px] font-black border-l" style="border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.40)">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display:inline"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+                        </span>
+                    </div>
+                    <span>Móvil: sin menú · barra inferior (máx 4) · drawer "Más"</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-1 px-2 py-1 rounded-lg flex-shrink-0 bg-primary/20 text-primary">
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <span class="text-[10px] font-black">ON</span>
+                    </div>
+                    <span>Activado/desactivado globalmente</span>
+                </div>
+            </div>
         </div>
 
-        {{-- Bottom nav --}}
-        <section>
-            <h2 class="text-sm font-black uppercase tracking-widest text-primary mb-3">Menú inferior</h2>
-            <div class="card overflow-hidden">
-                @forelse($items->get('bottom_nav', collect()) as $item)
-                    @include('admin.nav-items._row', ['item' => $item, 'targetLocation' => 'drawer', 'targetLocationLabel' => 'Mover al drawer'])
-                @empty
-                    <div class="px-5 py-6 text-center text-sm" style="color:rgba(255,255,255,0.35)">Sin elementos</div>
-                @endforelse
+        {{-- Item list --}}
+        <div class="card overflow-hidden">
+            <div class="px-5 py-3 flex items-center justify-between" style="border-bottom:1px solid rgba(255,255,255,0.06)">
+                <h2 class="text-sm font-black text-white">Elementos</h2>
+                <div class="flex items-center gap-4 text-[10px] font-black uppercase tracking-wider" style="color:rgba(255,255,255,0.25)">
+                    <span class="hidden sm:block">PC</span>
+                    <span class="hidden sm:block">Móvil</span>
+                    <span class="hidden sm:block">ON</span>
+                </div>
             </div>
-        </section>
-
-        {{-- Drawer --}}
-        <section>
-            <h2 class="text-sm font-black uppercase tracking-widest text-primary mb-3">Drawer (Más)</h2>
-            <div class="card overflow-hidden">
-                @forelse($items->get('drawer', collect()) as $item)
-                    @include('admin.nav-items._row', ['item' => $item, 'targetLocation' => 'bottom_nav', 'targetLocationLabel' => 'Mover al menú inferior'])
-                @empty
-                    <div class="px-5 py-6 text-center text-sm" style="color:rgba(255,255,255,0.35)">Sin elementos</div>
-                @endforelse
-            </div>
-        </section>
+            @forelse($items as $item)
+                @include('admin.nav-items._row', ['item' => $item])
+            @empty
+                <div class="px-5 py-10 text-center text-sm" style="color:rgba(255,255,255,0.35)">Sin elementos</div>
+            @endforelse
+        </div>
 
         {{-- Add new item --}}
         <section x-data="{
             open: {{ $errors->any() ? 'true' : 'false' }},
             selectedIcon: {{ $errors->any() ? json_encode(old('icon_path', '')) : "''" }},
-            selectedIconName: '{{ $errors->any() && old('icon_path') ? 'Personalizado' : '' }}',
+            selectedIconName: '{{ $errors->any() && old('icon_path') ? 'Seleccionado' : '' }}',
             icons: {{ Js::from($iconOptions) }}
         }">
             <button type="button" @click="open = !open"
@@ -129,7 +146,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
                     </svg>
                 </div>
-                <span class="text-sm font-bold text-white">Añadir elemento al menú</span>
+                <span class="text-sm font-bold text-white">Añadir elemento</span>
                 <svg class="w-4 h-4 ml-auto transition-transform duration-200" :class="open ? 'rotate-90' : ''"
                      style="color:rgba(255,255,255,0.30)" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -168,7 +185,6 @@
                     <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.05)">
                         <div class="flex items-center gap-3 mb-3">
                             <label class="text-xs font-bold" style="color:rgba(255,255,255,0.45)">Icono <span class="text-red-400">*</span></label>
-                            {{-- Preview --}}
                             <div class="flex items-center gap-2 ml-auto">
                                 <template x-if="selectedIcon">
                                     <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg" style="background:rgba(200,250,95,0.10)">
@@ -183,17 +199,13 @@
                                 </template>
                             </div>
                         </div>
-
                         <input type="hidden" name="icon_path" :value="selectedIcon" required>
-
                         <div class="grid grid-cols-6 gap-2">
                             <template x-for="icon in icons" :key="icon.name">
                                 <button type="button"
                                         @click="selectedIcon = icon.path; selectedIconName = icon.name"
                                         class="flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-150"
-                                        :class="selectedIcon === icon.path
-                                            ? 'bg-primary/15 ring-1 ring-primary/40'
-                                            : 'hover:bg-white/[0.06]'"
+                                        :class="selectedIcon === icon.path ? 'bg-primary/15 ring-1 ring-primary/40' : 'hover:bg-white/[0.06]'"
                                         style="background: selectedIcon === icon.path ? '' : 'rgba(255,255,255,0.03)'">
                                     <svg class="w-5 h-5 flex-shrink-0"
                                          :class="selectedIcon === icon.path ? 'text-primary' : ''"
@@ -211,21 +223,44 @@
                         @error('icon_path')<p class="text-red-400 text-xs mt-2">{{ $message }}</p>@enderror
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.05)">
-                        <div class="space-y-1.5">
-                            <label class="block text-xs font-bold" style="color:rgba(255,255,255,0.45)">Ubicación en móvil</label>
-                            <select name="location" class="input-field">
-                                <option value="drawer" {{ old('location', 'drawer') === 'drawer' ? 'selected' : '' }}>Drawer (Más)</option>
-                                <option value="bottom_nav" {{ old('location') === 'bottom_nav' ? 'selected' : '' }}>Menú inferior</option>
-                            </select>
+                    {{-- Where to show --}}
+                    <div class="px-5 py-4 space-y-3" style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                        <p class="text-xs font-bold" style="color:rgba(255,255,255,0.45)">Dónde mostrar</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            {{-- Desktop --}}
+                            <div class="rounded-xl p-3 space-y-2" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4" style="color:#60a5fa" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="text-xs font-bold text-white">Escritorio</span>
+                                </div>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="show_desktop" value="1" checked
+                                           class="w-4 h-4 rounded accent-primary">
+                                    <span class="text-xs" style="color:rgba(255,255,255,0.55)">Mostrar en sidebar</span>
+                                </label>
+                            </div>
+                            {{-- Mobile --}}
+                            <div class="rounded-xl p-3 space-y-2" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="text-xs font-bold text-white">Móvil</span>
+                                </div>
+                                <select name="location" class="input-field text-xs py-1.5">
+                                    <option value="">Sin menú móvil</option>
+                                    <option value="bottom_nav" {{ old('location') === 'bottom_nav' ? 'selected' : '' }}>Barra inferior</option>
+                                    <option value="drawer" selected {{ old('location', 'drawer') === 'drawer' ? 'selected' : '' }}>Drawer (Más)</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="flex items-end pb-1">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="is_premium" value="1" {{ old('is_premium') ? 'checked' : '' }}
-                                       class="w-4 h-4 rounded accent-primary">
-                                <span class="text-sm font-medium text-white">Solo premium</span>
-                            </label>
-                        </div>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" name="is_premium" value="1" {{ old('is_premium') ? 'checked' : '' }}
+                                   class="w-4 h-4 rounded accent-primary">
+                            <span class="text-sm font-medium text-white">Solo para usuarios premium</span>
+                        </label>
                     </div>
 
                     <div class="px-5 py-4 flex gap-2 justify-end">

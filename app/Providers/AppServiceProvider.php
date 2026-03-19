@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
                 ->filter(fn (NavItem $item) => $isAdmin || ! $item->is_premium || $user?->is_premium);
 
             $view->with([
-                'sidebarNav' => $accessible,
+                'sidebarNav' => $accessible->where('show_desktop', true)->values(),
                 'mobileBottomNav' => $accessible->where('location', 'bottom_nav')->values(),
                 'mobileDrawer' => $accessible->where('location', 'drawer')->values(),
             ]);

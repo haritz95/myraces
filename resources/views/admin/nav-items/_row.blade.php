@@ -3,28 +3,20 @@
     {{-- ── Main row ──────────────────────────────────────────── --}}
     <div class="flex items-center gap-2 px-4 py-3">
 
-        {{-- Reorder: stacked ▲▼ --}}
+        {{-- Reorder --}}
         <div class="flex flex-col gap-0.5 flex-shrink-0">
             <form method="POST" action="{{ route('admin.nav-items.move', $item) }}">
                 @csrf @method('PATCH')
                 <input type="hidden" name="direction" value="up">
-                <button type="submit"
-                        class="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-white/[0.08]"
-                        style="color:rgba(255,255,255,0.30)">
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
-                    </svg>
+                <button type="submit" class="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-white/[0.08]" style="color:rgba(255,255,255,0.30)">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
                 </button>
             </form>
             <form method="POST" action="{{ route('admin.nav-items.move', $item) }}">
                 @csrf @method('PATCH')
                 <input type="hidden" name="direction" value="down">
-                <button type="submit"
-                        class="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-white/[0.08]"
-                        style="color:rgba(255,255,255,0.30)">
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                    </svg>
+                <button type="submit" class="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-white/[0.08]" style="color:rgba(255,255,255,0.30)">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                 </button>
             </form>
         </div>
@@ -40,41 +32,63 @@
 
         {{-- Label + meta --}}
         <div class="flex-1 min-w-0">
-            <p class="text-sm font-bold text-white leading-tight">{{ $item->label }}</p>
-            <p class="text-[11px] truncate mt-0.5" style="color:rgba(255,255,255,0.30)">{{ $item->route_name }}</p>
+            <p class="text-sm font-bold leading-tight {{ $item->is_enabled ? 'text-white' : '' }}" style="{{ !$item->is_enabled ? 'color:rgba(255,255,255,0.35)' : '' }}">
+                {{ $item->label }}
+            </p>
+            <p class="text-[10px] truncate mt-0.5" style="color:rgba(255,255,255,0.25)">{{ $item->route_name }}</p>
         </div>
 
-        {{-- Badges --}}
-        <div class="flex flex-col items-end gap-1 flex-shrink-0">
-            @if($item->is_premium)
-                <span class="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 leading-none">PRO</span>
-            @endif
-            @if(!$item->is_enabled)
-                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-white/8 leading-none" style="color:rgba(255,255,255,0.35)">OFF</span>
-            @endif
-        </div>
+        {{-- Surface badges: Desktop + Mobile --}}
+        <div class="flex items-center gap-1 flex-shrink-0">
 
-        {{-- Actions --}}
-        <div class="flex items-center gap-1 flex-shrink-0 ml-1">
-
-            {{-- Move location --}}
-            <form method="POST" action="{{ route('admin.nav-items.location', $item) }}" title="{{ $targetLocationLabel }}">
+            {{-- Desktop toggle --}}
+            <form method="POST" action="{{ route('admin.nav-items.desktop', $item) }}" title="{{ $item->show_desktop ? 'Visible en escritorio' : 'Oculto en escritorio' }}">
                 @csrf @method('PATCH')
-                <input type="hidden" name="location" value="{{ $targetLocation }}">
                 <button type="submit"
-                        class="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-white/[0.08]"
-                        style="color:rgba(255,255,255,0.25)">
-                    @if($targetLocation === 'drawer')
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
-                        </svg>
-                    @else
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8M4 18h16"/>
-                        </svg>
-                    @endif
+                        class="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black transition-colors"
+                        style="{{ $item->show_desktop ? 'background:rgba(96,165,250,0.15);color:#60a5fa' : 'background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.20)' }}">
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    PC
                 </button>
             </form>
+
+            {{-- Mobile location selector --}}
+            <form method="POST" action="{{ route('admin.nav-items.location', $item) }}" class="flex items-center">
+                @csrf @method('PATCH')
+                <div class="flex rounded-lg overflow-hidden" style="border:1px solid rgba(255,255,255,0.08)">
+                    {{-- Off --}}
+                    <button type="submit" name="location" value="none" title="No mostrar en móvil"
+                            class="px-2 py-1 text-[10px] font-black transition-colors"
+                            style="{{ $item->location === null ? 'background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.60)' : 'color:rgba(255,255,255,0.20)' }}">
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                        </svg>
+                    </button>
+                    {{-- Barra inferior --}}
+                    <button type="submit" name="location" value="bottom_nav" title="Menú inferior"
+                            class="px-2 py-1 text-[10px] font-black transition-colors border-l"
+                            style="border-color:rgba(255,255,255,0.08);{{ $item->location === 'bottom_nav' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'color:rgba(255,255,255,0.20)' }}">
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </button>
+                    {{-- Drawer --}}
+                    <button type="submit" name="location" value="drawer" title="Drawer (Más)"
+                            class="px-2 py-1 text-[10px] font-black transition-colors border-l"
+                            style="border-color:rgba(255,255,255,0.08);{{ $item->location === 'drawer' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'color:rgba(255,255,255,0.20)' }}">
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+        {{-- Right actions --}}
+        <div class="flex items-center gap-1 flex-shrink-0 ml-1">
 
             {{-- Enable/disable --}}
             <form method="POST" action="{{ route('admin.nav-items.toggle', $item) }}">
@@ -177,7 +191,7 @@
                 {{-- Icon picker --}}
                 <div>
                     <label class="section-label block mb-2">Icono</label>
-                    <div class="grid grid-cols-7 gap-1.5">
+                    <div class="grid grid-cols-8 gap-1.5">
                         <template x-for="icon in icons" :key="icon.name">
                             <button type="button"
                                     @click="selectedIcon = icon.path"
@@ -192,6 +206,36 @@
                                 </svg>
                             </button>
                         </template>
+                    </div>
+                </div>
+
+                {{-- Where to show --}}
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="rounded-xl p-3 space-y-2" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5" style="color:#60a5fa" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-[11px] font-bold text-white">Escritorio</span>
+                        </div>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" name="show_desktop" value="1" {{ $item->show_desktop ? 'checked' : '' }}
+                                   class="w-4 h-4 rounded accent-primary">
+                            <span class="text-xs" style="color:rgba(255,255,255,0.55)">Sidebar</span>
+                        </label>
+                    </div>
+                    <div class="rounded-xl p-3 space-y-2" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-[11px] font-bold text-white">Móvil</span>
+                        </div>
+                        <select name="location" class="input-field text-xs py-1.5">
+                            <option value="" {{ $item->location === null ? 'selected' : '' }}>Sin menú móvil</option>
+                            <option value="bottom_nav" {{ $item->location === 'bottom_nav' ? 'selected' : '' }}>Barra inferior</option>
+                            <option value="drawer" {{ $item->location === 'drawer' ? 'selected' : '' }}>Drawer (Más)</option>
+                        </select>
                     </div>
                 </div>
 

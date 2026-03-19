@@ -147,6 +147,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('/nav-items/{navItem}', [NavItemController::class, 'update'])->name('nav-items.update');
     Route::delete('/nav-items/{navItem}', [NavItemController::class, 'destroy'])->name('nav-items.destroy');
     Route::patch('/nav-items/{navItem}/toggle', [NavItemController::class, 'toggle'])->name('nav-items.toggle');
+    Route::patch('/nav-items/{navItem}/desktop', [NavItemController::class, 'toggleDesktop'])->name('nav-items.desktop');
     Route::patch('/nav-items/{navItem}/premium', [NavItemController::class, 'togglePremium'])->name('nav-items.premium');
     Route::patch('/nav-items/{navItem}/move', [NavItemController::class, 'move'])->name('nav-items.move');
     Route::patch('/nav-items/{navItem}/location', [NavItemController::class, 'updateLocation'])->name('nav-items.location');

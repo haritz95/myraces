@@ -15,13 +15,14 @@ class NavItem extends Model
 
     protected $fillable = [
         'key', 'label', 'route_name', 'icon_path',
-        'match_pattern', 'location', 'sort_order',
+        'match_pattern', 'location', 'show_desktop', 'sort_order',
         'is_enabled', 'is_premium',
     ];
 
     protected $casts = [
         'is_enabled' => 'boolean',
         'is_premium' => 'boolean',
+        'show_desktop' => 'boolean',
         'sort_order' => 'integer',
     ];
 

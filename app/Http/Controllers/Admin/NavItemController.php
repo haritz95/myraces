@@ -13,7 +13,7 @@ class NavItemController extends Controller
 {
     public function index(): View
     {
-        $items = NavItem::ordered()->get()->groupBy('location');
+        $items = NavItem::ordered()->get();
 
         return view('admin.nav-items.index', compact('items'));
     }
@@ -25,18 +25,21 @@ class NavItemController extends Controller
             'route_name' => ['required', 'string', 'max:100'],
             'icon_path' => ['required', 'string'],
             'match_pattern' => ['required', 'string', 'max:200'],
-            'location' => ['required', 'in:bottom_nav,drawer'],
+            'location' => ['nullable', 'in:bottom_nav,drawer'],
+            'show_desktop' => ['boolean'],
             'is_premium' => ['boolean'],
         ]);
 
-        if ($request->location === 'bottom_nav') {
+        $mobileLocation = $request->location ?: null;
+
+        if ($mobileLocation === 'bottom_nav') {
             $count = NavItem::where('location', 'bottom_nav')->where('is_enabled', true)->count();
             if ($count >= 4) {
                 return back()->with('error', 'El menú inferior sólo admite 4 elementos activos.');
             }
         }
 
-        $maxOrder = NavItem::where('location', $request->location)->max('sort_order') ?? 0;
+        $maxOrder = NavItem::max('sort_order') ?? 0;
 
         NavItem::create([
             'key' => Str::slug($request->label).'-'.Str::random(4),
@@ -44,13 +47,14 @@ class NavItemController extends Controller
             'route_name' => $request->route_name,
             'icon_path' => $request->icon_path,
             'match_pattern' => $request->match_pattern,
-            'location' => $request->location,
+            'location' => $mobileLocation,
+            'show_desktop' => $request->boolean('show_desktop', true),
             'sort_order' => $maxOrder + 1,
             'is_enabled' => true,
             'is_premium' => $request->boolean('is_premium'),
         ]);
 
-        return back()->with('success', "\"{$request->label}\" añadido al menú.");
+        return back()->with('success', "\"{$request->label}\" añadido a la navegación.");
     }
 
     public function update(Request $request, NavItem $navItem): RedirectResponse
@@ -60,9 +64,24 @@ class NavItemController extends Controller
             'route_name' => ['required', 'string', 'max:100'],
             'match_pattern' => ['required', 'string', 'max:200'],
             'icon_path' => ['required', 'string'],
+            'location' => ['nullable', 'in:bottom_nav,drawer'],
+            'show_desktop' => ['boolean'],
         ]);
 
-        $navItem->update($request->only('label', 'route_name', 'match_pattern', 'icon_path'));
+        $newLocation = $request->location ?: null;
+
+        if ($newLocation === 'bottom_nav' && $navItem->location !== 'bottom_nav') {
+            $count = NavItem::where('location', 'bottom_nav')->where('is_enabled', true)->count();
+            if ($count >= 4) {
+                return back()->with('error', 'El menú inferior sólo admite 4 elementos activos.');
+            }
+        }
+
+        $navItem->update([
+            ...$request->only('label', 'route_name', 'match_pattern', 'icon_path'),
+            'location' => $newLocation,
+            'show_desktop' => $request->boolean('show_desktop'),
+        ]);
 
         return back()->with('success', "\"{$navItem->label}\" actualizado.");
     }
@@ -76,9 +95,9 @@ class NavItemController extends Controller
 
     public function toggle(NavItem $navItem): RedirectResponse
     {
-        if (! $navItem->is_enabled) {
+        if (! $navItem->is_enabled && $navItem->location === 'bottom_nav') {
             $bottomCount = NavItem::where('location', 'bottom_nav')->where('is_enabled', true)->count();
-            if ($navItem->location === 'bottom_nav' && $bottomCount >= 4) {
+            if ($bottomCount >= 4) {
                 return back()->with('error', 'El menú inferior sólo admite 4 elementos. Mueve uno al drawer primero.');
             }
         }
@@ -88,6 +107,16 @@ class NavItemController extends Controller
         return back()->with('success', $navItem->is_enabled
             ? "\"{$navItem->label}\" activado."
             : "\"{$navItem->label}\" desactivado."
+        );
+    }
+
+    public function toggleDesktop(NavItem $navItem): RedirectResponse
+    {
+        $navItem->update(['show_desktop' => ! $navItem->show_desktop]);
+
+        return back()->with('success', $navItem->show_desktop
+            ? "\"{$navItem->label}\" visible en escritorio."
+            : "\"{$navItem->label}\" oculto en escritorio."
         );
     }
 
@@ -102,14 +131,17 @@ class NavItemController extends Controller
     {
         $request->validate(['direction' => ['required', 'in:up,down']]);
 
-        $sibling = NavItem::where('location', $navItem->location)
-            ->when($request->direction === 'up',
+        $up = $request->input('direction') === 'up';
+
+        /** @var NavItem|null $sibling */
+        $sibling = NavItem::query()
+            ->when($up,
                 fn ($q) => $q->where('sort_order', '<', $navItem->sort_order)->orderByDesc('sort_order'),
                 fn ($q) => $q->where('sort_order', '>', $navItem->sort_order)->orderBy('sort_order'),
             )
             ->first();
 
-        if ($sibling) {
+        if ($sibling instanceof NavItem) {
             [$navItem->sort_order, $sibling->sort_order] = [$sibling->sort_order, $navItem->sort_order];
             $navItem->save();
             $sibling->save();
@@ -120,18 +152,21 @@ class NavItemController extends Controller
 
     public function updateLocation(Request $request, NavItem $navItem): RedirectResponse
     {
-        $request->validate(['location' => ['required', 'in:bottom_nav,drawer']]);
+        $request->validate(['location' => ['nullable', 'in:bottom_nav,drawer,none']]);
 
-        if ($request->location === 'bottom_nav') {
+        $newLocation = $request->location === 'none' ? null : $request->location;
+
+        if ($newLocation === 'bottom_nav') {
             $count = NavItem::where('location', 'bottom_nav')->where('is_enabled', true)->count();
             if ($count >= 4) {
                 return back()->with('error', 'El menú inferior sólo admite 4 elementos.');
             }
         }
 
-        $maxOrder = NavItem::where('location', $request->location)->max('sort_order') ?? 0;
-        $navItem->update(['location' => $request->location, 'sort_order' => $maxOrder + 1]);
+        $navItem->update(['location' => $newLocation]);
 
-        return back()->with('success', "\"{$navItem->label}\" movido a ".($request->location === 'bottom_nav' ? 'menú inferior' : 'drawer').'.');
+        $labels = ['bottom_nav' => 'menú inferior', 'drawer' => 'drawer', null => 'ningún menú móvil'];
+
+        return back()->with('success', "\"{$navItem->label}\" → ".($labels[$newLocation] ?? 'oculto en móvil').'.');
     }
 }
