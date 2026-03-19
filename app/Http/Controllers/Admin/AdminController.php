@@ -7,6 +7,7 @@ use App\Models\Expense;
 use App\Models\PersonalRecord;
 use App\Models\Pod;
 use App\Models\Race;
+use App\Models\RaceEvent;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class AdminController extends Controller
             'premium_users' => User::where('is_premium', true)->count(),
             'banned_users' => User::where('is_banned', true)->count(),
             'active_pods' => Pod::where('status', 'active')->count(),
+            'pending_events' => RaceEvent::where('status', 'pending')->count(),
             'recent_users' => User::latest()->take(5)->get(),
             'recent_races' => Race::with('user')->latest()->take(5)->get(),
         ];

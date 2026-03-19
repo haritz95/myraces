@@ -13,11 +13,11 @@ use Illuminate\Support\Str;
 class RaceEvent extends Model
 {
     protected $fillable = [
-        'created_by', 'name', 'slug', 'description', 'image', 'image_url',
+        'created_by', 'submitted_by', 'name', 'slug', 'description', 'image', 'image_url',
         'event_date', 'registration_deadline', 'location', 'province', 'country',
         'distance_km', 'category', 'race_type', 'price', 'max_participants',
         'website_url', 'registration_url', 'organizer',
-        'status', 'source', 'external_id', 'is_featured',
+        'status', 'source', 'external_id', 'is_featured', 'rejection_reason',
     ];
 
     protected function casts(): array
@@ -73,6 +73,11 @@ class RaceEvent extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function submitter(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'submitted_by');
+    }
+
     public function modalities(): HasMany
     {
         return $this->hasMany(RaceEventModality::class)->orderBy('sort_order');
@@ -80,13 +85,14 @@ class RaceEvent extends Model
 
     public function attendees(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'race_event_user')->withTimestamps();
+        return $this->belongsToMany(User::class, 'race_event_user')
+            ->withPivot('created_at');
     }
 
     public function scopeUpcoming(Builder $query): Builder
     {
         return $query->where('event_date', '>=', now()->startOfDay())
-            ->where('status', '!=', 'cancelled')
+            ->whereNotIn('status', ['cancelled', 'pending', 'rejected'])
             ->orderBy('event_date');
     }
 

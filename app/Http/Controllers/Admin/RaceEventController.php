@@ -18,17 +18,58 @@ class RaceEventController extends Controller
             ->when($request->filled('q'), fn ($query) => $query->where('name', 'like', "%{$request->q}%")
                 ->orWhere('location', 'like', "%{$request->q}%"))
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->status))
+            ->whereNotIn('status', ['pending', 'rejected'])
             ->orderBy('event_date')
             ->paginate(20);
 
         $stats = [
-            'total' => RaceEvent::count(),
+            'total' => RaceEvent::whereNotIn('status', ['pending', 'rejected'])->count(),
             'upcoming' => RaceEvent::where('status', 'upcoming')->count(),
             'open' => RaceEvent::where('status', 'open')->count(),
-            'cancelled' => RaceEvent::where('status', 'cancelled')->count(),
+            'pending' => RaceEvent::where('status', 'pending')->count(),
         ];
 
         return view('admin.events.index', compact('events', 'stats'));
+    }
+
+    public function pending(): View
+    {
+        $submissions = RaceEvent::where('status', 'pending')
+            ->with('submitter')
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.events.pending', compact('submissions'));
+    }
+
+    public function approve(RaceEvent $event): RedirectResponse
+    {
+        abort_unless($event->status === 'pending', 404);
+
+        $event->update([
+            'status' => 'upcoming',
+            'rejection_reason' => null,
+        ]);
+
+        return redirect()->route('admin.events.pending')
+            ->with('success', "Carrera \"{$event->name}\" aprobada.");
+    }
+
+    public function reject(Request $request, RaceEvent $event): RedirectResponse
+    {
+        abort_unless($event->status === 'pending', 404);
+
+        $request->validate([
+            'rejection_reason' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $event->update([
+            'status' => 'rejected',
+            'rejection_reason' => $request->input('rejection_reason'),
+        ]);
+
+        return redirect()->route('admin.events.pending')
+            ->with('success', "Carrera \"{$event->name}\" rechazada.");
     }
 
     public function create(): View

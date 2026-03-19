@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PodController as AdminPodController;
 use App\Http\Controllers\Admin\RaceEventController as AdminRaceEventController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EventSubmissionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GearController;
 use App\Http\Controllers\MyAdsController;
@@ -69,8 +70,13 @@ Route::middleware(['auth', 'verified', 'nav.access'])->group(function () {
     Route::get('/pods/{pod}/messages', [PodController::class, 'messages'])->name('pods.messages');
 
     Route::get('/events', [RaceEventController::class, 'index'])->name('events.index');
+    Route::get('/events/submit', [EventSubmissionController::class, 'create'])->name('events.submit');
+    Route::post('/events/submit', [EventSubmissionController::class, 'store'])->name('events.submit.store');
+    Route::get('/events/my-submissions', [EventSubmissionController::class, 'mySubmissions'])->name('events.my-submissions');
     Route::get('/events/{raceEvent:slug}', [RaceEventController::class, 'show'])->name('events.show');
     Route::post('/events/{raceEvent}/attend', [RaceEventController::class, 'toggleAttend'])->name('events.attend');
+    Route::get('/events/{event}/edit-submission', [EventSubmissionController::class, 'edit'])->name('events.submission.edit');
+    Route::patch('/events/{event}/edit-submission', [EventSubmissionController::class, 'update'])->name('events.submission.update');
 
     Route::get('/premium', [PremiumController::class, 'index'])->name('premium');
 
@@ -127,6 +133,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/pods/{pod}/members/{userId}', [AdminPodController::class, 'removeMember'])->name('pods.members.remove');
 
     Route::get('/events', [AdminRaceEventController::class, 'index'])->name('events.index');
+    Route::get('/events/pending', [AdminRaceEventController::class, 'pending'])->name('events.pending');
+    Route::post('/events/{event}/approve', [AdminRaceEventController::class, 'approve'])->name('events.approve');
+    Route::post('/events/{event}/reject', [AdminRaceEventController::class, 'reject'])->name('events.reject');
     Route::get('/events/create', [AdminRaceEventController::class, 'create'])->name('events.create');
     Route::post('/events', [AdminRaceEventController::class, 'store'])->name('events.store');
     Route::get('/events/{event}/edit', [AdminRaceEventController::class, 'edit'])->name('events.edit');

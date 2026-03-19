@@ -130,6 +130,25 @@
                     <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Añadir, editar, destacar</p>
                 </div>
             </a>
+            <a href="{{ route('admin.events.pending') }}" class="card-interactive flex items-center gap-4 p-5 relative">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                     style="background:{{ $stats['pending_events'] > 0 ? 'rgba(245,158,11,0.15)' : 'rgba(200,250,95,0.10)' }}">
+                    <svg class="w-5 h-5" style="color:{{ $stats['pending_events'] > 0 ? '#f59e0b' : 'rgba(255,255,255,0.30)' }}"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-white">Envíos pendientes</p>
+                    <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Aprobar o rechazar</p>
+                </div>
+                @if($stats['pending_events'] > 0)
+                    <span class="flex-shrink-0 text-xs font-black px-2 py-0.5 rounded-full"
+                          style="background:rgba(245,158,11,0.20);color:#f59e0b">
+                        {{ $stats['pending_events'] }}
+                    </span>
+                @endif
+            </a>
             <a href="{{ route('admin.pods.index') }}" class="card-interactive flex items-center gap-4 p-5">
                 <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
                     <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
