@@ -131,10 +131,8 @@
                 </div>
             </a>
             <a href="{{ route('admin.events.pending') }}" class="card-interactive flex items-center gap-4 p-5 relative">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                     style="background:{{ $stats['pending_events'] > 0 ? 'rgba(245,158,11,0.15)' : 'rgba(200,250,95,0.10)' }}">
-                    <svg class="w-5 h-5" style="color:{{ $stats['pending_events'] > 0 ? '#f59e0b' : 'rgba(255,255,255,0.30)' }}"
-                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
