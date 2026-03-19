@@ -2,7 +2,7 @@
     "name": "MyRaces",
     "short_name": "MyRaces",
     "description": "Tu app de running: carreras, estadísticas, pods sociales y coach IA.",
-    "start_url": "/dashboard",
+    "start_url": "/events",
     "scope": "/",
     "display": "standalone",
     "orientation": "portrait",

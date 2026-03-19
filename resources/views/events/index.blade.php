@@ -1,7 +1,7 @@
 <x-app-layout>
     @section('page_title', 'Carreras')
     @section('header_action')
-        <div x-data x-cloak>
+        <div x-data x-cloak class="flex items-center gap-2">
             <button @click="
                     let v = localStorage.getItem('events-view') === 'card' ? 'list' : 'card';
                     localStorage.setItem('events-view', v);
@@ -13,6 +13,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                 </svg>
             </button>
+            <a href="{{ route('profile.edit') }}"
+               class="w-9 h-9 rounded-full bg-primary flex items-center justify-center overflow-hidden flex-shrink-0">
+                @if(auth()->user()->profile?->avatar)
+                    <img src="{{ asset('storage/' . auth()->user()->profile->avatar) }}" alt="" class="w-full h-full object-cover">
+                @else
+                    <span class="text-black font-black text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                @endif
+            </a>
         </div>
     @endsection
 
