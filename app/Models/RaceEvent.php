@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class RaceEvent extends Model
 {
     protected $fillable = [
-        'created_by', 'name', 'slug', 'description', 'image',
+        'created_by', 'name', 'slug', 'description', 'image', 'image_url',
         'event_date', 'registration_deadline', 'location', 'province', 'country',
         'distance_km', 'category', 'race_type', 'price', 'max_participants',
         'website_url', 'registration_url', 'organizer',
@@ -50,9 +52,30 @@ class RaceEvent extends Model
         return $slug;
     }
 
+    /**
+     * Returns the URL to display the image — external URL takes precedence over uploaded file.
+     */
+    public function imageSource(): ?string
+    {
+        if ($this->image_url) {
+            return $this->image_url;
+        }
+
+        if ($this->image) {
+            return Storage::disk('public')->url($this->image);
+        }
+
+        return null;
+    }
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function modalities(): HasMany
+    {
+        return $this->hasMany(RaceEventModality::class)->orderBy('sort_order');
     }
 
     public function attendees(): BelongsToMany

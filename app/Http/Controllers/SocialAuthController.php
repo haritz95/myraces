@@ -47,7 +47,7 @@ class SocialAuthController extends Controller
 
             Auth::login($socialAccount->user, true);
 
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('events.index'));
         }
 
         $email = $socialUser->getEmail();
@@ -77,6 +77,6 @@ class SocialAuthController extends Controller
 
         Auth::login($user, true);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('events.index');
     }
 }

@@ -23,6 +23,7 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
+        "@alpinejs/collapse": "^3.15.8",
         "@capacitor/android": "^8.2.0",
         "@capacitor/app": "^8.0.1",
         "@capacitor/cli": "^8.2.0",

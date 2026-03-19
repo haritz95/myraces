@@ -53,7 +53,7 @@ class RaceEventController extends Controller
 
     public function show(Request $request, RaceEvent $raceEvent): View
     {
-        $raceEvent->loadCount('attendees');
+        $raceEvent->load('modalities')->loadCount('attendees');
         $isAttending = $raceEvent->isAttending($request->user());
 
         return view('events.show', compact('raceEvent', 'isAttending'));
