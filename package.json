@@ -4,7 +4,10 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "cap:sync": "npx cap sync",
+        "cap:android": "npx cap open android",
+        "cap:ios": "npx cap open ios"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
@@ -16,6 +19,18 @@
         "laravel-vite-plugin": "^2.0.0",
         "postcss": "^8.4.31",
         "tailwindcss": "^3.1.0",
+        "typescript": "^5.9.3",
         "vite": "^7.0.7"
+    },
+    "dependencies": {
+        "@capacitor/android": "^8.2.0",
+        "@capacitor/app": "^8.0.1",
+        "@capacitor/cli": "^8.2.0",
+        "@capacitor/core": "^8.2.0",
+        "@capacitor/haptics": "^8.0.1",
+        "@capacitor/ios": "^8.2.0",
+        "@capacitor/push-notifications": "^8.0.2",
+        "@capacitor/splash-screen": "^8.0.1",
+        "@capacitor/status-bar": "^8.0.1"
     }
 }

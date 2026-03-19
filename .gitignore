@@ -22,3 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Capacitor native projects (regenerated with npx cap sync)
+/android
+/ios

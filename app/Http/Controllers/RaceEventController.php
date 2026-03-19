@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ad;
 use App\Models\RaceEvent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,7 +29,11 @@ class RaceEventController extends Controller
             $query->where('category', $request->category);
         }
 
-        if ($request->filled('when')) {
+        if ($request->filled('date_from') || $request->filled('date_to')) {
+            $from = $request->filled('date_from') ? $request->date('date_from') : now();
+            $to = $request->filled('date_to') ? $request->date('date_to')->endOfDay() : now()->addYears(5);
+            $query->whereBetween('event_date', [$from, $to]);
+        } elseif ($request->filled('when')) {
             $query->when($request->when === 'month', fn ($q) => $q->whereBetween('event_date', [now(), now()->endOfMonth()]))
                 ->when($request->when === '3months', fn ($q) => $q->whereBetween('event_date', [now(), now()->addMonths(3)]));
         }
@@ -41,7 +46,9 @@ class RaceEventController extends Controller
             ->pluck('race_event_id')
             ->toArray();
 
-        return view('events.index', compact('events', 'featured', 'attendingIds'));
+        $feedAd = Ad::pick('feed');
+
+        return view('events.index', compact('events', 'featured', 'attendingIds', 'feedAd'));
     }
 
     public function show(Request $request, RaceEvent $raceEvent): View
