@@ -28,6 +28,20 @@ return [
     'mockup_distance' => 'Distance',
     'mockup_position' => 'Position',
 
+    // Bento grid
+    'bento_catalog'       => 'Event catalog',
+    'bento_main_title'    => 'Upcoming Races',
+    'bento_events'        => 'Events',
+    'bento_distances'     => 'Distances',
+    'bento_cost'          => 'Free',
+    'bento_bar_label'     => 'Current season',
+    'bento_records'       => 'Your times',
+    'bento_pb'            => 'Personal Records',
+    'bento_records_desc'  => 'Store your best times and track your improvement season to season.',
+    'bento_road'          => 'Category',
+    'bento_trail'         => 'Category',
+    'bento_community'     => 'Community',
+
     // Stats cards
     'stat_label_distances' => 'Distances',
     'stat_label_cost'      => 'Cost',

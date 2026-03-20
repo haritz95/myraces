@@ -6,10 +6,9 @@
     <meta name="theme-color" content="#0a0a0a">
     <title>MyRaces — {{ __('landing.hero_title_1') }} {{ __('landing.hero_title_highlight') }} {{ __('landing.hero_title_2') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=public-sans:300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=public-sans:300,400,500,600,700,800,900i,800i,700i&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- Apply saved theme before first paint --}}
     <script>
         (function () {
             var t = localStorage.getItem('theme') || 'dark';
@@ -18,168 +17,97 @@
     </script>
 
     <style>
-        /* ── LANDING BASE STYLES ───────────────────────────────── */
-        .lp-nav        { background: rgba(10,10,10,0.88); border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .lp-nav-link   { color: rgba(255,255,255,0.55); font-size:.875rem; font-weight:500; transition:color .15s; }
+        /* ── NAV ───────────────────────────────────────────────── */
+        .lp-nav { background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .lp-nav-link { color: rgba(255,255,255,0.45); font-size:.875rem; font-weight:500; transition:color .15s; letter-spacing:.01em; }
         .lp-nav-link:hover { color: #fff; }
-        .lp-body       { background: #0a0a0a; }
+        .lp-logo { font-style: italic; font-weight: 900; font-size: 1.25rem; letter-spacing: -.03em; color: #C8FA5F; }
 
-        /* Hero */
-        .lp-hero       { background: linear-gradient(160deg, #0a0a0a 0%, #0f1a00 60%, #0a0a0a 100%); }
-        .hero-badge    { background: rgba(200,250,95,0.10); color: #C8FA5F; border: 1px solid rgba(200,250,95,0.20); }
-        .hero-hl       { color: #C8FA5F; }
-        .hero-sub      { color: rgba(255,255,255,0.50); }
-        .hero-ghost    { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.10); color: rgba(255,255,255,0.80); }
-        .hero-ghost:hover { background: rgba(255,255,255,0.12); }
-        .hero-note     { color: rgba(255,255,255,0.28); }
-        .hero-visual   { background: linear-gradient(145deg,#181818 0%,#0d0d0d 100%); border: 1px solid rgba(255,255,255,0.07); }
-        .pb-card       { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); backdrop-filter: blur(12px); }
+        /* ── HERO ──────────────────────────────────────────────── */
+        .lp-hero { background: #0a0a0a; overflow: hidden; }
+        .hero-hl { color: #C8FA5F; }
+        .hero-sub { color: rgba(255,255,255,0.45); }
+        .hero-ghost { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09); color: rgba(255,255,255,0.80); }
+        .hero-ghost:hover { background: rgba(255,255,255,0.10); }
 
-        /* Stats */
-        .lp-stats      { background: #0a0a0a; }
-        .stat-card     { background: #161616; border: 1px solid rgba(255,255,255,0.07); }
-        .stat-label    { color: #C8FA5F; }
-        .stat-number   { color: #ffffff; }
-        .stat-desc     { color: rgba(255,255,255,0.45); }
+        /* ── BENTO ─────────────────────────────────────────────── */
+        .bento-card { background: #161616; border: 1px solid rgba(255,255,255,0.07); border-radius: 1rem; }
+        .bento-label { color: #C8FA5F; font-size: .625rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
 
-        /* Features */
-        .lp-features       { background: #0f0f0f; }
-        .features-h2       { color: #ffffff; }
-        .features-sub      { color: rgba(255,255,255,0.45); }
-        .feat-card         { background: #161616; border: 1px solid rgba(255,255,255,0.06); }
-        .feat-card:hover   { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
-        .feat-icon-bg      { background: rgba(200,250,95,0.10); }
-        .feat-icon         { color: #C8FA5F; }
-        .feat-title        { color: #ffffff; }
-        .feat-desc         { color: rgba(255,255,255,0.45); }
-        .soon-badge        { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45); }
+        /* ── FEATURES ──────────────────────────────────────────── */
+        .feat-card { background: #161616; border: 1px solid rgba(255,255,255,0.06); transition: all .2s; }
+        .feat-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
+        .feat-icon-bg { background: rgba(200,250,95,0.10); }
+        .feat-icon { color: #C8FA5F; }
+        .soon-badge { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.40); }
 
-        /* CTA card — gradient in class so global [style*] override can't touch it */
-        .lp-cta-wrap   { background: #0a0a0a; }
-        .cta-card      { background: linear-gradient(145deg,#1c1c1c 0%,#111111 100%); border: 1px solid rgba(255,255,255,0.08); }
-        .cta-title     { color: #ffffff; }
-        .cta-sub       { color: rgba(255,255,255,0.45); }
+        /* ── CTA ───────────────────────────────────────────────── */
+        .cta-card { background: linear-gradient(145deg,#1a1a1a 0%,#111 100%); border: 1px solid rgba(255,255,255,0.08); }
 
-        /* Footer */
-        .lp-footer     { background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.06); }
-        .footer-link   { color: rgba(255,255,255,0.40); font-size:.875rem; transition:color .15s; }
+        /* ── FOOTER ────────────────────────────────────────────── */
+        .lp-footer { background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.06); }
+        .footer-link { color: rgba(255,255,255,0.38); font-size:.875rem; transition:color .15s; }
         .footer-link:hover { color: rgba(255,255,255,0.75); }
-        .footer-copy   { color: rgba(255,255,255,0.28); font-size:.8125rem; }
+        .footer-copy { color: rgba(255,255,255,0.25); font-size:.8125rem; }
 
-        /* Controls */
-        .lp-lang-active   { color: #C8FA5F; }
-        .lp-lang-inactive { color: rgba(255,255,255,0.35); }
-        .lp-lang-inactive:hover { color: rgba(255,255,255,0.70); }
-        .lp-lang-dot      { color: rgba(255,255,255,0.16); }
-        .lp-theme-btn     { color: rgba(255,255,255,0.45); }
+        /* ── CONTROLS ──────────────────────────────────────────── */
+        .lp-lang-active { color: #C8FA5F; }
+        .lp-lang-inactive { color: rgba(255,255,255,0.30); }
+        .lp-lang-inactive:hover { color: rgba(255,255,255,0.65); }
+        .lp-lang-dot { color: rgba(255,255,255,0.15); }
+        .lp-theme-btn { color: rgba(255,255,255,0.40); }
         .lp-theme-btn:hover { background: rgba(255,255,255,0.07); }
+        .nav-signin { color: rgba(255,255,255,0.50); }
+        .nav-signin:hover { color: #fff; }
 
-        /* ── LIGHT MODE OVERRIDES ──────────────────────────────── */
-        [data-theme="light"] body                  { background: #f5f5f7 !important; color: #0a0a0a !important; }
-        [data-theme="light"] .lp-nav               { background: rgba(255,255,255,0.94) !important; border-bottom-color: rgba(0,0,0,0.07) !important; box-shadow: 0 1px 0 rgba(0,0,0,0.04); }
-        [data-theme="light"] .lp-nav-link          { color: rgba(0,0,0,0.52) !important; }
-        [data-theme="light"] .lp-nav-link:hover    { color: #0a0a0a !important; }
-        [data-theme="light"] .lp-body              { background: #ffffff !important; }
-
-        /* Hero — white with subtle lime aura */
-        [data-theme="light"] .lp-hero {
-            background: radial-gradient(ellipse 65% 50% at 95% 5%, rgba(200,250,95,0.20) 0%, transparent 55%),
-                        linear-gradient(180deg,#ffffff 0%,#f7fff0 100%) !important;
-        }
-        [data-theme="light"] .hero-badge  { background: rgba(74,124,0,0.08) !important; color: #4a7c00 !important; border-color: rgba(74,124,0,0.18) !important; }
-        [data-theme="light"] .hero-h1     { color: #0a0a0a !important; }
-        [data-theme="light"] .hero-hl {
-            color: transparent !important;
-            -webkit-text-fill-color: transparent !important;
-            background: linear-gradient(120deg,#3d6800 0%,#5a9900 100%) !important;
-            -webkit-background-clip: text !important;
-            background-clip: text !important;
-        }
-        [data-theme="light"] .hero-sub    { color: rgba(0,0,0,0.50) !important; }
-        [data-theme="light"] .hero-ghost  { background: rgba(0,0,0,0.05) !important; border-color: rgba(0,0,0,0.09) !important; color: #111111 !important; }
+        /* ── LIGHT MODE ────────────────────────────────────────── */
+        [data-theme="light"] body { background: #f5f5f7 !important; color: #0a0a0a !important; }
+        [data-theme="light"] .lp-nav { background: rgba(255,255,255,0.92) !important; border-bottom-color: rgba(0,0,0,0.07) !important; }
+        [data-theme="light"] .lp-nav-link { color: rgba(0,0,0,0.50) !important; }
+        [data-theme="light"] .lp-nav-link:hover { color: #0a0a0a !important; }
+        [data-theme="light"] .lp-logo { color: #4a7c00 !important; }
+        [data-theme="light"] .lp-hero { background: #ffffff !important; }
+        [data-theme="light"] .hero-hl { color: #3d6800 !important; }
+        [data-theme="light"] .hero-sub { color: rgba(0,0,0,0.48) !important; }
+        [data-theme="light"] .hero-ghost { background: rgba(0,0,0,0.05) !important; border-color: rgba(0,0,0,0.09) !important; color: #111 !important; }
         [data-theme="light"] .hero-ghost:hover { background: rgba(0,0,0,0.09) !important; }
-        [data-theme="light"] .hero-note   { color: rgba(0,0,0,0.34) !important; }
-        /* Hero visual stays dark — it's the "product screenshot" area */
-
-        /* Stats */
-        [data-theme="light"] .lp-stats    { background: #f5f5f7 !important; }
-        [data-theme="light"] .stat-card   { background: #ffffff !important; border-color: rgba(0,0,0,0.00) !important; box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.05) !important; }
-        [data-theme="light"] .stat-label  { color: #4a7c00 !important; }
-        [data-theme="light"] .stat-number { color: #0a0a0a !important; }
-        [data-theme="light"] .stat-desc   { color: rgba(0,0,0,0.48) !important; }
-
-        /* Features */
-        [data-theme="light"] .lp-features   { background: #f5f5f7 !important; }
-        [data-theme="light"] .features-h2   { color: #0a0a0a !important; }
-        [data-theme="light"] .features-sub  { color: rgba(0,0,0,0.48) !important; }
-        [data-theme="light"] .feat-card     { background: #ffffff !important; border-color: rgba(0,0,0,0.00) !important; box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.05) !important; }
-        [data-theme="light"] .feat-card:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 10px 28px rgba(0,0,0,0.09), 0 0 0 1px rgba(0,0,0,0.05) !important; }
-        [data-theme="light"] .feat-icon-bg  { background: #eeffd4 !important; }
-        [data-theme="light"] .feat-icon     { color: #4a7c00 !important; }
-        [data-theme="light"] .feat-title    { color: #0a0a0a !important; }
-        [data-theme="light"] .feat-desc     { color: rgba(0,0,0,0.50) !important; }
-        [data-theme="light"] .soon-badge    { background: rgba(0,0,0,0.06) !important; color: rgba(0,0,0,0.42) !important; }
-
-        /* CTA — force dark even in light mode (no inline style = no global override risk) */
-        [data-theme="light"] .lp-cta-wrap  { background: #f0f0f5 !important; }
-        [data-theme="light"] .cta-card     { background: linear-gradient(145deg,#1c1c1c 0%,#111111 100%) !important; border-color: rgba(255,255,255,0.10) !important; }
-        [data-theme="light"] .cta-title    { color: #ffffff !important; }
-        [data-theme="light"] .cta-sub      { color: rgba(255,255,255,0.55) !important; }
-
-        /* Hero visual — keep dark interior readable in light mode */
-        /* The hero-visual bg stays dark (it's a class-based gradient, not inline) */
-        [data-theme="light"] .hero-visual  { box-shadow: 0 32px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.14) !important; }
-        /* Protect text-white inside the dark visual */
-        [data-theme="light"] .hero-visual .text-white { color: #ffffff !important; }
-        /* Prevent global CSS from turning the inner mockup card white */
-        [data-theme="light"] .hero-visual [style*="background:#1e1e1e"] { background: #1e1e1e !important; }
-        [data-theme="light"] .hero-visual [style*="background:rgba(255,255,255"] { background: rgba(255,255,255,0.05) !important; }
-        /* Protect inline text colors inside the dark visual */
-        [data-theme="light"] .hero-visual [style*="color:rgba(255,255,255"] { color: inherit !important; }
-        /* pb-card: solid dark bg so it always reads well */
-        [data-theme="light"] .pb-card      { background: rgba(10,10,10,0.75) !important; border-color: rgba(255,255,255,0.14) !important; }
-
-        /* Footer — light mode */
-        [data-theme="light"] .lp-footer    { background: #ffffff !important; border-top-color: rgba(0,0,0,0.08) !important; }
-        [data-theme="light"] .footer-link  { color: rgba(0,0,0,0.55) !important; }
+        [data-theme="light"] h1, [data-theme="light"] h2, [data-theme="light"] h3 { color: #0a0a0a !important; }
+        [data-theme="light"] .bento-card { background: #fff !important; border-color: rgba(0,0,0,0.07) !important; box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05); }
+        [data-theme="light"] .bento-label { color: #4a7c00 !important; }
+        [data-theme="light"] .feat-card { background: #fff !important; border-color: rgba(0,0,0,0.00) !important; box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05); }
+        [data-theme="light"] .feat-icon-bg { background: #eeffd4 !important; }
+        [data-theme="light"] .feat-icon { color: #4a7c00 !important; }
+        [data-theme="light"] .soon-badge { background: rgba(0,0,0,0.06) !important; color: rgba(0,0,0,0.40) !important; }
+        [data-theme="light"] .cta-card { background: linear-gradient(145deg,#1a1a1a 0%,#111 100%) !important; border-color: rgba(255,255,255,0.10) !important; }
+        [data-theme="light"] .lp-footer { background: #fff !important; border-top-color: rgba(0,0,0,0.08) !important; }
+        [data-theme="light"] .footer-link { color: rgba(0,0,0,0.50) !important; }
         [data-theme="light"] .footer-link:hover { color: rgba(0,0,0,0.85) !important; }
-        [data-theme="light"] .footer-copy  { color: rgba(0,0,0,0.42) !important; }
-        [data-theme="light"] .lp-lang-active   { color: #4a7c00 !important; }
-        [data-theme="light"] .lp-lang-inactive { color: rgba(0,0,0,0.30) !important; }
-        [data-theme="light"] .lp-lang-inactive:hover { color: rgba(0,0,0,0.65) !important; }
-        [data-theme="light"] .lp-lang-dot  { color: rgba(0,0,0,0.15) !important; }
-        [data-theme="light"] .lp-theme-btn { color: rgba(0,0,0,0.44) !important; }
+        [data-theme="light"] .footer-copy { color: rgba(0,0,0,0.38) !important; }
+        [data-theme="light"] .lp-lang-active { color: #4a7c00 !important; }
+        [data-theme="light"] .lp-lang-inactive { color: rgba(0,0,0,0.28) !important; }
+        [data-theme="light"] .lp-lang-inactive:hover { color: rgba(0,0,0,0.60) !important; }
+        [data-theme="light"] .lp-lang-dot { color: rgba(0,0,0,0.14) !important; }
+        [data-theme="light"] .lp-theme-btn { color: rgba(0,0,0,0.42) !important; }
         [data-theme="light"] .lp-theme-btn:hover { background: rgba(0,0,0,0.06) !important; }
-        [data-theme="light"] .nav-signin   { color: rgba(0,0,0,0.52) !important; }
+        [data-theme="light"] .nav-signin { color: rgba(0,0,0,0.50) !important; }
         [data-theme="light"] .nav-signin:hover { color: #0a0a0a !important; }
     </style>
 </head>
-<body class="lp-body font-sans antialiased">
+<body class="font-sans antialiased">
 
     {{-- ── NAVIGATION ──────────────────────────────────────── --}}
-    <header class="lp-nav fixed top-0 inset-x-0 z-50 backdrop-blur-md">
-        <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-6">
+    <header class="lp-nav fixed top-0 inset-x-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
 
-            {{-- Logo --}}
-            <a href="/" class="flex items-center gap-2 flex-shrink-0">
-                <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center" style="box-shadow:0 4px 12px rgba(200,250,95,0.35)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <span class="text-white text-[15px] font-bold tracking-tight">My<span class="text-primary">Races</span></span>
-            </a>
+            <a href="/" class="lp-logo">MyRaces.</a>
 
-            {{-- Nav links (desktop) --}}
-            <nav class="hidden md:flex items-center gap-6 flex-1">
+            <nav class="hidden md:flex items-center gap-8 flex-1">
                 <a href="#features" class="lp-nav-link">{{ __('landing.nav_features') }}</a>
-                <a href="#pricing"  class="lp-nav-link">{{ __('landing.nav_pricing') }}</a>
+                <a href="#catalog"  class="lp-nav-link">{{ __('landing.nav_pricing') }}</a>
                 <a href="#about"    class="lp-nav-link">{{ __('landing.nav_about') }}</a>
             </nav>
 
-            {{-- Controls --}}
-            <div class="flex items-center gap-2.5">
-                {{-- Language --}}
+            <div class="flex items-center gap-3">
                 <div class="hidden sm:flex items-center gap-1.5">
                     <a href="{{ route('language.switch', 'es') }}"
                        class="text-xs font-bold transition-colors {{ app()->getLocale() === 'es' ? 'lp-lang-active' : 'lp-lang-inactive' }}">ES</a>
@@ -188,7 +116,6 @@
                        class="text-xs font-bold transition-colors {{ app()->getLocale() === 'en' ? 'lp-lang-active' : 'lp-lang-inactive' }}">EN</a>
                 </div>
 
-                {{-- Theme toggle --}}
                 <button onclick="toggleLpTheme()" aria-label="Toggle theme"
                         class="lp-theme-btn w-8 h-8 flex items-center justify-center rounded-lg transition-colors">
                     <svg id="lp-sun" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -200,14 +127,15 @@
                 </button>
 
                 @auth
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary text-sm px-4 py-2">
+                    <a href="{{ route('events.index') }}" class="btn btn-primary text-sm px-4 py-2">
                         {{ __('landing.go_to_dashboard') }}
                     </a>
                 @else
-                    <a href="{{ route('login') }}" class="nav-signin hidden sm:block text-sm font-medium text-white/55 hover:text-white transition">
+                    <a href="{{ route('login') }}" class="nav-signin hidden sm:block text-sm font-medium transition">
                         {{ __('landing.sign_in') }}
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-primary text-sm px-4 py-2">
+                    <a href="{{ route('register') }}" class="btn btn-primary text-sm px-5 py-2"
+                       style="box-shadow: 0 0 20px rgba(200,250,95,0.2)">
                         {{ __('landing.register_free') }}
                     </a>
                 @endauth
@@ -216,225 +144,214 @@
     </header>
 
     {{-- ── HERO ─────────────────────────────────────────────── --}}
-    <section class="lp-hero pt-16 min-h-screen flex items-center">
-        <div class="max-w-6xl mx-auto px-5 py-20 md:py-28 w-full">
-            <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section class="lp-hero pt-16 min-h-screen flex items-center relative">
 
-                {{-- Left: Copy --}}
+        {{-- Background glow right --}}
+        <div class="absolute top-0 right-0 -z-0 w-1/2 h-full pointer-events-none">
+            <div class="absolute inset-0" style="background: linear-gradient(to left, rgba(200,250,95,0.04) 0%, transparent 60%)"></div>
+        </div>
+        {{-- Abstract lines --}}
+        <svg class="absolute right-0 top-0 h-full w-1/2 opacity-20 pointer-events-none" viewBox="0 0 600 800" preserveAspectRatio="none">
+            <line x1="0" y1="600" x2="600" y2="100" stroke="#C8FA5F" stroke-width="1.5" opacity="0.5"/>
+            <line x1="0" y1="650" x2="600" y2="150" stroke="#C8FA5F" stroke-width="0.8" opacity="0.35"/>
+            <line x1="0" y1="700" x2="600" y2="200" stroke="#C8FA5F" stroke-width="0.4" opacity="0.20"/>
+            <circle cx="500" cy="100" r="200" fill="#C8FA5F" opacity="0.04"/>
+        </svg>
+
+        <div class="max-w-7xl mx-auto px-6 py-24 md:py-32 w-full relative z-10">
+            <div class="max-w-2xl">
+
+                <h1 class="text-white font-black italic tracking-tighter leading-[0.88] uppercase mb-8"
+                    style="font-size: clamp(3rem, 8vw, 5.5rem)">
+                    {{ __('landing.hero_title_1') }}<br>
+                    {{ __('landing.hero_title_2') }}<br>
+                    <span class="hero-hl">{{ __('landing.hero_title_highlight') }}</span>
+                </h1>
+
+                <p class="hero-sub text-lg md:text-xl leading-relaxed mb-10 max-w-md">
+                    {{ __('landing.hero_subtitle') }}
+                </p>
+
+                <div class="flex flex-wrap gap-4">
+                    <a href="{{ route('register') }}"
+                       class="inline-flex items-center gap-2 font-black italic text-black uppercase tracking-tighter px-8 py-4 rounded-full transition-all active:scale-[0.97]"
+                       style="background:#C8FA5F; box-shadow:0 0 32px rgba(200,250,95,0.25); font-size:1.05rem">
+                        {{ __('landing.cta_start') }}
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </a>
+                    <a href="{{ route('events.index') }}"
+                       class="hero-ghost inline-flex items-center justify-center gap-2 font-bold text-base px-8 py-4 rounded-full transition">
+                        {{ __('landing.cta_login') }}
+                    </a>
+                </div>
+
+                <p class="mt-6 text-sm" style="color:rgba(255,255,255,0.25)">{{ __('landing.no_credit_card') }}</p>
+            </div>
+        </div>
+    </section>
+
+    {{-- ── BENTO GRID ───────────────────────────────────────── --}}
+    <section class="py-12 max-w-7xl mx-auto px-6" id="catalog">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+
+            {{-- Main card --}}
+            <div class="md:col-span-8 bento-card p-8 relative overflow-hidden">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <span class="bento-label block mb-2">{{ __('landing.bento_catalog') }}</span>
+                        <h2 class="text-white font-black italic text-2xl tracking-tighter uppercase">
+                            {{ $featuredEvent?->name ?? __('landing.bento_main_title') }}
+                        </h2>
+                    </div>
+                    @if($featuredEvent)
+                        <span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-md"
+                              style="background:#1e1e1e; color:rgba(255,255,255,0.45)">
+                            {{ $featuredEvent->category ?? 'Carretera' }}
+                        </span>
+                    @endif
+                </div>
+
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:rgba(255,255,255,0.35)">{{ __('landing.bento_events') }}</p>
+                        <p class="text-white font-black italic text-4xl">{{ $totalEvents > 0 ? $totalEvents : '100+' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:rgba(255,255,255,0.35)">{{ __('landing.bento_distances') }}</p>
+                        <p class="text-white font-black italic text-4xl">5K<span class="text-xl">→</span>100K</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:rgba(255,255,255,0.35)">{{ __('landing.bento_cost') }}</p>
+                        <p class="font-black italic text-4xl" style="color:#C8FA5F">100%</p>
+                    </div>
+                </div>
+
+                {{-- Progress bar accent --}}
+                <div class="h-1 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.06)">
+                    <div class="h-full rounded-full" style="width:72%; background: linear-gradient(90deg,#C8FA5F,#a8e840)"></div>
+                </div>
+                <p class="text-[10px] font-medium mt-2" style="color:rgba(255,255,255,0.20)">{{ __('landing.bento_bar_label') }}</p>
+
+                {{-- bg glow --}}
+                <div class="absolute -bottom-10 -right-10 w-48 h-48 rounded-full pointer-events-none"
+                     style="background:radial-gradient(circle,rgba(200,250,95,0.06) 0%,transparent 70%)"></div>
+            </div>
+
+            {{-- Side card --}}
+            <div class="md:col-span-4 bento-card p-8 flex flex-col justify-between">
                 <div>
-                    <div class="hero-badge inline-flex items-center gap-2 text-sm font-semibold px-3 py-1.5 rounded-full mb-6">
-                        <span class="w-1.5 h-1.5 rounded-full bg-current opacity-80"></span>
-                        {{ __('landing.badge') }}
-                    </div>
-
-                    <h1 class="hero-h1 text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight mb-6">
-                        {{ __('landing.hero_title_1') }}
-                        <span class="hero-hl"> {{ __('landing.hero_title_highlight') }}</span>
-                        {{ __('landing.hero_title_2') }}
-                    </h1>
-
-                    <p class="hero-sub text-lg leading-relaxed mb-10 max-w-lg">
-                        {{ __('landing.hero_subtitle') }}
-                    </p>
-
-                    <div class="flex flex-wrap gap-3">
-                        <a href="{{ route('register') }}" class="btn btn-primary text-base px-7 py-3.5 shadow-fab">
-                            {{ __('landing.cta_start') }}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </a>
-                        <a href="{{ route('login') }}" class="hero-ghost inline-flex items-center justify-center gap-2 font-semibold text-base px-7 py-3.5 rounded-full transition">
-                            {{ __('landing.cta_login') }}
-                        </a>
-                    </div>
-
-                    <p class="hero-note text-sm mt-5">{{ __('landing.no_credit_card') }}</p>
-                </div>
-
-                {{-- Right: Product visual --}}
-                <div class="hero-visual rounded-3xl overflow-hidden relative" style="min-height:420px">
-
-                    {{-- Subtle lime glow --}}
-                    <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl pointer-events-none" style="background:rgba(200,250,95,0.06)"></div>
-
-                    {{-- App mockup card --}}
-                    <div class="absolute inset-0 flex items-center justify-center p-8">
-                        <div class="w-full max-w-xs rounded-2xl p-5" style="background:#1e1e1e;border:1px solid rgba(255,255,255,0.08)">
-                            {{-- Race header --}}
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="badge badge-completed">{{ __('landing.mockup_status') }}</span>
-                                <span class="text-[11px] font-medium" style="color:rgba(255,255,255,0.30)">42.195 km</span>
-                            </div>
-                            <p class="text-white font-black text-xl mb-4 tracking-tight">{{ __('landing.mockup_race') }}</p>
-
-                            {{-- Stats row --}}
-                            <div class="grid grid-cols-3 gap-3 mb-5">
-                                <div class="rounded-xl px-3 py-2.5 text-center" style="background:rgba(255,255,255,0.05)">
-                                    <p class="text-[10px] font-semibold mb-1" style="color:rgba(255,255,255,0.35)">{{ __('landing.mockup_time') }}</p>
-                                    <p class="text-white font-black text-lg tabnum leading-none">3:42</p>
-                                </div>
-                                <div class="rounded-xl px-3 py-2.5 text-center" style="background:rgba(255,255,255,0.05)">
-                                    <p class="text-[10px] font-semibold mb-1" style="color:rgba(255,255,255,0.35)">{{ __('landing.mockup_distance') }}</p>
-                                    <p class="text-white font-black text-lg tabnum leading-none">42K</p>
-                                </div>
-                                <div class="rounded-xl px-3 py-2.5 text-center" style="background:rgba(255,255,255,0.05)">
-                                    <p class="text-[10px] font-semibold mb-1" style="color:rgba(255,255,255,0.35)">{{ __('landing.mockup_position') }}</p>
-                                    <p class="text-white font-black text-lg tabnum leading-none">#347</p>
-                                </div>
-                            </div>
-
-                            {{-- Mini bar chart --}}
-                            <div class="flex items-end gap-1 h-14 mb-1">
-                                @foreach([28,42,55,35,68,82,100,75,60,88] as $h)
-                                    <div class="flex-1 rounded-sm transition-all"
-                                         style="height:{{ $h }}%;background:rgba(200,250,95,{{ 0.15 + ($h/100)*0.65 }})"></div>
-                                @endforeach
-                            </div>
-                            <p class="text-[10px] font-medium text-center" style="color:rgba(255,255,255,0.20)">Ritmo por km</p>
-                        </div>
-                    </div>
-
-                    {{-- Floating PB card --}}
-                    <div class="pb-card absolute bottom-6 right-6 rounded-2xl px-4 py-3 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(74,222,128,0.15)">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" style="color:#4ade80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(200,250,95,0.12)">
+                            <svg class="w-4 h-4" style="color:#C8FA5F" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                             </svg>
                         </div>
-                        <div>
-                            <p class="text-[10px] font-bold tracking-widest uppercase" style="color:rgba(255,255,255,0.35)">{{ __('landing.pb_label') }}</p>
-                            <p class="text-white font-black text-2xl tabnum leading-none">38:42</p>
-                        </div>
+                        <span class="bento-label">{{ __('landing.bento_records') }}</span>
                     </div>
+                    <h3 class="text-white font-black italic text-4xl tracking-tighter uppercase mb-1">{{ __('landing.bento_pb') }}</h3>
+                    <p class="font-black italic" style="font-size:3.5rem; color:#C8FA5F; line-height:1">∞</p>
                 </div>
-
+                <p class="text-sm leading-relaxed mt-4" style="color:rgba(255,255,255,0.38)">{{ __('landing.bento_records_desc') }}</p>
             </div>
-        </div>
-    </section>
 
-    {{-- ── STATS CARDS ─────────────────────────────────────── --}}
-    <section class="lp-stats py-10" id="pricing">
-        <div class="max-w-6xl mx-auto px-5">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                {{-- Distances --}}
-                <div class="stat-card rounded-2xl px-7 py-6 transition-all">
-                    <p class="stat-label text-xs font-bold uppercase tracking-widest mb-3">{{ __('landing.stat_label_distances') }}</p>
-                    <p class="stat-number text-4xl font-black tabnum mb-2">5K → 42K</p>
-                    <div class="flex items-center gap-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" style="color:#C8FA5F" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            {{-- Bottom 3 small cards --}}
+            @foreach([
+                ['icon' => 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6', 'label' => 'landing.bento_road', 'value' => 'Asfalto'],
+                ['icon' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', 'label' => 'landing.bento_trail', 'value' => 'Trail'],
+                ['icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z', 'label' => 'landing.bento_community', 'value' => 'Comunidad'],
+            ] as $card)
+                <div class="md:col-span-4 bento-card p-6 flex items-center gap-5">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                         style="background:rgba(200,250,95,0.08)">
+                        <svg class="w-5 h-5" style="color:#C8FA5F" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $card['icon'] }}"/>
                         </svg>
-                        <p class="stat-desc text-sm font-medium">{{ __('landing.stat_distances') }}</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:rgba(255,255,255,0.35)">{{ __($card['label']) }}</p>
+                        <p class="text-white font-bold text-lg">{{ $card['value'] }}</p>
                     </div>
                 </div>
+            @endforeach
+        </div>
+    </section>
 
-                {{-- Cost --}}
-                <div class="stat-card rounded-2xl px-7 py-6 transition-all">
-                    <p class="stat-label text-xs font-bold uppercase tracking-widest mb-3">{{ __('landing.stat_label_cost') }}</p>
-                    <p class="stat-number text-4xl font-black tabnum mb-2">100% Free</p>
-                    <div class="flex items-center gap-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" style="color:#4ade80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    {{-- ── FEATURES ──────────────────────────────────────────── --}}
+    <section class="py-24 max-w-7xl mx-auto px-6" id="features">
+        <div class="text-center mb-14">
+            <h2 class="text-white font-black italic text-4xl md:text-5xl tracking-tighter uppercase mb-4">
+                {{ __('landing.features_title') }}
+            </h2>
+            <div class="h-1 w-20 mx-auto rounded-full" style="background:#C8FA5F; opacity:.8"></div>
+            <p class="mt-5 text-lg max-w-lg mx-auto" style="color:rgba(255,255,255,0.42)">{{ __('landing.features_subtitle') }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            @foreach ([
+                ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'title' => 'feat_calendar_title', 'desc' => 'feat_calendar_desc', 'soon' => false],
+                ['icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'title' => 'feat_records_title', 'desc' => 'feat_records_desc', 'soon' => false],
+                ['icon' => 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'title' => 'feat_expenses_title', 'desc' => 'feat_expenses_desc', 'soon' => false],
+                ['icon' => 'M13 10V3L4 14h7v7l9-11h-7z', 'title' => 'feat_trail_title', 'desc' => 'feat_trail_desc', 'soon' => false],
+                ['icon' => 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z', 'title' => 'feat_mobile_title', 'desc' => 'feat_mobile_desc', 'soon' => false],
+                ['icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z', 'title' => 'feat_social_title', 'desc' => 'feat_social_desc', 'soon' => true],
+            ] as $feat)
+                <div class="feat-card rounded-2xl p-7 relative">
+                    @if($feat['soon'])
+                        <span class="soon-badge absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                            {{ __('landing.soon') }}
+                        </span>
+                    @endif
+                    <div class="feat-icon-bg w-11 h-11 rounded-xl flex items-center justify-center mb-5">
+                        <svg class="feat-icon w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $feat['icon'] }}"/>
                         </svg>
-                        <p class="stat-desc text-sm font-medium">{{ __('landing.stat_free') }}</p>
                     </div>
+                    <h3 class="text-white font-bold text-lg mb-2">{{ __('landing.' . $feat['title']) }}</h3>
+                    <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.42)">{{ __('landing.' . $feat['desc']) }}</p>
                 </div>
-
-                {{-- Records --}}
-                <div class="stat-card rounded-2xl px-7 py-6 transition-all">
-                    <p class="stat-label text-xs font-bold uppercase tracking-widest mb-3">{{ __('landing.stat_label_records') }}</p>
-                    <p class="stat-number text-4xl font-black tabnum mb-2">∞</p>
-                    <div class="flex items-center gap-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" style="color:#4ade80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                        <p class="stat-desc text-sm font-medium">{{ __('landing.stat_races') }}</p>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
-    {{-- ── FEATURES ─────────────────────────────────────────── --}}
-    <section class="lp-features py-24" id="features">
-        <div class="max-w-6xl mx-auto px-5">
-            {{-- Left-aligned heading --}}
-            <div class="mb-12">
-                <h2 class="features-h2 text-3xl md:text-4xl font-black tracking-tight mb-3">{{ __('landing.features_title') }}</h2>
-                <p class="features-sub text-lg max-w-lg">{{ __('landing.features_subtitle') }}</p>
+    {{-- ── CTA CARD ──────────────────────────────────────────── --}}
+    <section class="py-16 px-6 max-w-7xl mx-auto" id="about">
+        <div class="cta-card rounded-3xl py-20 px-8 text-center">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                 style="background:#C8FA5F; box-shadow:0 8px 32px rgba(200,250,95,0.30)">
+                <svg class="w-8 h-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                @foreach ([
-                    ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'title' => 'feat_calendar_title', 'desc' => 'feat_calendar_desc', 'soon' => false],
-                    ['icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'title' => 'feat_records_title', 'desc' => 'feat_records_desc', 'soon' => false],
-                    ['icon' => 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'title' => 'feat_expenses_title', 'desc' => 'feat_expenses_desc', 'soon' => false],
-                    ['icon' => 'M13 10V3L4 14h7v7l9-11h-7z', 'title' => 'feat_trail_title', 'desc' => 'feat_trail_desc', 'soon' => false],
-                    ['icon' => 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z', 'title' => 'feat_mobile_title', 'desc' => 'feat_mobile_desc', 'soon' => false],
-                    ['icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z', 'title' => 'feat_social_title', 'desc' => 'feat_social_desc', 'soon' => true],
-                ] as $feat)
-                    <div class="feat-card rounded-2xl p-7 transition-all duration-200 relative">
-                        @if($feat['soon'])
-                            <span class="soon-badge absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
-                                {{ __('landing.soon') }}
-                            </span>
-                        @endif
-                        <div class="feat-icon-bg w-11 h-11 rounded-xl flex items-center justify-center mb-5">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="feat-icon w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $feat['icon'] }}"/>
-                            </svg>
-                        </div>
-                        <h3 class="feat-title font-bold text-lg mb-2">{{ __('landing.' . $feat['title']) }}</h3>
-                        <p class="feat-desc text-sm leading-relaxed">{{ __('landing.' . $feat['desc']) }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    {{-- ── CTA CARD ─────────────────────────────────────────── --}}
-    <section class="lp-cta-wrap py-16 px-5" id="about">
-        <div class="max-w-6xl mx-auto">
-            <div class="cta-card rounded-3xl py-20 px-8 text-center">
-                <div class="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6"
-                     style="box-shadow:0 8px 28px rgba(200,250,95,0.30)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <h2 class="cta-title text-3xl md:text-4xl font-black tracking-tight mb-4">{{ __('landing.cta_title') }}</h2>
-                <p class="cta-sub text-lg mb-8 max-w-md mx-auto">{{ __('landing.cta_subtitle') }}</p>
-                <a href="{{ route('register') }}" class="btn btn-primary text-base px-9 py-4 shadow-fab">
-                    {{ __('landing.cta_btn') }}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    {{-- ── FOOTER ───────────────────────────────────────────── --}}
-    <footer class="lp-footer py-7">
-        <div class="max-w-6xl mx-auto px-5 flex flex-col md:flex-row items-center justify-between gap-5">
-            {{-- Logo --}}
-            <a href="/" class="flex items-center gap-2">
-                <div class="w-6 h-6 bg-primary rounded-md flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <span class="footer-link font-semibold">MyRaces</span>
+            <h2 class="text-white font-black italic text-3xl md:text-4xl tracking-tighter uppercase mb-4">
+                {{ __('landing.cta_title') }}
+            </h2>
+            <p class="text-lg mb-8 max-w-md mx-auto" style="color:rgba(255,255,255,0.45)">{{ __('landing.cta_subtitle') }}</p>
+            <a href="{{ route('register') }}"
+               class="inline-flex items-center gap-2 font-black italic text-black uppercase tracking-tighter px-9 py-4 rounded-full transition-all active:scale-[0.97]"
+               style="background:#C8FA5F; box-shadow:0 8px 32px rgba(200,250,95,0.25); font-size:1.05rem">
+                {{ __('landing.cta_btn') }}
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
             </a>
+        </div>
+    </section>
 
-            {{-- Footer links --}}
-            <nav class="flex items-center gap-6">
-                <a href="#" class="footer-link">{{ __('landing.footer_terms') }}</a>
-                <a href="#" class="footer-link">{{ __('landing.footer_privacy') }}</a>
-                <a href="#" class="footer-link">{{ __('landing.footer_contact') }}</a>
-                {{-- Mobile lang switcher --}}
-                <div class="flex sm:hidden items-center gap-1.5 ml-2">
+    {{-- ── FOOTER ────────────────────────────────────────────── --}}
+    <footer class="lp-footer py-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <span class="lp-logo text-xl">MyRaces.</span>
+                <p class="footer-copy mt-1">{{ str_replace(':year', now()->year, __('landing.footer_copy')) }}</p>
+            </div>
+
+            <nav class="flex items-center gap-7">
+                <a href="#" class="footer-link text-sm">{{ __('landing.footer_terms') }}</a>
+                <a href="#" class="footer-link text-sm">{{ __('landing.footer_privacy') }}</a>
+                <a href="#" class="footer-link text-sm">{{ __('landing.footer_contact') }}</a>
+                <div class="flex sm:hidden items-center gap-1.5">
                     <a href="{{ route('language.switch', 'es') }}"
                        class="text-xs font-bold transition-colors {{ app()->getLocale() === 'es' ? 'lp-lang-active' : 'lp-lang-inactive' }}">ES</a>
                     <span class="lp-lang-dot text-[10px]">·</span>
@@ -443,8 +360,24 @@
                 </div>
             </nav>
 
-            {{-- Copyright --}}
-            <p class="footer-copy">{{ str_replace(':year', now()->year, __('landing.footer_copy')) }}</p>
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer"
+                     style="background:rgba(255,255,255,0.07)"
+                     onmouseenter="this.style.background='#C8FA5F';this.style.color='#253600'"
+                     onmouseleave="this.style.background='rgba(255,255,255,0.07)';this.style.color=''">
+                    <svg class="w-3.5 h-3.5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                    </svg>
+                </div>
+                <div class="w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer"
+                     style="background:rgba(255,255,255,0.07)"
+                     onmouseenter="this.style.background='#C8FA5F';this.style.color='#253600'"
+                     onmouseleave="this.style.background='rgba(255,255,255,0.07)';this.style.color=''">
+                    <svg class="w-3.5 h-3.5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+            </div>
         </div>
     </footer>
 

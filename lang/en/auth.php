@@ -2,6 +2,7 @@
 
 return [
     // Login
+    'express_entry' => 'Quick access',
     'welcome_back' => 'Welcome back',
     'sign_in_subtitle' => 'Sign in to your account',
     'continue_google' => 'Continue with Google',

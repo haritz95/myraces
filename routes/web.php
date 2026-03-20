@@ -27,7 +27,14 @@ use App\Http\Controllers\StravaImportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $featuredEvent = \App\Models\RaceEvent::upcoming()
+        ->whereNotNull('event_date')
+        ->orderBy('event_date')
+        ->first(['name', 'event_date', 'location', 'category', 'image', 'image_url']);
+
+    $totalEvents = \App\Models\RaceEvent::upcoming()->count();
+
+    return view('welcome', compact('featuredEvent', 'totalEvents'));
 })->name('home');
 
 Route::get('/offline', OfflineController::class)->name('offline');
