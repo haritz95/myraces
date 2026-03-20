@@ -33,13 +33,14 @@
     }
     #fb-widget {
         position: fixed;
-        bottom: 5rem; /* above bottom nav */
+        /* Mobile: sit above the bottom nav (72px) + safe area + gap */
+        bottom: calc(72px + env(safe-area-inset-bottom) + 1rem);
         right: 1.25rem;
         z-index: 9999;
     }
-    /* Desktop: button lower */
-    @media (min-width: 480px) {
-        #fb-widget { bottom: 1.25rem; }
+    /* Desktop: no bottom nav, so move it down */
+    @media (min-width: 768px) {
+        #fb-widget { bottom: 1.5rem; }
     }
     /* Prevent iOS zoom — all inputs must be ≥16px */
     #fb-form textarea,
