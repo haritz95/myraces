@@ -6,9 +6,10 @@
     <meta name="robots" content="noindex">
     <title>Mantenimiento — MyRaces</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=public-sans:700,900i&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.bunny.net/css?family=public-sans:400,700,900i&display=swap" rel="stylesheet"/>
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{--color-primary:{{ \App\Models\Setting::primaryColorChannels() }}}
         body{background:#0a0a0a;color:#e5e2e1;font-family:'Public Sans',sans-serif;min-height:100dvh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem}
         .icon{width:64px;height:64px;background:rgb(var(--color-primary));border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 8px 32px rgb(var(--color-primary) / 0.25)}
         h1{font-style:italic;font-weight:900;font-size:clamp(2rem,6vw,3.5rem);letter-spacing:-.03em;text-transform:uppercase;line-height:.9;color:#fff;margin-bottom:1rem}
