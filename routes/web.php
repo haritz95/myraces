@@ -24,15 +24,16 @@ use App\Http\Controllers\RaceEventController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\StravaImportController;
+use App\Models\RaceEvent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $featuredEvent = \App\Models\RaceEvent::upcoming()
+    $featuredEvent = RaceEvent::upcoming()
         ->whereNotNull('event_date')
         ->orderBy('event_date')
         ->first(['name', 'event_date', 'location', 'category', 'image', 'image_url']);
 
-    $totalEvents = \App\Models\RaceEvent::upcoming()->count();
+    $totalEvents = RaceEvent::upcoming()->count();
 
     return view('welcome', compact('featuredEvent', 'totalEvents'));
 })->name('home');
@@ -82,6 +83,9 @@ Route::middleware(['auth', 'verified', 'nav.access'])->group(function () {
     Route::get('/events/my-submissions', [EventSubmissionController::class, 'mySubmissions'])->name('events.my-submissions');
     Route::get('/events/{raceEvent:slug}', [RaceEventController::class, 'show'])->name('events.show');
     Route::post('/events/{raceEvent}/attend', [RaceEventController::class, 'toggleAttend'])->name('events.attend');
+    Route::post('/events/{raceEvent}/add-to-races', [RaceEventController::class, 'addToRaces'])->name('events.add-to-races');
+    Route::post('/events/{raceEvent}/skip-add-to-races', [RaceEventController::class, 'skipAddToRaces'])->name('events.skip-add-to-races');
+    Route::delete('/events/{raceEvent}/remove-from-races', [RaceEventController::class, 'removeFromRaces'])->name('events.remove-from-races');
     Route::get('/events/{event}/edit-submission', [EventSubmissionController::class, 'edit'])->name('events.submission.edit');
     Route::patch('/events/{event}/edit-submission', [EventSubmissionController::class, 'update'])->name('events.submission.update');
 

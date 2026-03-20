@@ -29,6 +29,7 @@ class UpdateUserProfileRequest extends FormRequest
             'height_cm' => ['nullable', 'integer', 'min:100', 'max:250'],
             'weight_kg' => ['nullable', 'numeric', 'min:30', 'max:300'],
             'is_public' => ['boolean'],
+            'attend_add_race' => ['nullable', 'in:ask,always,never'],
         ];
     }
 

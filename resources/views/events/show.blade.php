@@ -39,38 +39,193 @@
             @endif
         </div>
 
-        {{-- Attend CTA --}}
-        @if(!$raceEvent->isPast() && $raceEvent->status !== 'cancelled')
-        <div x-data="{ attending: {{ $isAttending ? 'true' : 'false' }}, count: {{ $raceEvent->attendees_count }}, loading: false }"
-             class="rounded-2xl px-5 py-4 flex items-center justify-between gap-4"
-             style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
-            <div>
-                <p class="text-sm font-black text-white" x-text="attending ? '¡Vas a esta carrera!' : '¿Te apuntas?'"></p>
-                <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.40)">
-                    <span x-text="count"></span> personas apuntadas
-                </p>
+        {{-- Attend CTA + modal --}}
+        @if($raceEvent->status !== 'cancelled')
+        <div x-data="{
+                attending: {{ $isAttending ? 'true' : 'false' }},
+                count: {{ $raceEvent->attendees_count }},
+                loading: false,
+                modal: false,
+                unattendModal: false,
+                remember: false,
+                raceAdded: false,
+                eventName: '',
+                eventDate: '',
+                eventStatus: '',
+                csrf: document.querySelector('meta[name=csrf-token]').content,
+                toggle() {
+                    if (this.loading) return;
+                    this.loading = true;
+                    fetch('{{ route('events.attend', $raceEvent) }}', {
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN': this.csrf, 'Accept': 'application/json' }
+                    }).then(r => r.json()).then(d => {
+                        this.attending = d.attending;
+                        this.count = d.count;
+                        this.loading = false;
+                        if (navigator.vibrate) navigator.vibrate(30);
+                        if (d.attending) {
+                            if (d.race_added) { this.raceAdded = true; }
+                            else if (d.show_modal) {
+                                this.eventName = d.event.name;
+                                this.eventDate = d.event.date || '';
+                                this.eventStatus = d.event.status;
+                                this.modal = true;
+                            }
+                        } else {
+                            if (d.show_unattend_modal) { this.unattendModal = true; }
+                        }
+                    }).catch(() => { this.loading = false; });
+                },
+                addToRaces() {
+                    fetch('{{ route('events.add-to-races', $raceEvent) }}', {
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN': this.csrf, 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ remember: this.remember })
+                    }).then(r => r.json()).then(() => {
+                        this.modal = false;
+                        this.raceAdded = true;
+                    });
+                },
+                skip() {
+                    fetch('{{ route('events.skip-add-to-races', $raceEvent) }}', {
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN': this.csrf, 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ remember: this.remember })
+                    }).then(() => { this.modal = false; });
+                },
+                removeFromRaces() {
+                    fetch('{{ route('events.remove-from-races', $raceEvent) }}', {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': this.csrf, 'Accept': 'application/json' }
+                    }).then(() => {
+                        this.unattendModal = false;
+                        this.raceAdded = false;
+                    });
+                }
+             }">
+
+            {{-- Attend button row --}}
+            <div class="rounded-2xl px-5 py-4 flex items-center justify-between gap-4"
+                 style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+                <div>
+                    <p class="text-sm font-black text-white" x-text="attending ? '¡Vas a esta carrera!' : '¿Te apuntas?'"></p>
+                    <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.40)">
+                        <span x-text="count"></span> personas apuntadas
+                    </p>
+                </div>
+                <button @click="toggle()" :disabled="loading"
+                        class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-sm transition-all"
+                        :style="attending ? 'background:rgba(248,113,113,0.12);color:#f87171' : 'background:#C8FA5F;color:#000'">
+                    <span x-show="!loading" x-text="attending ? 'Me voy' : 'Me apunto'"></span>
+                    <span x-show="loading" class="opacity-50">...</span>
+                </button>
             </div>
-            <button @click="
-                if (loading) return;
-                loading = true;
-                fetch('{{ route('events.attend', $raceEvent) }}', {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content, 'Accept': 'application/json' }
-                }).then(r => r.json()).then(d => {
-                    attending = d.attending;
-                    count = d.count;
-                    loading = false;
-                    if (navigator.vibrate) navigator.vibrate(30);
-                }).catch(() => loading = false)
-            "
-            :disabled="loading"
-            class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-sm transition-all"
-            :style="attending
-                ? 'background:rgba(248,113,113,0.12);color:#f87171'
-                : 'background:#C8FA5F;color:#000'">
-                <span x-show="!loading" x-text="attending ? 'Me voy' : 'Me apunto'"></span>
-                <span x-show="loading" class="opacity-50">...</span>
-            </button>
+
+            {{-- Race added confirmation --}}
+            <div x-show="raceAdded" x-transition
+                 class="mt-2 rounded-xl px-4 py-2.5 flex items-center gap-2 text-xs font-semibold"
+                 style="background:rgba(74,222,128,0.10);color:#4ade80">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Carrera añadida a tu historial
+            </div>
+
+            {{-- Modal backdrop --}}
+            <div x-show="modal" x-transition.opacity
+                 class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+                 style="background:rgba(0,0,0,0.75)" x-cloak>
+
+                {{-- Modal panel --}}
+                <div x-show="modal" x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="w-full max-w-sm rounded-2xl p-6"
+                     style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.10)">
+
+                    {{-- Icon --}}
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                         style="background:rgba(200,250,95,0.10)">
+                        <svg class="w-6 h-6" style="color:#C8FA5F" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                    </div>
+
+                    <h3 class="text-white font-black text-lg leading-tight mb-1">¿Añadir a tus carreras?</h3>
+                    <p class="text-sm mb-1" style="color:rgba(255,255,255,0.50)">
+                        <span x-text="eventName" class="font-semibold text-white/80"></span>
+                    </p>
+                    <p class="text-xs mb-5" style="color:rgba(255,255,255,0.35)">
+                        <span x-text="eventDate"></span>
+                        &middot;
+                        <span x-text="eventStatus === 'completed' ? 'Se añadirá como carrera terminada' : 'Se añadirá como próxima carrera'"></span>
+                    </p>
+
+                    {{-- Remember toggle --}}
+                    <label class="flex items-center gap-3 cursor-pointer mb-6 select-none">
+                        <input type="checkbox" x-model="remember"
+                               class="w-4 h-4 rounded text-primary border-white/20 bg-transparent focus:ring-primary/30">
+                        <span class="text-xs font-semibold" style="color:rgba(255,255,255,0.45)">Recordar mi elección</span>
+                    </label>
+
+                    {{-- Actions --}}
+                    <div class="flex gap-3">
+                        <button @click="skip()"
+                                class="flex-1 py-3 rounded-xl font-bold text-sm transition-colors"
+                                style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.60)"
+                                onmouseenter="this.style.background='rgba(255,255,255,0.10)'"
+                                onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
+                            No, gracias
+                        </button>
+                        <button @click="addToRaces()"
+                                class="flex-1 py-3 rounded-xl font-black text-sm text-black transition-all active:scale-[0.97]"
+                                style="background:#C8FA5F">
+                            Sí, añadir
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Unattend modal: remove from races? --}}
+            <div x-show="unattendModal" x-transition.opacity
+                 class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+                 style="background:rgba(0,0,0,0.75)" x-cloak>
+
+                <div x-show="unattendModal" x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="w-full max-w-sm rounded-2xl p-6"
+                     style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.10)">
+
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                         style="background:rgba(248,113,113,0.10)">
+                        <svg class="w-6 h-6" style="color:#f87171" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                    </div>
+
+                    <h3 class="text-white font-black text-lg leading-tight mb-2">¿Eliminar de tus carreras?</h3>
+                    <p class="text-sm mb-6" style="color:rgba(255,255,255,0.45)">
+                        Esta carrera está en tu historial. ¿Quieres eliminarla también?
+                    </p>
+
+                    <div class="flex gap-3">
+                        <button @click="unattendModal = false"
+                                class="flex-1 py-3 rounded-xl font-bold text-sm transition-colors"
+                                style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.60)"
+                                onmouseenter="this.style.background='rgba(255,255,255,0.10)'"
+                                onmouseleave="this.style.background='rgba(255,255,255,0.06)'">
+                            No, mantener
+                        </button>
+                        <button @click="removeFromRaces()"
+                                class="flex-1 py-3 rounded-xl font-black text-sm transition-all active:scale-[0.97]"
+                                style="background:rgba(248,113,113,0.15);color:#f87171">
+                            Sí, eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         @endif
 

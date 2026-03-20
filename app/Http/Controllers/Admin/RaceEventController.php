@@ -26,6 +26,7 @@ class RaceEventController extends Controller
             'total' => RaceEvent::whereNotIn('status', ['pending', 'rejected'])->count(),
             'upcoming' => RaceEvent::where('status', 'upcoming')->count(),
             'open' => RaceEvent::where('status', 'open')->count(),
+            'cancelled' => RaceEvent::where('status', 'cancelled')->count(),
             'pending' => RaceEvent::where('status', 'pending')->count(),
         ];
 

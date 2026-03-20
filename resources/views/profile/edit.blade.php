@@ -355,6 +355,28 @@
                     </div>
                 </div>
 
+                {{-- Attend → add race preference --}}
+                @php $attendPref = $user->profile?->attend_add_race ?? 'ask'; @endphp
+                <form method="POST" action="{{ route('profile.data') }}" class="settings-row" style="border-top:1px solid rgba(255,255,255,0.05)">
+                    @csrf
+                    <div class="settings-icon">
+                        <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="settings-row-label">Al apuntarme a un evento</p>
+                        <p class="text-[10px] mt-0.5" style="color:rgba(255,255,255,0.35)">Añadir también a mis carreras</p>
+                    </div>
+                    <select name="attend_add_race" onchange="this.form.submit()"
+                            class="text-xs font-bold rounded-lg px-2 py-1.5 border-0 outline-none cursor-pointer"
+                            style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.70)">
+                        <option value="ask"    {{ $attendPref === 'ask'    ? 'selected' : '' }}>Preguntar</option>
+                        <option value="always" {{ $attendPref === 'always' ? 'selected' : '' }}>Siempre</option>
+                        <option value="never"  {{ $attendPref === 'never'  ? 'selected' : '' }}>Nunca</option>
+                    </select>
+                </form>
+
                 {{-- Push notifications --}}
                 <div class="settings-row" style="border-top:1px solid rgba(255,255,255,0.05)"
                      x-data="{ enabled: false, loading: false }"
