@@ -21,7 +21,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
             @foreach([
                 [$stats['total'],     'Total',     'rgba(255,255,255,0.70)'],
-                [$stats['open'],      'Abiertas',  '#C8FA5F'],
+                [$stats['open'],      'Abiertas',  'rgb(var(--color-primary))'],
                 [$stats['upcoming'],  'Próximas',  '#60a5fa'],
                 [$stats['cancelled'], 'Canceladas','#f87171'],
             ] as [$val, $label, $color])
@@ -111,7 +111,7 @@
                                            style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.60)">Ver</a>
                                         <a href="{{ route('admin.events.edit', $event) }}"
                                            class="text-xs font-bold px-3 py-1.5 rounded-lg"
-                                           style="background:rgba(200,250,95,0.10);color:#C8FA5F">Editar</a>
+                                           style="background:rgb(var(--color-primary) / 0.10);color:rgb(var(--color-primary))">Editar</a>
                                         <form method="POST" action="{{ route('admin.events.destroy', $event) }}"
                                               onsubmit="return confirm('¿Eliminar «{{ $event->name }}»?')">
                                             @csrf @method('DELETE')

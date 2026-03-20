@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\Race;
 use App\Models\RaceEvent;
 use App\Models\RaceEventModality;
+use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -40,8 +41,11 @@ class RaceEventController extends Controller
                 ->when($request->when === '3months', fn ($q) => $q->whereBetween('event_date', [now(), now()->addMonths(3)]));
         }
 
-        $events = $query->paginate(12)->withQueryString();
-        $featured = RaceEvent::featured()->upcoming()->withCount('attendees')->take(3)->get();
+        $perPage = (int) (Setting::get('events_per_page', 12) ?? 12);
+        $featuredCount = (int) (Setting::get('featured_events_count', 3) ?? 3);
+
+        $events = $query->paginate($perPage)->withQueryString();
+        $featured = RaceEvent::featured()->upcoming()->withCount('attendees')->take($featuredCount)->get();
 
         $attendingIds = $request->user()
             ->belongsToMany(RaceEvent::class, 'race_event_user')

@@ -5,7 +5,7 @@
     @php
         $statusConfig = [
             'pending'  => ['bg' => 'rgba(251,191,36,0.15)',  'text' => '#fbbf24', 'label' => 'Pendiente de revisión'],
-            'approved' => ['bg' => 'rgba(200,250,95,0.12)',  'text' => '#C8FA5F', 'label' => 'Activo'],
+            'approved' => ['bg' => 'rgb(var(--color-primary) / 0.12)',  'text' => 'rgb(var(--color-primary))', 'label' => 'Activo'],
             'paused'   => ['bg' => 'rgba(255,255,255,0.08)', 'text' => 'rgba(255,255,255,0.50)', 'label' => 'Pausado por admin'],
             'rejected' => ['bg' => 'rgba(248,113,113,0.12)', 'text' => '#f87171', 'label' => 'Rechazado'],
         ];
@@ -106,7 +106,7 @@
                             </div>
                         @endif
                         <div class="w-full rounded-t transition-all"
-                             style="height:{{ max(2, $pct * 0.68) }}px;background:{{ $day['count'] > 0 ? 'rgba(200,250,95,0.70)' : 'rgba(255,255,255,0.07)' }}"></div>
+                             style="height:{{ max(2, $pct * 0.68) }}px;background:{{ $day['count'] > 0 ? 'rgb(var(--color-primary) / 0.70)' : 'rgba(255,255,255,0.07)' }}"></div>
                     </div>
                 @endforeach
             </div>

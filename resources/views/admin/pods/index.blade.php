@@ -12,7 +12,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
             @foreach([
                 [$stats['total'],     'Total',      'rgba(255,255,255,0.70)'],
-                [$stats['active'],    'Activos',    '#C8FA5F'],
+                [$stats['active'],    'Activos',    'rgb(var(--color-primary))'],
                 [$stats['completed'], 'Completados','#f59e0b'],
                 [$stats['archived'],  'Archivados', 'rgba(255,255,255,0.30)'],
             ] as [$val, $label, $color])
@@ -57,7 +57,7 @@
                         @forelse($pods as $pod)
                             @php
                                 $statusColor = match($pod->status) {
-                                    'active'    => '#C8FA5F',
+                                    'active'    => 'rgb(var(--color-primary))',
                                     'completed' => '#f59e0b',
                                     default     => 'rgba(255,255,255,0.30)',
                                 };
@@ -84,7 +84,7 @@
                                     <div class="flex items-center justify-end gap-2">
                                         <a href="{{ route('admin.pods.show', $pod) }}"
                                            class="text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
-                                           style="background:rgba(200,250,95,0.10);color:#C8FA5F">Ver</a>
+                                           style="background:rgb(var(--color-primary) / 0.10);color:rgb(var(--color-primary))">Ver</a>
                                         <a href="{{ route('admin.pods.edit', $pod) }}"
                                            class="text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
                                            style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.60)">Editar</a>

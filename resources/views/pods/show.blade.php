@@ -11,7 +11,7 @@
         $accentColor = match($pod->status) {
             'completed' => '#f59e0b',
             'archived'  => 'rgba(255,255,255,0.40)',
-            default     => '#C8FA5F',
+            default     => 'rgb(var(--color-primary))',
         };
         $topPoints = $members->first()?->pivot->points ?? 0;
     @endphp
@@ -107,7 +107,7 @@
                                 {{ $medals[$i] ?? ($i + 1) . '.' }}
                             </span>
                             <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-black text-sm text-black"
-                                 style="background:{{ $isMe ? '#C8FA5F' : 'rgba(255,255,255,0.15)' }};{{ $isMe ? '' : 'color:rgba(255,255,255,0.70)' }}">
+                                 style="background:{{ $isMe ? 'rgb(var(--color-primary))' : 'rgba(255,255,255,0.15)' }};{{ $isMe ? '' : 'color:rgba(255,255,255,0.70)' }}">
                                 {{ strtoupper(substr($member->name, 0, 1)) }}
                             </div>
                             <div class="flex-1 min-w-0">
@@ -129,7 +129,7 @@
                             <div class="h-full rounded-full transition-all duration-700"
                                  x-data
                                  x-init="$el.style.width='0%'; setTimeout(()=>$el.style.width='{{ $pct }}%', {{ $loop->index * 120 + 200 }})"
-                                 style="width:0%;background:{{ $isMe ? '#C8FA5F' : 'rgba(255,255,255,0.25)' }};transition:width 0.8s cubic-bezier(0.4,0,0.2,1)">
+                                 style="width:0%;background:{{ $isMe ? 'rgb(var(--color-primary))' : 'rgba(255,255,255,0.25)' }};transition:width 0.8s cubic-bezier(0.4,0,0.2,1)">
                             </div>
                         </div>
                     </div>
@@ -140,7 +140,7 @@
         {{-- Your streak in this pod --}}
         @if($isMember && $streak)
         <div class="rounded-2xl px-5 py-4 flex items-center gap-4"
-             style="background:rgba(200,250,95,0.06);border:1px solid rgba(200,250,95,0.12);backdrop-filter:blur(8px)">
+             style="background:rgb(var(--color-primary) / 0.06);border:1px solid rgb(var(--color-primary) / 0.12);backdrop-filter:blur(8px)">
             <div class="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
                 <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -244,7 +244,7 @@
                             </template>
                             <template x-if="msg.type === 'celebration'">
                                 <div class="rounded-2xl px-4 py-3 text-center"
-                                     style="background:linear-gradient(135deg,rgba(200,250,95,0.12),rgba(200,250,95,0.05));border:1px solid rgba(200,250,95,0.20)">
+                                     style="background:linear-gradient(135deg,rgb(var(--color-primary) / 0.12),rgb(var(--color-primary) / 0.05));border:1px solid rgb(var(--color-primary) / 0.20)">
                                     <p class="text-xs font-bold text-primary" x-text="msg.message"></p>
                                 </div>
                             </template>

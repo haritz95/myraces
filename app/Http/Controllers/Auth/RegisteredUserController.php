@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -20,6 +21,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        abort_if(Setting::get('allow_registrations', '1') === '0', 403, 'Los registros están desactivados.');
+
         return view('auth.register');
     }
 
@@ -30,6 +33,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        abort_if(Setting::get('allow_registrations', '1') === '0', 403, 'Los registros están desactivados.');
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],

@@ -96,7 +96,7 @@
                         <span class="px-2 py-1 text-[10px] font-black" style="background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.60)">
                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display:inline"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
                         </span>
-                        <span class="px-2 py-1 text-[10px] font-black border-l" style="border-color:rgba(255,255,255,0.15);background:rgba(200,250,95,0.15);color:#C8FA5F">
+                        <span class="px-2 py-1 text-[10px] font-black border-l" style="border-color:rgba(255,255,255,0.15);background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))">
                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display:inline"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         </span>
                         <span class="px-2 py-1 text-[10px] font-black border-l" style="border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.40)">
@@ -187,7 +187,7 @@
                             <label class="text-xs font-bold" style="color:rgba(255,255,255,0.45)">Icono <span class="text-red-400">*</span></label>
                             <div class="flex items-center gap-2 ml-auto">
                                 <template x-if="selectedIcon">
-                                    <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg" style="background:rgba(200,250,95,0.10)">
+                                    <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg" style="background:rgb(var(--color-primary) / 0.10)">
                                         <svg class="w-4 h-4 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" :d="selectedIcon"/>
                                         </svg>

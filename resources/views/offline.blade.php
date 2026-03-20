@@ -25,8 +25,8 @@
         .icon {
             width: 72px;
             height: 72px;
-            background: rgba(200,250,95,0.10);
-            border: 1px solid rgba(200,250,95,0.20);
+            background: rgb(var(--color-primary) / 0.10);
+            border: 1px solid rgb(var(--color-primary) / 0.20);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -36,7 +36,7 @@
         h1 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
         p { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 28px; }
         button {
-            background: #C8FA5F;
+            background: rgb(var(--color-primary));
             color: #000;
             border: none;
             border-radius: 14px;
@@ -52,7 +52,7 @@
 <body>
     <div class="card">
         <div class="icon">
-            <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="#C8FA5F" stroke-width="1.75">
+            <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="rgb(var(--color-primary))" stroke-width="1.75">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636a9 9 0 010 12.728M15.536 8.464a5 5 0 010 7.072M3 3l18 18M10.584 10.584A2 2 0 0013.415 13.415"/>
             </svg>
         </div>

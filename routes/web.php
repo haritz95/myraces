@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NavItemController;
 use App\Http\Controllers\Admin\PodController as AdminPodController;
 use App\Http\Controllers\Admin\RaceEventController as AdminRaceEventController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventSubmissionController;
@@ -21,11 +22,14 @@ use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\RaceCoachController;
 use App\Http\Controllers\RaceController;
 use App\Http\Controllers\RaceEventController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\StravaImportController;
 use App\Models\RaceEvent;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 Route::get('/', function () {
     $featuredEvent = RaceEvent::upcoming()
@@ -152,6 +156,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/events/{event}/edit', [AdminRaceEventController::class, 'edit'])->name('events.edit');
     Route::patch('/events/{event}', [AdminRaceEventController::class, 'update'])->name('events.update');
     Route::delete('/events/{event}', [AdminRaceEventController::class, 'destroy'])->name('events.destroy');
+
+    Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings');
+    Route::patch('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
 
     Route::get('/nav-items', [NavItemController::class, 'index'])->name('nav-items');
     Route::post('/nav-items', [NavItemController::class, 'store'])->name('nav-items.store');

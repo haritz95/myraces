@@ -45,7 +45,7 @@
                             onclick="document.querySelector('[name=distance]').value='{{ $dist }}'"
                             class="text-xs px-4 py-2 rounded-full font-bold transition-colors"
                             style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.60);border:1px solid rgba(255,255,255,0.10)"
-                            onmouseover="this.style.background='rgba(200,250,95,0.15)';this.style.color='#C8FA5F';this.style.borderColor='rgba(200,250,95,0.30)'"
+                            onmouseover="this.style.background='rgb(var(--color-primary) / 0.15)';this.style.color='rgb(var(--color-primary))';this.style.borderColor='rgb(var(--color-primary) / 0.30)'"
                             onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='rgba(255,255,255,0.60)';this.style.borderColor='rgba(255,255,255,0.10)'">
                         {{ $label }}
                     </button>
@@ -88,7 +88,7 @@
                              :class="$el.previousElementSibling.checked ? 'checked-mod' : ''">
                             {{ __('races.modalities.' . $mod) }}
                         </div>
-                        <style>.sr-only:checked + div { background: rgba(200,250,95,0.12) !important; color: #C8FA5F !important; border-color: rgba(200,250,95,0.30) !important; }</style>
+                        <style>.sr-only:checked + div { background: rgb(var(--color-primary) / 0.12) !important; color: rgb(var(--color-primary)) !important; border-color: rgb(var(--color-primary) / 0.30) !important; }</style>
                     </label>
                 @endforeach
             </div>
@@ -101,7 +101,7 @@
             </label>
             <div class="grid grid-cols-2 gap-2">
                 @foreach([
-                    'upcoming'  => ['label' => __('races.statuses.upcoming'),  'color' => 'rgba(200,250,95,0.12)',  'text' => '#C8FA5F',  'border' => 'rgba(200,250,95,0.30)'],
+                    'upcoming'  => ['label' => __('races.statuses.upcoming'),  'color' => 'rgb(var(--color-primary) / 0.12)',  'text' => 'rgb(var(--color-primary))',  'border' => 'rgb(var(--color-primary) / 0.30)'],
                     'completed' => ['label' => __('races.statuses.completed'), 'color' => 'rgba(74,222,128,0.12)', 'text' => '#4ade80', 'border' => 'rgba(74,222,128,0.30)'],
                     'dnf'       => ['label' => __('races.statuses.dnf'),       'color' => 'rgba(248,113,113,0.12)','text' => '#f87171', 'border' => 'rgba(248,113,113,0.30)'],
                     'dns'       => ['label' => __('races.statuses.dns'),       'color' => 'rgba(107,114,128,0.15)','text' => '#9ca3af', 'border' => 'rgba(107,114,128,0.30)'],
@@ -207,7 +207,7 @@
                 <input type="checkbox" name="is_public" value="1" class="sr-only" id="chk_is_public"
                        {{ old('is_public', $race->is_public ?? true) ? 'checked' : '' }}>
                 <div id="toggle_track"
-                     style="width:52px;height:30px;border-radius:999px;position:relative;transition:background 0.2s,box-shadow 0.2s;background:{{ old('is_public', $race->is_public ?? true) ? '#C8FA5F' : 'rgba(255,255,255,0.15)' }};box-shadow:{{ old('is_public', $race->is_public ?? true) ? '0 0 0 3px rgba(200,250,95,0.25)' : 'none' }}">
+                     style="width:52px;height:30px;border-radius:999px;position:relative;transition:background 0.2s,box-shadow 0.2s;background:{{ old('is_public', $race->is_public ?? true) ? 'rgb(var(--color-primary))' : 'rgba(255,255,255,0.15)' }};box-shadow:{{ old('is_public', $race->is_public ?? true) ? '0 0 0 3px rgb(var(--color-primary) / 0.25)' : 'none' }}">
                     <div id="toggle_thumb"
                          style="position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;transition:transform 0.2s,background 0.2s;transform:{{ old('is_public', $race->is_public ?? true) ? 'translateX(22px)' : 'translateX(0)' }};background:{{ old('is_public', $race->is_public ?? true) ? '#0a0a0a' : '#ffffff' }};box-shadow:0 1px 4px rgba(0,0,0,0.4)"></div>
                 </div>
@@ -230,14 +230,14 @@
                     @foreach($items as $item)
                         <label class="flex items-center gap-3 px-4 py-3 rounded-2xl cursor-pointer transition-all gear-row"
                                id="gear_label_{{ $item->id }}"
-                               style="background:{{ in_array($item->id, $selectedGearIds) ? 'rgba(200,250,95,0.08)' : 'rgba(255,255,255,0.04)' }};border:1px solid {{ in_array($item->id, $selectedGearIds) ? 'rgba(200,250,95,0.30)' : 'rgba(255,255,255,0.07)' }}">
+                               style="background:{{ in_array($item->id, $selectedGearIds) ? 'rgb(var(--color-primary) / 0.08)' : 'rgba(255,255,255,0.04)' }};border:1px solid {{ in_array($item->id, $selectedGearIds) ? 'rgb(var(--color-primary) / 0.30)' : 'rgba(255,255,255,0.07)' }}">
                             <input type="checkbox" name="gear_ids[]" value="{{ $item->id }}"
                                    class="sr-only gear-checkbox"
                                    id="gear_{{ $item->id }}"
                                    {{ in_array($item->id, $selectedGearIds) ? 'checked' : '' }}>
                             <div class="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-all gear-box"
                                  id="gear_box_{{ $item->id }}"
-                                 style="border:2px solid {{ in_array($item->id, $selectedGearIds) ? '#C8FA5F' : 'rgba(255,255,255,0.20)' }};background:{{ in_array($item->id, $selectedGearIds) ? '#C8FA5F' : 'transparent' }}">
+                                 style="border:2px solid {{ in_array($item->id, $selectedGearIds) ? 'rgb(var(--color-primary))' : 'rgba(255,255,255,0.20)' }};background:{{ in_array($item->id, $selectedGearIds) ? 'rgb(var(--color-primary))' : 'transparent' }}">
                                 <svg class="w-2.5 h-2.5 text-black {{ in_array($item->id, $selectedGearIds) ? '' : 'hidden' }} gear-check" id="gear_icon_{{ $item->id }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
                                 </svg>
@@ -270,9 +270,9 @@
                 const label = r.nextElementSibling;
                 if (!label) { return; }
                 if (r.checked) {
-                    label.style.background = 'rgba(200,250,95,0.12)';
-                    label.style.color = '#C8FA5F';
-                    label.style.borderColor = 'rgba(200,250,95,0.30)';
+                    label.style.background = 'rgb(var(--color-primary) / 0.12)';
+                    label.style.color = 'rgb(var(--color-primary))';
+                    label.style.borderColor = 'rgb(var(--color-primary) / 0.30)';
                 } else {
                     label.style.background = 'rgba(255,255,255,0.06)';
                     label.style.color = 'rgba(255,255,255,0.40)';
@@ -292,8 +292,8 @@
         if (!chk || !track || !thumb) { return; }
         const update = () => {
             if (chk.checked) {
-                track.style.background = '#C8FA5F';
-                track.style.boxShadow  = '0 0 0 3px rgba(200,250,95,0.25)';
+                track.style.background = 'rgb(var(--color-primary))';
+                track.style.boxShadow  = '0 0 0 3px rgb(var(--color-primary) / 0.25)';
                 thumb.style.transform  = 'translateX(22px)';
                 thumb.style.background = '#0a0a0a';
             } else {
@@ -314,10 +314,10 @@
         const icon  = document.getElementById('gear_icon_' + id);
         const apply = () => {
             if (cb.checked) {
-                row.style.background  = 'rgba(200,250,95,0.08)';
-                row.style.borderColor = 'rgba(200,250,95,0.30)';
-                box.style.background  = '#C8FA5F';
-                box.style.borderColor = '#C8FA5F';
+                row.style.background  = 'rgb(var(--color-primary) / 0.08)';
+                row.style.borderColor = 'rgb(var(--color-primary) / 0.30)';
+                box.style.background  = 'rgb(var(--color-primary))';
+                box.style.borderColor = 'rgb(var(--color-primary))';
                 icon.classList.remove('hidden');
             } else {
                 row.style.background  = 'rgba(255,255,255,0.04)';

@@ -1,5 +1,10 @@
 <x-app-layout>
     @section('page_title', 'Carreras')
+    @section('meta_description', 'Descubre y apúntate a carreras de running, trail y triatlón. Explora el calendario de eventos deportivos con filtros por tipo, categoría y fecha.')
+    @section('robots', 'index, follow')
+    @section('canonical', url('/events'))
+    @section('og_title', 'Carreras — MyRaces')
+    @section('og_description', 'Descubre y apúntate a carreras de running, trail y triatlón. Explora el calendario de eventos deportivos con filtros por tipo, categoría y fecha.')
 
     <div class="max-w-2xl mx-auto px-4 py-5 space-y-5"
          x-data="{
@@ -22,7 +27,7 @@
                                  class="w-full h-40 object-cover">
                             <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,0.80) 0%,rgba(0,0,0,0.10) 60%)"></div>
                         @else
-                            <div class="w-full h-32" style="background:linear-gradient(135deg,rgba(200,250,95,0.15),rgba(200,250,95,0.05))"></div>
+                            <div class="w-full h-32" style="background:linear-gradient(135deg,rgb(var(--color-primary) / 0.15),rgb(var(--color-primary) / 0.05))"></div>
                         @endif
                         <div class="absolute bottom-0 left-0 right-0 px-4 pb-3 pt-6">
                             <div class="flex items-end justify-between gap-2">
@@ -77,7 +82,7 @@
                 @foreach($typeFilters as $val => $label)
                     <a href="{{ request()->fullUrlWithQuery(['type' => $val ?: null, 'page' => null]) }}"
                        class="flex-shrink-0 text-xs font-bold px-3.5 py-2 rounded-full transition-colors"
-                       style="{{ $currentType === $val ? 'background:#C8FA5F;color:#000' : 'background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55)' }}">
+                       style="{{ $currentType === $val ? 'background:rgb(var(--color-primary));color:#000' : 'background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55)' }}">
                         {{ $label }}
                     </a>
                 @endforeach
@@ -143,14 +148,14 @@
                 <div class="flex rounded-xl overflow-hidden" style="border:1px solid rgba(255,255,255,0.08)">
                     <button @click="view='list'; localStorage.setItem('events-view','list')"
                             class="px-2.5 py-1.5 transition-colors"
-                            :style="view==='list' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'background:transparent;color:rgba(255,255,255,0.35)'">
+                            :style="view==='list' ? 'background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))' : 'background:transparent;color:rgba(255,255,255,0.35)'">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                         </svg>
                     </button>
                     <button @click="view='card'; localStorage.setItem('events-view','card')"
                             class="px-2.5 py-1.5 transition-colors"
-                            :style="view==='card' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'background:transparent;color:rgba(255,255,255,0.35)'">
+                            :style="view==='card' ? 'background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))' : 'background:transparent;color:rgba(255,255,255,0.35)'">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
                         </svg>
@@ -192,7 +197,7 @@
                                     </div>
                                 @else
                                     <div class="w-20 flex-shrink-0 rounded-l-2xl flex flex-col items-center justify-center gap-1"
-                                         style="background:rgba(200,250,95,0.06);min-height:96px">
+                                         style="background:rgb(var(--color-primary) / 0.06);min-height:96px">
                                         <p class="text-xl font-black text-primary leading-none">{{ $event->event_date->format('d') }}</p>
                                         <p class="text-[10px] font-bold uppercase" style="color:rgba(255,255,255,0.35)">{{ $event->event_date->translatedFormat('M') }}</p>
                                         <p class="text-[9px] font-bold uppercase" style="color:rgba(255,255,255,0.25)">{{ $event->event_date->format('Y') }}</p>
@@ -261,7 +266,7 @@
                                         @endif
                                     </div>
                                 @else
-                                    <div class="relative flex flex-col items-center justify-center gap-1" style="height:120px;background:rgba(200,250,95,0.06)">
+                                    <div class="relative flex flex-col items-center justify-center gap-1" style="height:120px;background:rgb(var(--color-primary) / 0.06)">
                                         <p class="text-2xl font-black text-primary leading-none">{{ $event->event_date->format('d') }}</p>
                                         <p class="text-xs font-bold uppercase" style="color:rgba(255,255,255,0.40)">{{ $event->event_date->translatedFormat('M Y') }}</p>
                                         @if($attending)

@@ -80,7 +80,7 @@
                 '5K'            => '#60a5fa',
                 '10K'           => '#a78bfa',
                 'Half Marathon' => '#4ade80',
-                'Marathon'      => '#C8FA5F',
+                'Marathon'      => 'rgb(var(--color-primary))',
             ];
         @endphp
 
@@ -89,7 +89,7 @@
                 <h2 class="text-lg font-black text-white mb-4">Mejores marcas</h2>
                 <div class="grid grid-cols-2 gap-3">
                     @foreach($featuredDistances as $dist)
-                        @php $color = $distColors[$dist] ?? '#C8FA5F'; @endphp
+                        @php $color = $distColors[$dist] ?? 'rgb(var(--color-primary))'; @endphp
                         <div class="card overflow-hidden">
                             <div class="h-1 w-full" style="background:{{ $color }}"></div>
                             <div class="p-4">
@@ -149,7 +149,7 @@
                                 <div class="flex items-center gap-2 mb-1">
                                     <span class="text-xs font-black text-white">{{ $record->distance_label }}</span>
                                     @if($isBest)
-                                        <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full" style="background:rgba(200,250,95,0.15);color:#C8FA5F">PR</span>
+                                        <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full" style="background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))">PR</span>
                                     @endif
                                     @if($record->race_id)
                                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:rgba(96,165,250,0.12);color:#60a5fa">De carrera</span>

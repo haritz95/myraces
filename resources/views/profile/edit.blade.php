@@ -4,10 +4,10 @@
     {{-- ── HERO ─────────────────────────────────────────────── --}}
     <div class="relative overflow-hidden px-6 pt-8 pb-8"
          style="background:linear-gradient(135deg,#0f1a00 0%,#1a2d00 50%,#253d00 100%);border-bottom:1px solid rgba(255,255,255,0.06)">
-        <div class="absolute inset-0 opacity-[0.05]" style="background-image:radial-gradient(circle at 20% 80%, #C8FA5F 1px, transparent 1px);background-size:30px 30px"></div>
+        <div class="absolute inset-0 opacity-[0.05]" style="background-image:radial-gradient(circle at 20% 80%, rgb(var(--color-primary)) 1px, transparent 1px);background-size:30px 30px"></div>
         <div class="flex items-center gap-4 relative max-w-lg mx-auto">
             <div class="w-16 h-16 rounded-2xl flex-shrink-0 overflow-hidden bg-primary flex items-center justify-center"
-                 style="box-shadow:0 8px 24px rgba(200,250,95,0.35)">
+                 style="box-shadow:0 8px 24px rgb(var(--color-primary) / 0.35)">
                 @if($user->profile?->avatar)
                     <img src="{{ asset('storage/' . $user->profile->avatar) }}" alt="" class="w-full h-full object-cover">
                 @else

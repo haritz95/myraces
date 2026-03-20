@@ -5,13 +5,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#0a0a0a">
+        <meta name="robots" content="noindex, nofollow">
 
         <title>{{ config('app.name', 'MyRaces') }}</title>
+
+        @php $gaId = \App\Models\Setting::get('google_analytics_id'); @endphp
+        @if($gaId)
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+        <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $gaId }}');</script>
+        @endif
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=public-sans:300,400,500,600,700,800,900i,800i,700i&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style>:root { --color-primary: {{ \App\Models\Setting::primaryColorChannels() }}; }</style>
 
         <script>
             (function () {
@@ -22,7 +31,7 @@
 
         <style>
             /* Match landing nav logo */
-            .auth-logo { font-style: italic; font-weight: 900; font-size: 1.25rem; letter-spacing: -.03em; color: #C8FA5F; }
+            .auth-logo { font-style: italic; font-weight: 900; font-size: 1.25rem; letter-spacing: -.03em; color: rgb(var(--color-primary)); }
 
             /* Input underline animation */
             .auth-field { position: relative; }
@@ -31,7 +40,7 @@
                 position: absolute;
                 bottom: 0; left: 0;
                 width: 0; height: 2px;
-                background: #C8FA5F;
+                background: rgb(var(--color-primary));
                 transition: width 0.35s ease;
                 border-radius: 0 0 2px 2px;
             }
@@ -47,11 +56,11 @@
                 outline: none;
                 transition: border-color 0.2s;
             }
-            .auth-input:focus { border-bottom-color: rgba(200,250,95,0.30); }
+            .auth-input:focus { border-bottom-color: rgb(var(--color-primary) / 0.30); }
             .auth-input::placeholder { color: rgba(255,255,255,0.22); }
 
             /* Nav controls */
-            .auth-lang-active   { color: #C8FA5F; }
+            .auth-lang-active   { color: rgb(var(--color-primary)); }
             .auth-lang-inactive { color: rgba(255,255,255,0.28); }
             .auth-lang-inactive:hover { color: rgba(255,255,255,0.60); }
             .auth-theme-btn { color: rgba(255,255,255,0.38); }
@@ -75,9 +84,9 @@
 
         {{-- Ambient glows (same as landing) --}}
         <div class="fixed top-0 right-0 pointer-events-none -z-10"
-             style="width:600px;height:600px;background:radial-gradient(circle,rgba(200,250,95,0.04) 0%,transparent 65%);transform:translate(30%,-30%)"></div>
+             style="width:600px;height:600px;background:radial-gradient(circle,rgb(var(--color-primary) / 0.04) 0%,transparent 65%);transform:translate(30%,-30%)"></div>
         <div class="fixed bottom-0 left-0 pointer-events-none -z-10"
-             style="width:500px;height:500px;background:radial-gradient(circle,rgba(200,250,95,0.03) 0%,transparent 65%);transform:translate(-30%,30%)"></div>
+             style="width:500px;height:500px;background:radial-gradient(circle,rgb(var(--color-primary) / 0.03) 0%,transparent 65%);transform:translate(-30%,30%)"></div>
 
         {{-- Header — identical style to landing nav --}}
         <header class="w-full flex items-center justify-between px-6 py-5">
@@ -112,7 +121,7 @@
         </main>
 
         {{-- Bottom accent — same as landing --}}
-        <div class="w-full h-px" style="background: linear-gradient(90deg, transparent 0%, #C8FA5F 50%, transparent 100%); opacity: 0.22"></div>
+        <div class="w-full h-px" style="background: linear-gradient(90deg, transparent 0%, rgb(var(--color-primary)) 50%, transparent 100%); opacity: 0.22"></div>
 
         <script>
             function toggleGuestTheme() {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RaceEvent;
 use App\Models\RaceEventModality;
+use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,8 @@ class EventSubmissionController extends Controller
 {
     public function create(): View
     {
+        abort_if(Setting::get('event_submissions_open', '1') === '0', 403, 'El envío de eventos está desactivado.');
+
         return view('events.submit', [
             'raceTypes' => RaceEvent::raceTypes(),
             'categories' => RaceEvent::categories(),
@@ -21,6 +24,8 @@ class EventSubmissionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        abort_if(Setting::get('event_submissions_open', '1') === '0', 403, 'El envío de eventos está desactivado.');
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:2000'],

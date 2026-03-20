@@ -6,8 +6,8 @@
         {{-- Stats --}}
         <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
             @foreach([
-                [$stats['total_users'],                   'Usuarios',    '#C8FA5F'],
-                [$stats['total_races'],                   'Carreras',    '#C8FA5F'],
+                [$stats['total_users'],                   'Usuarios',    'rgb(var(--color-primary))'],
+                [$stats['total_races'],                   'Carreras',    'rgb(var(--color-primary))'],
                 [number_format($stats['total_km'], 0).'km','Km totales', 'rgba(255,255,255,0.7)'],
                 ['€'.number_format($stats['total_spent'], 0), 'Invertido','rgba(255,255,255,0.7)'],
                 [$stats['premium_users'],                  'Premium',     '#a78bfa'],
@@ -65,7 +65,7 @@
                                 'completed' => '#4ade80',
                                 'dnf'       => '#f87171',
                                 'dns'       => 'rgba(255,255,255,0.30)',
-                                default     => '#C8FA5F',
+                                default     => 'rgb(var(--color-primary))',
                             };
                         @endphp
                         <div class="flex items-center gap-3 px-5 py-3">
@@ -167,6 +167,17 @@
                 <div>
                     <p class="text-sm font-bold text-white">Menú móvil</p>
                     <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Orden, visibilidad, premium</p>
+                </div>
+            </a>
+            <a href="{{ route('admin.settings') }}" class="card-interactive flex items-center gap-4 p-5">
+                <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-white">Ajustes</p>
+                    <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Analytics, SEO, redes, general</p>
                 </div>
             </a>
         </div>

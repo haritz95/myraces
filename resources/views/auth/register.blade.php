@@ -4,15 +4,15 @@
     <div class="relative overflow-hidden rounded-2xl mb-8 mt-2 py-10 px-6"
          style="background:#111">
         <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 160" preserveAspectRatio="none">
-            <line x1="-20" y1="130" x2="420" y2="50"  stroke="#C8FA5F" stroke-width="1.2" opacity="0.18"/>
-            <line x1="-20" y1="155" x2="420" y2="75"  stroke="#C8FA5F" stroke-width="0.6" opacity="0.10"/>
-            <circle cx="370" cy="20" r="120" fill="#C8FA5F" opacity="0.03"/>
+            <line x1="-20" y1="130" x2="420" y2="50"  stroke="rgb(var(--color-primary))" stroke-width="1.2" opacity="0.18"/>
+            <line x1="-20" y1="155" x2="420" y2="75"  stroke="rgb(var(--color-primary))" stroke-width="0.6" opacity="0.10"/>
+            <circle cx="370" cy="20" r="120" fill="rgb(var(--color-primary))" opacity="0.03"/>
         </svg>
         <div class="absolute inset-0 rounded-2xl" style="background:linear-gradient(to top,#0a0a0a 0%,transparent 55%)"></div>
         <div class="relative">
             <h1 class="font-black italic tracking-tighter uppercase leading-[0.88] text-white"
                 style="font-size: clamp(2.2rem, 8vw, 3rem)">
-                {{ __('auth.create_account') }}<span style="color:#C8FA5F">.</span>
+                {{ __('auth.create_account') }}<span style="color:rgb(var(--color-primary))">.</span>
             </h1>
             <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.2em]" style="color:rgba(255,255,255,0.30)">
                 {{ __('auth.register_subtitle') }}
@@ -115,7 +115,7 @@
         <div class="pt-2">
             <button type="submit"
                     class="w-full py-4 rounded-full font-black italic uppercase tracking-tighter text-black transition-all active:scale-[0.97] flex items-center justify-center gap-2"
-                    style="background:#C8FA5F; box-shadow:0 0 32px rgba(200,250,95,0.20); font-size:1.05rem">
+                    style="background:rgb(var(--color-primary)); box-shadow:0 0 32px rgb(var(--color-primary) / 0.20); font-size:1.05rem">
                 {{ __('auth.create_btn') }}
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -127,7 +127,7 @@
     <p class="text-center text-sm mt-8 mb-2" style="color:rgba(255,255,255,0.30)">
         {{ __('auth.already_account') }}
         <a href="{{ route('login') }}" class="font-bold transition-colors ml-1"
-           style="color:rgba(255,255,255,0.75)" onmouseenter="this.style.color='#C8FA5F'" onmouseleave="this.style.color='rgba(255,255,255,0.75)'">
+           style="color:rgba(255,255,255,0.75)" onmouseenter="this.style.color='rgb(var(--color-primary))'" onmouseleave="this.style.color='rgba(255,255,255,0.75)'">
             {{ __('auth.sign_in_link') }}
         </a>
     </p>

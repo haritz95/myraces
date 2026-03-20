@@ -99,7 +99,7 @@
                     const lbl = document.getElementById('cat_label_' + r.value);
                     if (!lbl) { return; }
                     if (r.checked) {
-                        const c = colors[r.value] || '#C8FA5F';
+                        const c = colors[r.value] || 'rgb(var(--color-primary))';
                         lbl.style.background = c + '18';
                         lbl.style.color = c;
                         lbl.style.borderColor = c + '40';

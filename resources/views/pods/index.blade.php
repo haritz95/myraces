@@ -34,7 +34,7 @@
         {{-- Streak banner --}}
         @if($streak && $streak->current_streak > 0)
         <div class="relative overflow-hidden rounded-2xl px-5 py-4"
-             style="background:linear-gradient(135deg,rgba(200,250,95,0.15) 0%,rgba(200,250,95,0.05) 100%);border:1px solid rgba(200,250,95,0.25);backdrop-filter:blur(12px)">
+             style="background:linear-gradient(135deg,rgb(var(--color-primary) / 0.15) 0%,rgb(var(--color-primary) / 0.05) 100%);border:1px solid rgb(var(--color-primary) / 0.25);backdrop-filter:blur(12px)">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
@@ -105,7 +105,7 @@
                                     </div>
                                     <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.08)">
                                         <div class="h-full rounded-full transition-all duration-700"
-                                             style="width:{{ $pct }}%;background:{{ $pod->status === 'completed' ? '#f59e0b' : '#C8FA5F' }}"></div>
+                                             style="width:{{ $pct }}%;background:{{ $pod->status === 'completed' ? '#f59e0b' : 'rgb(var(--color-primary))' }}"></div>
                                     </div>
                                 </div>
                             @endif

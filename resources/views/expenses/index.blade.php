@@ -14,8 +14,8 @@
 
         {{-- ── YEAR TOTAL HERO ───────────────────────────────── --}}
         <div class="relative overflow-hidden rounded-3xl px-6 py-8"
-             style="background:linear-gradient(135deg,#0f1a00 0%,#1a2d00 50%,#253d00 100%);border:1px solid rgba(200,250,95,0.15)">
-            <div class="absolute inset-0 opacity-[0.06]" style="background-image:radial-gradient(circle at 80% 20%, #C8FA5F 1px, transparent 1px);background-size:30px 30px"></div>
+             style="background:linear-gradient(135deg,#0f1a00 0%,#1a2d00 50%,#253d00 100%);border:1px solid rgb(var(--color-primary) / 0.15)">
+            <div class="absolute inset-0 opacity-[0.06]" style="background-image:radial-gradient(circle at 80% 20%, rgb(var(--color-primary)) 1px, transparent 1px);background-size:30px 30px"</div>
             <div class="relative flex items-center justify-between">
                 <div>
                     <p class="section-label mb-3">Total {{ now()->year }}</p>
@@ -24,7 +24,7 @@
                     </p>
                     <p class="text-xs font-medium mt-2" style="color:rgba(255,255,255,0.30)">en gastos registrados</p>
                 </div>
-                <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgba(200,250,95,0.10);border:1px solid rgba(200,250,95,0.20)">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:rgb(var(--color-primary) / 0.10);border:1px solid rgb(var(--color-primary) / 0.20)">
                     <svg class="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>

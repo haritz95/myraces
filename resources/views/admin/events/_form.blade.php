@@ -53,12 +53,12 @@
                 <div class="flex rounded-xl overflow-hidden w-fit" style="border:1px solid rgba(255,255,255,0.10)">
                     <button type="button" @click="imageMode='upload'"
                             class="px-4 py-1.5 text-xs font-bold transition-colors"
-                            :style="imageMode==='upload' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'color:rgba(255,255,255,0.40)'">
+                            :style="imageMode==='upload' ? 'background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.40)'">
                         Subir archivo
                     </button>
                     <button type="button" @click="imageMode='url'"
                             class="px-4 py-1.5 text-xs font-bold transition-colors"
-                            :style="imageMode==='url' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'color:rgba(255,255,255,0.40)'">
+                            :style="imageMode==='url' ? 'background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.40)'">
                         URL externa
                     </button>
                 </div>

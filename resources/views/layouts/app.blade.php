@@ -14,10 +14,56 @@
 
         <title>@yield('page_title', config('app.name', 'MyRaces')) — MyRaces</title>
 
+        @php
+            $seoDefaultDesc = 'MyRaces — organiza tus carreras de running, trail y triatlón. Encuentra eventos, lleva un registro de tus tiempos y conecta con otros corredores.';
+            $seoDesc    = trim($__env->yieldContent('meta_description')) ?: $seoDefaultDesc;
+            $seoTitle   = trim($__env->yieldContent('page_title')) ?: 'MyRaces';
+            $seoOgTitle = trim($__env->yieldContent('og_title')) ?: ($seoTitle . ' — MyRaces');
+            $seoOgDesc  = trim($__env->yieldContent('og_description')) ?: $seoDesc;
+            $seoOgImg   = trim($__env->yieldContent('og_image')) ?: asset('icons/og-default.png');
+            $seoOgType  = trim($__env->yieldContent('og_type')) ?: 'website';
+            $seoRobots  = trim($__env->yieldContent('robots')) ?: 'noindex, nofollow';
+            $seoCanonical = trim($__env->yieldContent('canonical')) ?: '';
+        @endphp
+
+        <meta name="description" content="{{ $seoDesc }}">
+        <meta name="robots" content="{{ $seoRobots }}">
+
+        @if($seoCanonical)
+        <link rel="canonical" href="{{ $seoCanonical }}">
+        @endif
+
+        {{-- Open Graph --}}
+        <meta property="og:site_name" content="MyRaces">
+        <meta property="og:title" content="{{ $seoOgTitle }}">
+        <meta property="og:description" content="{{ $seoOgDesc }}">
+        <meta property="og:type" content="{{ $seoOgType }}">
+        <meta property="og:url" content="{{ $seoCanonical ?: url()->current() }}">
+        <meta property="og:image" content="{{ $seoOgImg }}">
+        <meta property="og:locale" content="{{ app()->getLocale() === 'es' ? 'es_ES' : 'en_US' }}">
+
+        {{-- Twitter Card --}}
+        <meta name="twitter:card" content="@yield('twitter_card', 'summary')">
+        <meta name="twitter:title" content="{{ $seoOgTitle }}">
+        <meta name="twitter:description" content="{{ $seoOgDesc }}">
+        <meta name="twitter:image" content="{{ $seoOgImg }}">
+
+        @hasSection('json_ld')
+        <script type="application/ld+json">@yield('json_ld')</script>
+        @endif
+
+        @php $gaId = \App\Models\Setting::get('google_analytics_id'); @endphp
+        @if($gaId)
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+        <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $gaId }}');</script>
+        @endif
+
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=public-sans:300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style>:root { --color-primary: {{ \App\Models\Setting::primaryColorChannels() }}; }</style>
 
         @if((auth()->user()?->profile?->theme ?? 'dark') === 'light')
         <script>
@@ -50,7 +96,7 @@
 
             <div class="h-[60px] flex items-center px-5 flex-shrink-0" style="border-bottom:1px solid rgba(255,255,255,0.06)">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center" style="box-shadow:0 4px 12px rgba(200,250,95,0.35)">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center" style="box-shadow:0 4px 12px rgb(var(--color-primary) / 0.35)">
                         <svg xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px" class="text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
@@ -128,7 +174,7 @@
                             </a>
                         @else
                             <div class="w-9 h-9 flex items-center justify-center">
-                                <div class="w-7 h-7 bg-primary rounded-lg flex items-center justify-center" style="box-shadow:0 4px 12px rgba(200,250,95,0.30)">
+                                <div class="w-7 h-7 bg-primary rounded-lg flex items-center justify-center" style="box-shadow:0 4px 12px rgb(var(--color-primary) / 0.30)">
                                     <svg class="text-black" style="width:13px;height:13px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                     </svg>
@@ -287,7 +333,7 @@
                     <div class="relative -top-5">
                         <a href="{{ route('races.create') }}"
                            class="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-black active:scale-95 transition-transform"
-                           style="box-shadow: 0 8px 24px rgba(200,250,95,0.45), 0 0 0 4px rgba(10,10,10,0.96)">
+                           style="box-shadow: 0 8px 24px rgb(var(--color-primary) / 0.45), 0 0 0 4px rgba(10,10,10,0.96)">
                             <svg style="width:26px;height:26px" class="text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
                             </svg>
@@ -456,7 +502,7 @@
         <button onclick="document.getElementById('ios-install-banner').style.display='none';localStorage.setItem('pwa-banner-dismissed','1')"
                 style="position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(255,255,255,0.40);font-size:18px;cursor:pointer;line-height:1;padding:4px">×</button>
         <div style="display:flex;align-items:center;gap:12px">
-            <div style="width:40px;height:40px;background:#C8FA5F;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <div style="width:40px;height:40px;background:rgb(var(--color-primary));border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#000" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                 </svg>

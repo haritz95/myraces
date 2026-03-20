@@ -2,6 +2,56 @@
     @section('page_title', $raceEvent->name)
     @section('back_url', route('events.index'))
 
+    @php
+        $eventUrl  = route('events.show', $raceEvent);
+        $eventDesc = $raceEvent->description
+            ? \Illuminate\Support\Str::limit(strip_tags($raceEvent->description), 155)
+            : 'Carrera ' . $raceEvent->raceTypeLabel() . ($raceEvent->category ? ' · ' . $raceEvent->category : '') . ' en ' . $raceEvent->location . ($raceEvent->event_date ? ', ' . $raceEvent->event_date->translatedFormat('j \d\e F \d\e Y') : '') . '.';
+        $eventImage = $raceEvent->imageSource() ?? asset('icons/og-default.png');
+
+        $jsonLd = array_filter([
+            '@context'            => 'https://schema.org',
+            '@type'               => 'SportsEvent',
+            'name'                => $raceEvent->name,
+            'url'                 => $eventUrl,
+            'description'         => $eventDesc,
+            'startDate'           => $raceEvent->event_date?->toIso8601String(),
+            'image'               => $raceEvent->imageSource(),
+            'location'            => [
+                '@type'   => 'Place',
+                'name'    => $raceEvent->location,
+                'address' => array_filter([
+                    '@type'           => 'PostalAddress',
+                    'addressLocality' => $raceEvent->location,
+                    'addressRegion'   => $raceEvent->province,
+                    'addressCountry'  => $raceEvent->country ?? 'ES',
+                ]),
+            ],
+            'organizer'           => $raceEvent->organizer ? ['@type' => 'Organization', 'name' => $raceEvent->organizer] : null,
+            'offers'              => $raceEvent->price ? [
+                '@type'        => 'Offer',
+                'price'        => (string) $raceEvent->price,
+                'priceCurrency' => 'EUR',
+                'url'          => $raceEvent->registration_url ?? $eventUrl,
+                'availability' => 'https://schema.org/InStock',
+            ] : null,
+            'eventStatus'         => $raceEvent->status === 'cancelled'
+                ? 'https://schema.org/EventCancelled'
+                : 'https://schema.org/EventScheduled',
+            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+        ]);
+    @endphp
+
+    @section('meta_description', $eventDesc)
+    @section('robots', 'index, follow')
+    @section('canonical', $eventUrl)
+    @section('og_title', $raceEvent->name . ' — MyRaces')
+    @section('og_description', $eventDesc)
+    @section('og_type', 'article')
+    @section('og_image', $eventImage)
+    @section('twitter_card', 'summary_large_image')
+    @section('json_ld', json_encode($jsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT))
+
     <div class="max-w-2xl mx-auto px-4 py-6 space-y-5">
 
         {{-- Hero --}}
@@ -116,7 +166,7 @@
                 </div>
                 <button @click="toggle()" :disabled="loading"
                         class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-sm transition-all"
-                        :style="attending ? 'background:rgba(248,113,113,0.12);color:#f87171' : 'background:#C8FA5F;color:#000'">
+                        :style="attending ? 'background:rgba(248,113,113,0.12);color:#f87171' : 'background:rgb(var(--color-primary));color:#000'">
                     <span x-show="!loading" x-text="attending ? 'Me voy' : 'Me apunto'"></span>
                     <span x-show="loading" class="opacity-50">...</span>
                 </button>
@@ -146,8 +196,8 @@
 
                     {{-- Icon --}}
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                         style="background:rgba(200,250,95,0.10)">
-                        <svg class="w-6 h-6" style="color:#C8FA5F" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         style="background:rgb(var(--color-primary) / 0.10)">
+                        <svg class="w-6 h-6" style="color:rgb(var(--color-primary))" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                         </svg>
                     </div>
@@ -180,7 +230,7 @@
                         </button>
                         <button @click="addToRaces()"
                                 class="flex-1 py-3 rounded-xl font-black text-sm text-black transition-all active:scale-[0.97]"
-                                style="background:#C8FA5F">
+                                style="background:rgb(var(--color-primary))">
                             Sí, añadir
                         </button>
                     </div>
@@ -269,7 +319,7 @@
                         @if($modality->registration_url)
                             <a href="{{ $modality->registration_url }}" target="_blank" rel="noopener noreferrer"
                                class="flex-shrink-0 px-4 py-2 rounded-xl text-xs font-black transition-all active:scale-95"
-                               style="background:rgba(200,250,95,0.15);color:#C8FA5F">
+                               style="background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))">
                                 Inscribirse
                             </a>
                         @endif
@@ -291,7 +341,7 @@
             @if($raceEvent->registration_url)
             <a href="{{ $raceEvent->registration_url }}" target="_blank" rel="noopener noreferrer"
                class="flex items-center justify-between px-5 py-4 rounded-2xl transition-all active:scale-[0.99]"
-               style="background:linear-gradient(135deg,rgba(200,250,95,0.12),rgba(200,250,95,0.05));border:1px solid rgba(200,250,95,0.25)">
+               style="background:linear-gradient(135deg,rgb(var(--color-primary) / 0.12),rgb(var(--color-primary) / 0.05));border:1px solid rgb(var(--color-primary) / 0.25)">
                 <div>
                     <p class="text-sm font-black text-primary">Inscribirse en la carrera</p>
                     <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.40)">

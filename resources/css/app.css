@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --color-primary: 200 250 95; /* #C8FA5F — overridden dynamically via Settings */
+}
+
 @layer base {
     html {
         -webkit-font-smoothing: antialiased;
@@ -20,7 +24,7 @@
         font-variant-numeric: tabular-nums;
         font-feature-settings: "tnum";
     }
-    .active-tab { border-bottom: 3px solid #C8FA5F; }
+    .active-tab { border-bottom: 3px solid rgb(var(--color-primary)); }
     .text-muted  { color: rgba(255,255,255,0.45); }
     .text-subtle { color: rgba(255,255,255,0.25); }
     .border-dim  { border-color: rgba(255,255,255,0.07); }
@@ -45,7 +49,7 @@
     }
     .btn-primary {
         @apply btn bg-primary text-black
-               hover:bg-[#b8ea4f]
+               hover:opacity-90
                shadow-fab
                focus-visible:ring-primary/50;
     }

@@ -25,7 +25,7 @@
         <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0
                     {{ $item->is_enabled ? 'bg-primary/10' : 'bg-white/[0.04]' }}">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                 style="{{ $item->is_enabled ? 'color:#C8FA5F' : 'color:rgba(255,255,255,0.20)' }}">
+                 style="{{ $item->is_enabled ? 'color:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.20)' }}">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="{{ $item->icon_path }}"/>
             </svg>
         </div>
@@ -69,7 +69,7 @@
                     {{-- Barra inferior --}}
                     <button type="submit" name="location" value="bottom_nav" title="Menú inferior"
                             class="px-2 py-1 text-[10px] font-black transition-colors border-l"
-                            style="border-color:rgba(255,255,255,0.08);{{ $item->location === 'bottom_nav' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'color:rgba(255,255,255,0.20)' }}">
+                            style="border-color:rgba(255,255,255,0.08);{{ $item->location === 'bottom_nav' ? 'background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.20)' }}">
                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                         </svg>
@@ -77,7 +77,7 @@
                     {{-- Drawer --}}
                     <button type="submit" name="location" value="drawer" title="Drawer (Más)"
                             class="px-2 py-1 text-[10px] font-black transition-colors border-l"
-                            style="border-color:rgba(255,255,255,0.08);{{ $item->location === 'drawer' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'color:rgba(255,255,255,0.20)' }}">
+                            style="border-color:rgba(255,255,255,0.08);{{ $item->location === 'drawer' ? 'background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.20)' }}">
                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
                         </svg>
@@ -200,7 +200,7 @@
                                     :class="selectedIcon === icon.path
                                         ? 'bg-primary/20 ring-1 ring-primary/50'
                                         : 'hover:bg-white/[0.08]'"
-                                    :style="selectedIcon === icon.path ? 'color:#C8FA5F' : 'color:rgba(255,255,255,0.35)'">
+                                    :style="selectedIcon === icon.path ? 'color:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.35)'">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" :d="icon.path"/>
                                 </svg>

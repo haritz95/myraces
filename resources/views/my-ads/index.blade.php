@@ -29,7 +29,7 @@
                 @php
                     $statusColors = [
                         'pending'  => ['rgba(251,191,36,0.15)', '#fbbf24'],
-                        'approved' => ['rgba(200,250,95,0.12)', '#C8FA5F'],
+                        'approved' => ['rgb(var(--color-primary) / 0.12)', 'rgb(var(--color-primary))'],
                         'paused'   => ['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.40)'],
                         'rejected' => ['rgba(248,113,113,0.12)', '#f87171'],
                     ];

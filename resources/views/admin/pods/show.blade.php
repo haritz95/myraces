@@ -8,7 +8,7 @@
 
     @php
         $statusColor = match($pod->status) {
-            'active'    => '#C8FA5F',
+            'active'    => 'rgb(var(--color-primary))',
             'completed' => '#f59e0b',
             default     => 'rgba(255,255,255,0.40)',
         };

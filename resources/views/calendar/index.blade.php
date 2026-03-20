@@ -14,7 +14,7 @@
         $racesByDay = $races->groupBy(fn($r) => $r->date->day);
 
         $statusColors = [
-            'upcoming'  => '#C8FA5F',
+            'upcoming'  => 'rgb(var(--color-primary))',
             'completed' => '#4ade80',
             'dnf'       => '#f87171',
             'dns'       => '#6b7280',
@@ -68,7 +68,7 @@
                     @endphp
                     <div class="h-14 p-1 relative" style="border-right:{{ $col === 6 ? '0' : '1px solid rgba(255,255,255,0.04)' }};border-bottom:1px solid rgba(255,255,255,0.04)">
                         <span class="text-xs block mb-0.5 {{ $isToday ? 'w-6 h-6 rounded-full flex items-center justify-center font-black text-black mx-auto' : 'text-center font-semibold' }}"
-                              style="{{ $isToday ? 'background:#C8FA5F' : 'color:rgba(255,255,255,0.50)' }}">
+                              style="{{ $isToday ? 'background:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.50)' }}">
                             {{ $day }}
                         </span>
                         @foreach($dayRaces->take(2) as $race)

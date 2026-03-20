@@ -10,7 +10,7 @@
                 <a href="{{ route('races.show', $nextRace) }}"
                    class="relative group overflow-hidden rounded-3xl block" style="aspect-ratio:16/9">
                     <div class="absolute inset-0" style="background:linear-gradient(135deg,#0a0a0a 0%,#1a1a0a 40%,#2d3a00 100%)"></div>
-                    <div class="absolute inset-0 opacity-[0.07]" style="background-image:radial-gradient(circle at 20% 80%, #C8FA5F 1px, transparent 1px),radial-gradient(circle at 80% 20%, #C8FA5F 1px, transparent 1px);background-size:40px 40px"></div>
+                    <div class="absolute inset-0 opacity-[0.07]" style="background-image:radial-gradient(circle at 20% 80%, rgb(var(--color-primary)) 1px, transparent 1px),radial-gradient(circle at 80% 20%, rgb(var(--color-primary)) 1px, transparent 1px);background-size:40px 40px"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 p-6 w-full">
                         <p class="text-primary text-[11px] font-black uppercase tracking-[0.2em] mb-2">
@@ -22,7 +22,7 @@
                                 <span class="text-sm font-semibold">{{ $nextRace->formatted_distance }} {{ $nextRace->distance_unit }}</span>
                                 <span class="text-sm font-semibold">{{ __('races.modalities.' . $nextRace->modality) }}</span>
                             </div>
-                            <span class="bg-primary text-black rounded-full px-5 py-2 font-black text-sm" style="box-shadow:0 4px 12px rgba(200,250,95,0.40)">
+                            <span class="bg-primary text-black rounded-full px-5 py-2 font-black text-sm" style="box-shadow:0 4px 12px rgb(var(--color-primary) / 0.40)">
                                 Ver →
                             </span>
                         </div>
@@ -53,7 +53,7 @@
             <div class="grid grid-cols-2 gap-3">
                 @php
                     $statCards = [
-                        ['value' => $stats['year_races'],                              'label' => 'Carreras',       'accent' => '#C8FA5F'],
+                        ['value' => $stats['year_races'],                              'label' => 'Carreras',       'accent' => 'rgb(var(--color-primary))'],
                         ['value' => number_format((float) $stats['total_km'], 0).' km','label' => 'Kilómetros',     'accent' => '#60a5fa'],
                         ['value' => $stats['completed_races'] ?? $stats['year_races'], 'label' => 'Finalizadas',    'accent' => '#4ade80'],
                         ['value' => number_format((float) $stats['total_spent'], 0).'€','label' => 'Invertido',     'accent' => '#fb923c'],

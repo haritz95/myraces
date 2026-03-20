@@ -5,9 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0a0a0a">
     <title>MyRaces — {{ __('landing.hero_title_1') }} {{ __('landing.hero_title_highlight') }} {{ __('landing.hero_title_2') }}</title>
+
+    @php $appUrl = rtrim(config('app.url'), '/'); @endphp
+    <meta name="description" content="MyRaces — la app para corredores. Organiza tus carreras de running, trail y triatlón, lleva un registro de tiempos y encuentra próximos eventos cerca de ti.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ $appUrl }}/">
+
+    <meta property="og:site_name" content="MyRaces">
+    <meta property="og:title" content="MyRaces — Organiza tus carreras">
+    <meta property="og:description" content="La app para corredores. Organiza tus carreras de running, trail y triatlón, lleva un registro de tiempos y encuentra próximos eventos cerca de ti.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ $appUrl }}/">
+    <meta property="og:image" content="{{ $appUrl }}/icons/og-default.png">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'es' ? 'es_ES' : 'en_US' }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MyRaces — Organiza tus carreras">
+    <meta name="twitter:description" content="La app para corredores. Organiza tus carreras de running, trail y triatlón, lleva un registro de tiempos y encuentra próximos eventos cerca de ti.">
+    <meta name="twitter:image" content="{{ $appUrl }}/icons/og-default.png">
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "WebSite",
+        "name": "MyRaces",
+        "url": "{{ $appUrl }}/",
+        "description": "La app para corredores. Organiza tus carreras de running, trail y triatlón.",
+        "potentialAction": {
+            "@@type": "SearchAction",
+            "target": {
+                "@@type": "EntryPoint",
+                "urlTemplate": "{{ $appUrl }}/events?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    @php $gaId = \App\Models\Setting::get('google_analytics_id'); @endphp
+    @if($gaId)
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $gaId }}');</script>
+    @endif
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=public-sans:300,400,500,600,700,800,900i,800i,700i&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>:root { --color-primary: {{ \App\Models\Setting::primaryColorChannels() }}; }</style>
 
     <script>
         (function () {
@@ -21,24 +65,24 @@
         .lp-nav { background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .lp-nav-link { color: rgba(255,255,255,0.45); font-size:.875rem; font-weight:500; transition:color .15s; letter-spacing:.01em; }
         .lp-nav-link:hover { color: #fff; }
-        .lp-logo { font-style: italic; font-weight: 900; font-size: 1.25rem; letter-spacing: -.03em; color: #C8FA5F; }
+        .lp-logo { font-style: italic; font-weight: 900; font-size: 1.25rem; letter-spacing: -.03em; color: rgb(var(--color-primary)); }
 
         /* ── HERO ──────────────────────────────────────────────── */
         .lp-hero { background: #0a0a0a; overflow: hidden; }
-        .hero-hl { color: #C8FA5F; }
+        .hero-hl { color: rgb(var(--color-primary)); }
         .hero-sub { color: rgba(255,255,255,0.45); }
         .hero-ghost { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09); color: rgba(255,255,255,0.80); }
         .hero-ghost:hover { background: rgba(255,255,255,0.10); }
 
         /* ── BENTO ─────────────────────────────────────────────── */
         .bento-card { background: #161616; border: 1px solid rgba(255,255,255,0.07); border-radius: 1rem; }
-        .bento-label { color: #C8FA5F; font-size: .625rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+        .bento-label { color: rgb(var(--color-primary)); font-size: .625rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
 
         /* ── FEATURES ──────────────────────────────────────────── */
         .feat-card { background: #161616; border: 1px solid rgba(255,255,255,0.06); transition: all .2s; }
         .feat-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
-        .feat-icon-bg { background: rgba(200,250,95,0.10); }
-        .feat-icon { color: #C8FA5F; }
+        .feat-icon-bg { background: rgb(var(--color-primary) / 0.10); }
+        .feat-icon { color: rgb(var(--color-primary)); }
         .soon-badge { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.40); }
 
         /* ── CTA ───────────────────────────────────────────────── */
@@ -51,7 +95,7 @@
         .footer-copy { color: rgba(255,255,255,0.25); font-size:.8125rem; }
 
         /* ── CONTROLS ──────────────────────────────────────────── */
-        .lp-lang-active { color: #C8FA5F; }
+        .lp-lang-active { color: rgb(var(--color-primary)); }
         .lp-lang-inactive { color: rgba(255,255,255,0.30); }
         .lp-lang-inactive:hover { color: rgba(255,255,255,0.65); }
         .lp-lang-dot { color: rgba(255,255,255,0.15); }
@@ -135,7 +179,7 @@
                         {{ __('landing.sign_in') }}
                     </a>
                     <a href="{{ route('register') }}" class="btn btn-primary text-sm px-5 py-2"
-                       style="box-shadow: 0 0 20px rgba(200,250,95,0.2)">
+                       style="box-shadow: 0 0 20px rgb(var(--color-primary) / 0.2)">
                         {{ __('landing.register_free') }}
                     </a>
                 @endauth
@@ -148,14 +192,14 @@
 
         {{-- Background glow right --}}
         <div class="absolute top-0 right-0 -z-0 w-1/2 h-full pointer-events-none">
-            <div class="absolute inset-0" style="background: linear-gradient(to left, rgba(200,250,95,0.04) 0%, transparent 60%)"></div>
+            <div class="absolute inset-0" style="background: linear-gradient(to left, rgb(var(--color-primary) / 0.04) 0%, transparent 60%)"></div>
         </div>
         {{-- Abstract lines --}}
         <svg class="absolute right-0 top-0 h-full w-1/2 opacity-20 pointer-events-none" viewBox="0 0 600 800" preserveAspectRatio="none">
-            <line x1="0" y1="600" x2="600" y2="100" stroke="#C8FA5F" stroke-width="1.5" opacity="0.5"/>
-            <line x1="0" y1="650" x2="600" y2="150" stroke="#C8FA5F" stroke-width="0.8" opacity="0.35"/>
-            <line x1="0" y1="700" x2="600" y2="200" stroke="#C8FA5F" stroke-width="0.4" opacity="0.20"/>
-            <circle cx="500" cy="100" r="200" fill="#C8FA5F" opacity="0.04"/>
+            <line x1="0" y1="600" x2="600" y2="100" stroke="rgb(var(--color-primary))" stroke-width="1.5" opacity="0.5"/>
+            <line x1="0" y1="650" x2="600" y2="150" stroke="rgb(var(--color-primary))" stroke-width="0.8" opacity="0.35"/>
+            <line x1="0" y1="700" x2="600" y2="200" stroke="rgb(var(--color-primary))" stroke-width="0.4" opacity="0.20"/>
+            <circle cx="500" cy="100" r="200" fill="rgb(var(--color-primary))" opacity="0.04"/>
         </svg>
 
         <div class="max-w-7xl mx-auto px-6 py-24 md:py-32 w-full relative z-10">
@@ -175,7 +219,7 @@
                 <div class="flex flex-wrap gap-4">
                     <a href="{{ route('register') }}"
                        class="inline-flex items-center gap-2 font-black italic text-black uppercase tracking-tighter px-8 py-4 rounded-full transition-all active:scale-[0.97]"
-                       style="background:#C8FA5F; box-shadow:0 0 32px rgba(200,250,95,0.25); font-size:1.05rem">
+                       style="background:rgb(var(--color-primary)); box-shadow:0 0 32px rgb(var(--color-primary) / 0.25); font-size:1.05rem">
                         {{ __('landing.cta_start') }}
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -224,34 +268,34 @@
                     </div>
                     <div>
                         <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:rgba(255,255,255,0.35)">{{ __('landing.bento_cost') }}</p>
-                        <p class="font-black italic text-4xl" style="color:#C8FA5F">100%</p>
+                        <p class="font-black italic text-4xl" style="color:rgb(var(--color-primary))">100%</p>
                     </div>
                 </div>
 
                 {{-- Progress bar accent --}}
                 <div class="h-1 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.06)">
-                    <div class="h-full rounded-full" style="width:72%; background: linear-gradient(90deg,#C8FA5F,#a8e840)"></div>
+                    <div class="h-full rounded-full" style="width:72%; background: linear-gradient(90deg,rgb(var(--color-primary)),#a8e840)"></div>
                 </div>
                 <p class="text-[10px] font-medium mt-2" style="color:rgba(255,255,255,0.20)">{{ __('landing.bento_bar_label') }}</p>
 
                 {{-- bg glow --}}
                 <div class="absolute -bottom-10 -right-10 w-48 h-48 rounded-full pointer-events-none"
-                     style="background:radial-gradient(circle,rgba(200,250,95,0.06) 0%,transparent 70%)"></div>
+                     style="background:radial-gradient(circle,rgb(var(--color-primary) / 0.06) 0%,transparent 70%)"></div>
             </div>
 
             {{-- Side card --}}
             <div class="md:col-span-4 bento-card p-8 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(200,250,95,0.12)">
-                            <svg class="w-4 h-4" style="color:#C8FA5F" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgb(var(--color-primary) / 0.12)">
+                            <svg class="w-4 h-4" style="color:rgb(var(--color-primary))" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                             </svg>
                         </div>
                         <span class="bento-label">{{ __('landing.bento_records') }}</span>
                     </div>
                     <h3 class="text-white font-black italic text-4xl tracking-tighter uppercase mb-1">{{ __('landing.bento_pb') }}</h3>
-                    <p class="font-black italic" style="font-size:3.5rem; color:#C8FA5F; line-height:1">∞</p>
+                    <p class="font-black italic" style="font-size:3.5rem; color:rgb(var(--color-primary)); line-height:1">∞</p>
                 </div>
                 <p class="text-sm leading-relaxed mt-4" style="color:rgba(255,255,255,0.38)">{{ __('landing.bento_records_desc') }}</p>
             </div>
@@ -264,8 +308,8 @@
             ] as $card)
                 <div class="md:col-span-4 bento-card p-6 flex items-center gap-5">
                     <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                         style="background:rgba(200,250,95,0.08)">
-                        <svg class="w-5 h-5" style="color:#C8FA5F" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         style="background:rgb(var(--color-primary) / 0.08)">
+                        <svg class="w-5 h-5" style="color:rgb(var(--color-primary))" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $card['icon'] }}"/>
                         </svg>
                     </div>
@@ -284,7 +328,7 @@
             <h2 class="text-white font-black italic text-4xl md:text-5xl tracking-tighter uppercase mb-4">
                 {{ __('landing.features_title') }}
             </h2>
-            <div class="h-1 w-20 mx-auto rounded-full" style="background:#C8FA5F; opacity:.8"></div>
+            <div class="h-1 w-20 mx-auto rounded-full" style="background:rgb(var(--color-primary)); opacity:.8"></div>
             <p class="mt-5 text-lg max-w-lg mx-auto" style="color:rgba(255,255,255,0.42)">{{ __('landing.features_subtitle') }}</p>
         </div>
 
@@ -319,7 +363,7 @@
     <section class="py-16 px-6 max-w-7xl mx-auto" id="about">
         <div class="cta-card rounded-3xl py-20 px-8 text-center">
             <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6"
-                 style="background:#C8FA5F; box-shadow:0 8px 32px rgba(200,250,95,0.30)">
+                 style="background:rgb(var(--color-primary)); box-shadow:0 8px 32px rgb(var(--color-primary) / 0.30)">
                 <svg class="w-8 h-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                 </svg>
@@ -330,7 +374,7 @@
             <p class="text-lg mb-8 max-w-md mx-auto" style="color:rgba(255,255,255,0.45)">{{ __('landing.cta_subtitle') }}</p>
             <a href="{{ route('register') }}"
                class="inline-flex items-center gap-2 font-black italic text-black uppercase tracking-tighter px-9 py-4 rounded-full transition-all active:scale-[0.97]"
-               style="background:#C8FA5F; box-shadow:0 8px 32px rgba(200,250,95,0.25); font-size:1.05rem">
+               style="background:rgb(var(--color-primary)); box-shadow:0 8px 32px rgba(200,250,95,0.25); font-size:1.05rem">
                 {{ __('landing.cta_btn') }}
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -360,23 +404,30 @@
                 </div>
             </nav>
 
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer"
-                     style="background:rgba(255,255,255,0.07)"
-                     onmouseenter="this.style.background='#C8FA5F';this.style.color='#253600'"
-                     onmouseleave="this.style.background='rgba(255,255,255,0.07)';this.style.color=''">
-                    <svg class="w-3.5 h-3.5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                    </svg>
-                </div>
-                <div class="w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer"
-                     style="background:rgba(255,255,255,0.07)"
-                     onmouseenter="this.style.background='#C8FA5F';this.style.color='#253600'"
-                     onmouseleave="this.style.background='rgba(255,255,255,0.07)';this.style.color=''">
-                    <svg class="w-3.5 h-3.5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                </div>
+            @php
+                $socials = [
+                    ['key' => 'social_instagram', 'icon' => 'M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01M6.5 20.5h11a3 3 0 003-3v-11a3 3 0 00-3-3h-11a3 3 0 00-3 3v11a3 3 0 003 3z'],
+                    ['key' => 'social_twitter',   'icon' => 'M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z'],
+                    ['key' => 'social_facebook',  'icon' => 'M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z'],
+                    ['key' => 'social_strava',     'icon' => 'M13 10V3L4 14h7v7l9-11h-7z'],
+                    ['key' => 'social_youtube',    'icon' => 'M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z'],
+                ];
+            @endphp
+            <div class="flex items-center gap-2">
+                @foreach($socials as $social)
+                    @php $url = \App\Models\Setting::get($social['key']); @endphp
+                    @if($url)
+                    <a href="{{ $url }}" target="_blank" rel="noopener"
+                       class="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                       style="background:rgba(255,255,255,0.07)"
+                       onmouseenter="this.style.background='rgb(var(--color-primary))'"
+                       onmouseleave="this.style.background='rgba(255,255,255,0.07)'">
+                        <svg class="w-3.5 h-3.5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $social['icon'] }}"/>
+                        </svg>
+                    </a>
+                    @endif
+                @endforeach
             </div>
         </div>
     </footer>

@@ -14,7 +14,7 @@
 
     @php
         $accentColor = match($race->status) {
-            'upcoming'  => '#C8FA5F',
+            'upcoming'  => 'rgb(var(--color-primary))',
             'completed' => '#4ade80',
             'dnf'       => '#f87171',
             default     => '#6b7280',

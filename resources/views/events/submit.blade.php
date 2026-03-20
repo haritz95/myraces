@@ -26,7 +26,7 @@
         @endif
 
         {{-- Info banner --}}
-        <div class="rounded-2xl px-5 py-4" style="background:rgba(200,250,95,0.08);border:1px solid rgba(200,250,95,0.20)">
+        <div class="rounded-2xl px-5 py-4" style="background:rgb(var(--color-primary) / 0.08);border:1px solid rgb(var(--color-primary) / 0.20)">
             <p class="text-sm font-black text-primary mb-1">Propón una carrera a la comunidad</p>
             <p class="text-xs" style="color:rgba(255,255,255,0.50)">
                 Nuestro equipo revisará tu envío antes de publicarlo. Te avisaremos cuando esté aprobado.
@@ -69,12 +69,12 @@
                     <div class="flex rounded-xl overflow-hidden w-fit" style="border:1px solid rgba(255,255,255,0.10)">
                         <button type="button" @click="imageMode='upload'"
                                 class="px-4 py-1.5 text-xs font-bold transition-colors"
-                                :style="imageMode==='upload' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'color:rgba(255,255,255,0.40)'">
+                                :style="imageMode==='upload' ? 'background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.40)'">
                             Subir archivo
                         </button>
                         <button type="button" @click="imageMode='url'"
                                 class="px-4 py-1.5 text-xs font-bold transition-colors"
-                                :style="imageMode==='url' ? 'background:rgba(200,250,95,0.15);color:#C8FA5F' : 'color:rgba(255,255,255,0.40)'">
+                                :style="imageMode==='url' ? 'background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))' : 'color:rgba(255,255,255,0.40)'">
                             URL externa
                         </button>
                     </div>

@@ -1,6 +1,6 @@
 @php
     $accentColor = match($race->status) {
-        'upcoming'  => '#C8FA5F',
+        'upcoming'  => 'rgb(var(--color-primary))',
         'completed' => '#4ade80',
         'dnf'       => '#f87171',
         default     => '#6b7280',
@@ -40,7 +40,7 @@
                 </div>
             @elseif($race->status === 'upcoming')
                 @php $d = now()->startOfDay()->diffInDays($race->date->startOfDay()); @endphp
-                <span class="text-[10px] font-black py-1 px-2.5 rounded-full uppercase" style="background:rgba(200,250,95,0.12);color:#C8FA5F">
+                <span class="text-[10px] font-black py-1 px-2.5 rounded-full uppercase" style="background:rgb(var(--color-primary) / 0.12);color:rgb(var(--color-primary))">
                     {{ $d === 0 ? '¡Hoy!' : ($d === 1 ? 'Mañana' : "En {$d} días") }}
                 </span>
             @else

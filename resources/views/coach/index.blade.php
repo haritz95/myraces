@@ -43,11 +43,11 @@
             {{-- Coach Hero --}}
             <div class="px-5 pt-6 pb-4">
                 <div class="relative overflow-hidden rounded-3xl p-5 mb-5"
-                     style="background:linear-gradient(135deg,#0f1a00 0%,#1a2d00 50%,#253d00 100%);border:1px solid rgba(200,250,95,0.15)">
-                    <div class="absolute inset-0 opacity-[0.05]" style="background-image:radial-gradient(circle at 20% 80%, #C8FA5F 1px, transparent 1px);background-size:30px 30px"></div>
+                     style="background:linear-gradient(135deg,#0f1a00 0%,#1a2d00 50%,#253d00 100%);border:1px solid rgb(var(--color-primary) / 0.15)">
+                    <div class="absolute inset-0 opacity-[0.05]" style="background-image:radial-gradient(circle at 20% 80%, rgb(var(--color-primary)) 1px, transparent 1px);background-size:30px 30px"></div>
                     <div class="relative flex items-center gap-4 mb-4">
                         <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-                             style="background:rgba(200,250,95,0.12);border:1px solid rgba(200,250,95,0.25)">
+                             style="background:rgb(var(--color-primary) / 0.12);border:1px solid rgb(var(--color-primary) / 0.25)">
                             <svg class="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                             </svg>
@@ -79,7 +79,7 @@
                         <button @click="input = '{{ $chip }}'; sendMessage()"
                                 class="flex-shrink-0 text-xs font-bold px-3.5 py-2 rounded-full whitespace-nowrap transition-colors"
                                 style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.60);border:1px solid rgba(255,255,255,0.10)"
-                                onmouseover="this.style.background='rgba(200,250,95,0.12)';this.style.color='#C8FA5F';this.style.borderColor='rgba(200,250,95,0.25)'"
+                                onmouseover="this.style.background='rgb(var(--color-primary) / 0.12)';this.style.color='rgb(var(--color-primary))';this.style.borderColor='rgb(var(--color-primary) / 0.25)'"
                                 onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='rgba(255,255,255,0.60)';this.style.borderColor='rgba(255,255,255,0.10)'">
                             {{ $chip }}
                         </button>
@@ -93,7 +93,7 @@
                     <div :class="msg.role === 'coach' ? 'flex gap-3' : 'flex gap-3 flex-row-reverse'">
                         <div x-show="msg.role === 'coach'"
                              class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
-                             style="background:rgba(200,250,95,0.12);border:1px solid rgba(200,250,95,0.20)">
+                             style="background:rgb(var(--color-primary) / 0.12);border:1px solid rgb(var(--color-primary) / 0.20)">
                             <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                             </svg>
@@ -103,7 +103,7 @@
                                 : 'rounded-3xl rounded-tr-md px-4 py-3 text-sm max-w-[85%] text-black font-semibold'"
                              :style="msg.role === 'coach'
                                 ? 'background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.08)'
-                                : 'background:#C8FA5F'"
+                                : 'background:rgb(var(--color-primary))'"
                              x-text="msg.text">
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                 {{-- Typing indicator --}}
                 <div x-show="loading" class="flex gap-3">
                     <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                         style="background:rgba(200,250,95,0.12);border:1px solid rgba(200,250,95,0.20)">
+                         style="background:rgb(var(--color-primary) / 0.12);border:1px solid rgb(var(--color-primary) / 0.20)">
                         <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
@@ -137,7 +137,7 @@
                        class="flex-1 input-field">
                 <button @click="sendMessage()" :disabled="loading || !input.trim()"
                         class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-black font-black transition-all disabled:opacity-30 bg-primary active:scale-95"
-                        style="box-shadow:0 4px 12px rgba(200,250,95,0.35)">
+                        style="box-shadow:0 4px 12px rgb(var(--color-primary) / 0.35)">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                     </svg>

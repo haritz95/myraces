@@ -57,7 +57,7 @@
                                 <div class="flex flex-wrap gap-1.5 mt-2">
                                     @foreach($event->modalities as $mod)
                                         <span class="text-[10px] font-bold px-2.5 py-1 rounded-full"
-                                              style="background:rgba(200,250,95,0.10);color:#C8FA5F">
+                                              style="background:rgb(var(--color-primary) / 0.10);color:rgb(var(--color-primary))">
                                             {{ $mod->name }}{{ $mod->distance_km ? ' · ' . $mod->distance_km . ' km' : '' }}
                                         </span>
                                     @endforeach
@@ -82,7 +82,7 @@
                         <form method="POST" action="{{ route('admin.events.approve', $event) }}">
                             @csrf
                             <button type="submit" class="flex items-center gap-1.5 text-xs font-black px-4 py-2 rounded-xl transition-colors"
-                                    style="background:rgba(200,250,95,0.15);color:#C8FA5F">
+                                    style="background:rgb(var(--color-primary) / 0.15);color:rgb(var(--color-primary))">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                 </svg>

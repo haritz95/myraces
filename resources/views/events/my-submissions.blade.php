@@ -32,8 +32,8 @@
                 @php
                     $statusConfig = match($event->status) {
                         'pending'  => ['label' => 'Pendiente de revisión', 'color' => '#f59e0b', 'bg' => 'rgba(245,158,11,0.12)'],
-                        'upcoming' => ['label' => 'Aprobada', 'color' => '#C8FA5F', 'bg' => 'rgba(200,250,95,0.12)'],
-                        'open'     => ['label' => 'Aprobada · Abierta', 'color' => '#C8FA5F', 'bg' => 'rgba(200,250,95,0.12)'],
+                        'upcoming' => ['label' => 'Aprobada', 'color' => 'rgb(var(--color-primary))', 'bg' => 'rgb(var(--color-primary) / 0.12)'],
+                        'open'     => ['label' => 'Aprobada · Abierta', 'color' => 'rgb(var(--color-primary))', 'bg' => 'rgb(var(--color-primary) / 0.12)'],
                         'rejected' => ['label' => 'Rechazada', 'color' => '#f87171', 'bg' => 'rgba(248,113,113,0.12)'],
                         default    => ['label' => ucfirst($event->status), 'color' => 'rgba(255,255,255,0.40)', 'bg' => 'rgba(255,255,255,0.06)'],
                     };

@@ -1,2 +1,27 @@
 User-agent: *
-Disallow:
+Allow: /
+Allow: /events
+
+Disallow: /dashboard
+Disallow: /races
+Disallow: /stats
+Disallow: /expenses
+Disallow: /personal-records
+Disallow: /gear
+Disallow: /calendar
+Disallow: /pods
+Disallow: /coach
+Disallow: /strava
+Disallow: /profile
+Disallow: /premium
+Disallow: /ads
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /confirm-password
+Disallow: /auth/
+
+Sitemap: http://myraces.test/sitemap.xml

@@ -15,7 +15,7 @@ export default {
                 sans: ['Public Sans', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary:       '#C8FA5F',
+                primary:       'rgb(var(--color-primary) / <alpha-value>)',
                 'bg-app':      'var(--color-bg-app)',
                 'bg-card':     'var(--color-bg-card)',
                 'bg-elevated': 'var(--color-bg-elevated)',
@@ -27,8 +27,8 @@ export default {
             boxShadow: {
                 'card':    '0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3)',
                 'card-up': '0 4px 16px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)',
-                'fab':     '0 8px 24px rgba(200,250,95,0.35)',
-                'glow':    '0 0 20px rgba(200,250,95,0.25)',
+                'fab':     '0 8px 24px rgb(var(--color-primary) / 0.35)',
+                'glow':    '0 0 20px rgb(var(--color-primary) / 0.25)',
             },
         },
     },

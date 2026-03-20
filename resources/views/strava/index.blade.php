@@ -139,8 +139,8 @@
         var box = document.getElementById('check-' + idx);
         var mark = document.getElementById('checkmark-' + idx);
         if (cb.checked) {
-            box.style.background = '#C8FA5F';
-            box.style.borderColor = '#C8FA5F';
+            box.style.background = 'rgb(var(--color-primary))';
+            box.style.borderColor = 'rgb(var(--color-primary))';
             mark.classList.remove('hidden');
         } else {
             box.style.background = '';

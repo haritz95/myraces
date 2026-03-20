@@ -83,7 +83,7 @@
 
             {{-- Info box --}}
             <div class="rounded-2xl px-4 py-3.5 text-xs leading-relaxed"
-                 style="background:rgba(200,250,95,0.06);border:1px solid rgba(200,250,95,0.15);color:rgba(255,255,255,0.50)">
+                 style="background:rgb(var(--color-primary) / 0.06);border:1px solid rgb(var(--color-primary) / 0.15);color:rgba(255,255,255,0.50)">
                 <span class="text-primary font-bold">Sistema de puntos:</span>
                 Cada km completado suma puntos con tu multiplicador de racha.
                 <span class="font-mono text-white/70">Puntos = km × (1 + racha/10)</span>.
