@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdClickController;
 use App\Http\Controllers\Admin\AdController as AdminAdController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
 use App\Http\Controllers\Admin\NavItemController;
 use App\Http\Controllers\Admin\PodController as AdminPodController;
 use App\Http\Controllers\Admin\RaceEventController as AdminRaceEventController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventSubmissionController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GearController;
 use App\Http\Controllers\MyAdsController;
 use App\Http\Controllers\OfflineController;
@@ -30,6 +32,8 @@ use App\Models\RaceEvent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store')->middleware('auth');
 
 Route::get('/', function () {
     $featuredEvent = RaceEvent::upcoming()
@@ -159,6 +163,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings');
     Route::patch('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
+
+    Route::get('/feedback', [AdminFeedbackController::class, 'index'])->name('feedback');
+    Route::delete('/feedback/{feedback}', [AdminFeedbackController::class, 'destroy'])->name('feedback.destroy');
 
     Route::get('/nav-items', [NavItemController::class, 'index'])->name('nav-items');
     Route::post('/nav-items', [NavItemController::class, 'store'])->name('nav-items.store');

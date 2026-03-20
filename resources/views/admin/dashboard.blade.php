@@ -169,6 +169,20 @@
                     <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">Orden, visibilidad, premium</p>
                 </div>
             </a>
+            <a href="{{ route('admin.feedback') }}" class="card-interactive flex items-center gap-4 p-5">
+                <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m-6 4h10M5 5a2 2 0 00-2 2v12l4-4h12a2 2 0 002-2V7a2 2 0 00-2-2H5z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-white">Feedback</p>
+                    @php $unread = \App\Models\Feedback::whereRead(false)->count(); @endphp
+                    <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">
+                        {{ $unread > 0 ? $unread.' nuevos mensajes' : 'Bugs y sugerencias de usuarios' }}
+                    </p>
+                </div>
+            </a>
             <a href="{{ route('admin.settings') }}" class="card-interactive flex items-center gap-4 p-5">
                 <div class="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0">
                     <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">

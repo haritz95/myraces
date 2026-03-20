@@ -587,5 +587,9 @@
             }
         })();
     </script>
+
+    @if(\App\Models\Setting::get('feedback_widget_enabled', '1') === '1')
+        @include('partials.feedback-widget')
+    @endif
     </body>
 </html>

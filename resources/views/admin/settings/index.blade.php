@@ -69,6 +69,20 @@
                             </button>
                             <input type="hidden" name="event_submissions_open" value="{{ $checked('event_submissions_open') ? '1' : '0' }}" class="toggle-input">
                         </label>
+
+                        <label class="settings-toggle">
+                            <span class="flex-1">
+                                <span class="text-sm font-semibold text-white block">Widget de feedback</span>
+                                <span class="text-xs" style="color:rgba(255,255,255,0.35)">Botón flotante para que los usuarios envíen bugs y sugerencias</span>
+                            </span>
+                            <input type="hidden" name="feedback_widget_enabled" value="0">
+                            <button type="button" role="switch" onclick="toggleSwitch(this)"
+                                    data-name="feedback_widget_enabled"
+                                    class="toggle-btn {{ $checked('feedback_widget_enabled') ? 'toggle-on' : 'toggle-off' }}">
+                                <span class="toggle-thumb {{ $checked('feedback_widget_enabled') ? 'translate-x-5' : 'translate-x-0.5' }}"></span>
+                            </button>
+                            <input type="hidden" name="feedback_widget_enabled" value="{{ $checked('feedback_widget_enabled') ? '1' : '0' }}" class="toggle-input">
+                        </label>
                     </div>
 
                     {{-- Maintenance --}}

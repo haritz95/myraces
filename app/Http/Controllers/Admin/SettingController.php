@@ -34,6 +34,7 @@ class SettingController extends Controller
         'events_per_page' => ['nullable', 'integer', 'min:6', 'max:100'],
         'featured_events_count' => ['nullable', 'integer', 'min:1', 'max:10'],
         'event_submissions_open' => ['boolean'],
+        'feedback_widget_enabled' => ['boolean'],
         // Appearance
         'primary_color' => ['nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
     ];
@@ -43,6 +44,7 @@ class SettingController extends Controller
         'allow_registrations',
         'maintenance_mode',
         'event_submissions_open',
+        'feedback_widget_enabled',
     ];
 
     public function index(): View
