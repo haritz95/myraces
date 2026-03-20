@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
-Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store')->middleware('auth');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store')->middleware(['auth', 'throttle:5,10']);
 
 Route::get('/', function () {
     $featuredEvent = RaceEvent::upcoming()
@@ -69,7 +69,7 @@ Route::middleware(['auth', 'verified', 'nav.access'])->group(function () {
     Route::resource('expenses', ExpenseController::class)->except(['show']);
 
     Route::get('/personal-records', [PersonalRecordController::class, 'index'])->name('personal-records.index');
-    Route::post('/personal-records', [PersonalRecordController::class, 'store'])->name('personal-records.store');
+    Route::post('/personal-records', [PersonalRecordController::class, 'store'])->name('personal-records.store')->middleware('throttle:30,10');
     Route::delete('/personal-records/{personalRecord}', [PersonalRecordController::class, 'destroy'])->name('personal-records.destroy');
 
     Route::resource('gear', GearController::class)->except(['show']);
@@ -78,16 +78,16 @@ Route::middleware(['auth', 'verified', 'nav.access'])->group(function () {
 
     Route::get('/pods', [PodController::class, 'index'])->name('pods.index');
     Route::get('/pods/create', [PodController::class, 'create'])->name('pods.create');
-    Route::post('/pods', [PodController::class, 'store'])->name('pods.store');
+    Route::post('/pods', [PodController::class, 'store'])->name('pods.store')->middleware('throttle:5,60');
     Route::get('/pods/{pod}', [PodController::class, 'show'])->name('pods.show');
-    Route::post('/pods/{pod}/join', [PodController::class, 'join'])->name('pods.join');
+    Route::post('/pods/{pod}/join', [PodController::class, 'join'])->name('pods.join')->middleware('throttle:10,10');
     Route::delete('/pods/{pod}/leave', [PodController::class, 'leave'])->name('pods.leave');
-    Route::post('/pods/{pod}/messages', [PodController::class, 'sendMessage'])->name('pods.messages.store');
+    Route::post('/pods/{pod}/messages', [PodController::class, 'sendMessage'])->name('pods.messages.store')->middleware('throttle:30,1');
     Route::get('/pods/{pod}/messages', [PodController::class, 'messages'])->name('pods.messages');
 
     Route::get('/events', [RaceEventController::class, 'index'])->name('events.index');
     Route::get('/events/submit', [EventSubmissionController::class, 'create'])->name('events.submit');
-    Route::post('/events/submit', [EventSubmissionController::class, 'store'])->name('events.submit.store');
+    Route::post('/events/submit', [EventSubmissionController::class, 'store'])->name('events.submit.store')->middleware('throttle:5,60');
     Route::get('/events/my-submissions', [EventSubmissionController::class, 'mySubmissions'])->name('events.my-submissions');
     Route::get('/events/{raceEvent:slug}', [RaceEventController::class, 'show'])->name('events.show');
     Route::post('/events/{raceEvent}/attend', [RaceEventController::class, 'toggleAttend'])->name('events.attend');
@@ -101,19 +101,19 @@ Route::middleware(['auth', 'verified', 'nav.access'])->group(function () {
 
     Route::middleware('premium')->group(function () {
         Route::get('/coach', [RaceCoachController::class, 'index'])->name('coach.index');
-        Route::post('/coach/chat', [RaceCoachController::class, 'chat'])->name('coach.chat');
+        Route::post('/coach/chat', [RaceCoachController::class, 'chat'])->name('coach.chat')->middleware('throttle:20,60');
     });
 
     Route::get('/strava/import', [StravaImportController::class, 'index'])->name('strava.import');
-    Route::post('/strava/import', [StravaImportController::class, 'import'])->name('strava.import.store');
+    Route::post('/strava/import', [StravaImportController::class, 'import'])->name('strava.import.store')->middleware('throttle:5,60');
 
     Route::get('/ads', [MyAdsController::class, 'index'])->name('my-ads.index');
     Route::get('/ads/create', [MyAdsController::class, 'create'])->name('my-ads.create');
-    Route::post('/ads', [MyAdsController::class, 'store'])->name('my-ads.store');
+    Route::post('/ads', [MyAdsController::class, 'store'])->name('my-ads.store')->middleware('throttle:10,60');
     Route::get('/ads/{ad}', [MyAdsController::class, 'show'])->name('my-ads.show');
     Route::patch('/ads/{ad}', [MyAdsController::class, 'update'])->name('my-ads.update');
     Route::delete('/ads/{ad}', [MyAdsController::class, 'destroy'])->name('my-ads.destroy');
-    Route::post('/ad/{ad}/impression', [AdClickController::class, 'impression'])->name('ad.impression');
+    Route::post('/ad/{ad}/impression', [AdClickController::class, 'impression'])->name('ad.impression')->middleware('throttle:60,1');
     Route::get('/ad/{ad}/click', [AdClickController::class, 'click'])->name('ad.click');
 
     Route::post('/push-subscriptions', [PushSubscriptionController::class, 'store'])->name('push.subscribe');

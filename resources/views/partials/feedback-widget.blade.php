@@ -122,7 +122,11 @@
                 headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' },
                 body: data,
             })
-            .then(function (r) { return r.json(); })
+            .then(function (r) {
+                if (r.status === 429) { throw new Error('rate_limit'); }
+                if (!r.ok) { throw new Error('error'); }
+                return r.json();
+            })
             .then(function () {
                 form.querySelector('textarea').value = '';
                 document.getElementById('fb-success').style.display = 'block';
@@ -135,10 +139,12 @@
                     btn.textContent = 'Enviar';
                 }, 2000);
             })
-            .catch(function () {
+            .catch(function (err) {
                 btn.disabled = false;
-                btn.textContent = 'Enviar';
+                btn.textContent = err.message === 'rate_limit' ? 'Demasiados envíos, espera' : 'Error al enviar';
+                setTimeout(function () { btn.textContent = 'Enviar'; }, 3000);
             });
+
         };
     })();
 </script>
