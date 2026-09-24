@@ -28,7 +28,6 @@ use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\StravaImportController;
-use App\Models\RaceEvent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
@@ -36,14 +35,7 @@ Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store')->middleware(['auth', 'throttle:5,10']);
 
 Route::get('/', function () {
-    $featuredEvent = RaceEvent::upcoming()
-        ->whereNotNull('event_date')
-        ->orderBy('event_date')
-        ->first(['name', 'event_date', 'location', 'category', 'image', 'image_url']);
-
-    $totalEvents = RaceEvent::upcoming()->count();
-
-    return view('welcome', compact('featuredEvent', 'totalEvents'));
+    return view('welcome');
 })->name('home');
 
 Route::get('/offline', OfflineController::class)->name('offline');
