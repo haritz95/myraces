@@ -40,6 +40,9 @@ Route::get('/', function () {
 
 Route::get('/offline', OfflineController::class)->name('offline');
 
+Route::view('/privacidad', 'legal.privacy')->name('privacy');
+Route::redirect('/privacy', '/privacidad');
+
 Route::get('/language/{locale}', function (string $locale) {
     if (in_array($locale, ['es', 'en'])) {
         session(['locale' => $locale]);
