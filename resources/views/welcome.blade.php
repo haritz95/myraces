@@ -32,7 +32,7 @@
     <style>
         :root { --red:#d9202c; --red-dark:#b41021; --ink:#171719; --paper:#f7f4ef; --cream:#fffdf9; --line:#ded9d0; --muted:#63605a; }
         * { box-sizing:border-box; margin:0; }
-        html { scroll-behavior:smooth; }
+        html { scroll-behavior:smooth; scroll-padding-top:84px; }
         body { background:var(--paper); color:var(--ink); font-family:'Barlow',system-ui,sans-serif; font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; }
         a { color:inherit; }
         img { display:block; max-width:100%; }
