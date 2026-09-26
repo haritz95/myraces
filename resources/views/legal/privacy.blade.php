@@ -95,6 +95,7 @@
     <h2>Con quién se comparten</h2>
     <ul>
         <li><strong>Hetzner</strong> (alojamiento del servidor), como encargado del tratamiento.</li>
+        <li><strong>Brevo</strong> (Francia, UE), para enviar los correos de la cuenta: el código para confirmar tu email o cambiar tu contraseña.</li>
         <li><strong>Apple</strong>, para las compras y las notificaciones.</li>
         <li><strong>Strava</strong>, solo si la conectas.</li>
         <li><strong>Otros usuarios</strong> ven únicamente lo que tú haces público.</li>
@@ -163,6 +164,7 @@
     <h2>Who we share it with</h2>
     <ul>
         <li><strong>Hetzner</strong> (server hosting), as data processor.</li>
+        <li><strong>Brevo</strong> (France, EU), to send account emails: the code to confirm your email or change your password.</li>
         <li><strong>Apple</strong>, for purchases and notifications.</li>
         <li><strong>Strava</strong>, only if you connect it.</li>
         <li><strong>Other users</strong> only see what you make public.</li>
