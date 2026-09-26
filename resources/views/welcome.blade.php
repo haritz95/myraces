@@ -172,7 +172,7 @@
             <h2 class="display section-title">{{ __('home.features_title') }}</h2>
             <div>
                 @foreach ($features as [$key, $screen])
-                    <article class="feature">
+                    <article class="feature" id="{{ $key }}">
                         <div class="shot">
                             <div class="phone"><img src="/images/screens/{{ $screen }}.jpg" alt="{{ __('home.screen_alt', ['name' => __('home.'.$key.'_title')]) }}" loading="lazy" width="590" height="1279"></div>
                         </div>
