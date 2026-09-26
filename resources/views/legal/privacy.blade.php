@@ -1,4 +1,5 @@
-@php($es = app()->getLocale() !== 'en')
+{{-- El idioma elegido en la web; si no se ha elegido, el del navegador o el iPhone (la app es en español). --}}
+@php($es = session()->has('locale') ? app()->getLocale() !== 'en' : request()->getPreferredLanguage(['es', 'en']) !== 'en')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
